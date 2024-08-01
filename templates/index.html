@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-
 {% block title %}Home - Infix{% endblock %}
 
-{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
+{% block content %}
 <!-- Video -->
 <div id="intro-section"></div>
 
@@ -20,3 +20,6 @@
 <div id="guides-section"></div>
 
 {% endblock %}
+
+
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
