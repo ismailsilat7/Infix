@@ -1,3 +1,25 @@
+/* Platform Font */
+
+@font-face {
+    font-family: 'Platform-Bold'; 
+    src: url('../fonts/Platform-Bold.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Platform-Regular'; 
+    src: url('../fonts/Platform-Regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Platform-Light'; 
+    src: url('../fonts/Platform-Light.woff2') format('woff2');
+  }
+
+html {
+    scroll-behavior: smooth;
+    font-family: "Figtree", sans-serif;
+}
+
+/* Footer */
+
 #footer {
     background-color: #ffffff;
     padding: 0;
@@ -26,6 +48,7 @@
 
 .help-us-expand {
     font-size: 80px;
+    font-family: 'Platform-Bold';
 }
 
 .gray {
@@ -83,12 +106,12 @@ a {
 }
 
 .copyright {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
     padding: 10px;
     font-size: 18px;
-    color: #ffffff;
-    background-color: #000000;
-    margin: -8px;
-    bottom: 0;
+    color: black;
 }
