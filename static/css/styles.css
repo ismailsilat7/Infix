@@ -1,0 +1,94 @@
+#footer {
+    background-color: #ffffff;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 85vh;
+}
+
+.infix-logo-top {
+    display: flex;
+    justify-content: center;
+}
+
+.infix-logo-top > .infix-logo {
+    width: 150px;
+    height: 150px;
+}
+
+.help-us {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.help-us-expand {
+    font-size: 80px;
+}
+
+.gray {
+    color: #858585;
+}
+
+.action-buttons{
+    display: flex; 
+    width: 600px;
+    justify-content: space-around;
+}
+
+.donate, .contribute {
+    text-align: center;
+    border: 2px solid #000000;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    width: 100px;
+    color: #000000;
+    font-size: 22px;
+}
+
+.donate {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.facebook-icon, .instagram-icon {
+    width: 20px;
+    height: 20px;
+    padding-left: 5px;
+    margin-bottom: -3px;
+}
+
+.links {
+    font-size: 22px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    margin-top: 20px;
+}
+
+.contact-email {
+    margin-top: -2px;
+}
+
+.other-links {
+    text-align: right;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.copyright {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #000000;
+    margin: -8px;
+    bottom: 0;
+}
