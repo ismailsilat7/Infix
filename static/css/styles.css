@@ -26,6 +26,9 @@ html {
 
 /* Navbar */
 
+
+/* Button Styles */
+
 .blackbgBtn {
     position: relative;
     font-family: 'Figtree';
@@ -39,6 +42,7 @@ html {
 }
 .blackbgBtn:hover {
     border-radius: 15px;
+    cursor: pointer;
 }
 .blackbgBtn a {
     color: white;
@@ -90,6 +94,7 @@ html {
 }
 .blackbgBtn-contrast:hover {
     border-radius: 15px;
+    cursor: pointer;
 }
 .blackbgBtn-contrast a {
     color: black;
@@ -141,6 +146,7 @@ html {
 }
 .whitebgBtn:hover {
     border-radius: 15px;
+    cursor: pointer;
 }
 .whitebgBtn a {
     color: black;
@@ -190,6 +196,7 @@ html {
 }
 .whitebgBtn-contrast:hover {
     border-radius: 15px;
+    cursor: pointer;
 }
 .whitebgBtn-contrast a {
     color: white;
