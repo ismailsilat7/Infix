@@ -18,6 +18,12 @@ html {
     font-family: "Figtree", sans-serif;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    transition: all ease 0.3s;
+}
+
 /* Footer */
 
 #footer {
@@ -31,7 +37,7 @@ html {
 
 .infix-logo-top {
     display: flex;
-    justify-content: center;
+    justify-content:center;
 }
 
 .infix-logo-top > .infix-logo {
@@ -42,13 +48,14 @@ html {
 .help-us {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 
 .help-us-expand {
-    font-size: 80px;
+    font-size: 100px;
     font-family: 'Platform-Bold';
+    margin: 30px;
 }
 
 .gray {
@@ -78,18 +85,17 @@ html {
 }
 
 .facebook-icon, .instagram-icon {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     padding-left: 5px;
-    margin-bottom: -3px;
+    margin-bottom: -5px;
 }
 
 .links {
     font-size: 22px;
     display: flex;
     justify-content: space-between;
-    margin: 5px;
-    margin-top: 20px;
+    margin: 30px;
 }
 
 .contact-email {
@@ -106,8 +112,6 @@ a {
 }
 
 .copyright {
-    position: fixed;
-    bottom: 0;
     width: 100%;
     display: flex;
     justify-content: center;
