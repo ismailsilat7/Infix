@@ -1,0 +1,87 @@
+
+
+
+
+#guides-section {
+    background-color: #000000;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 85vh;
+    align-items: center;
+}
+
+.study-guides {
+    font-size: 120px;
+    font-family: 'Platform-Bold';
+    display: flex;
+    margin: 45px;
+}
+
+.byAndread {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.byAndread p {
+    font-size: 30px;
+}
+
+.read-now-btn {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+@media (max-width : 900px ) {
+    .study-guides {
+        font-size: 100px;
+    }
+    .byAndread p {
+        font-size: 26px;
+    }
+    .read-now-btn {
+        font-size: 16px;
+    }
+}
+
+@media (max-width : 700px ) {
+    .study-guides {
+        font-size: 80px;
+    }
+    .byAndread p {
+        font-size: 22px;
+    }
+    .read-now-btn {
+        font-size: 16px;
+    }
+}
+
+@media (max-width : 580px ) {
+    .study-guides {
+        font-size: 60px;
+        justify-content: space-evenly;
+        margin: 30px;
+    }
+    .byAndread p {
+        font-size: 18px;
+    }
+    .read-now-btn {
+        font-size: 14px;
+    }
+}
+
+@media (max-width : 420px) {
+    .study-guides {
+        font-size: 40px;
+        margin: 10px;
+    }
+    .byAndread p {
+        font-size: 12px;
+    }
+    .read-now-btn {
+        font-size: 12px;
+    }
+}
