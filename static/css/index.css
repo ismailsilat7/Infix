@@ -1,6 +1,128 @@
+/* Video */
 
+#intro-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
+#intro-section video {
+    object-fit: cover;
+    width: 100%;
+}
 
+.intro-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em 3em;
+    text-align: center;
+}
+.intro-card h3 {
+    font-family: 'Platform-Regular';
+    font-size: 120px;
+    line-height: 90%;
+}
+.intro-card p {
+    font-size: 30px;
+}
+.intro-btn-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
+}
+.intro-btn-container div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.log-in-btn, .get-started-btn {
+    font-size: 18px;
+}
+
+/* Laptop */
+@media (max-width : 1024px ) {
+    .intro-card h3 {
+        font-size: 90px;
+    }
+    .intro-card p {
+        font-size: 20px;
+    }
+}
+
+/* Mobile L */
+@media (max-width : 500px ) {
+    #intro-section video{
+        display: none;
+    }
+    .intro-card h3 {
+        font-size: 70px;
+    }
+    .intro-card p {
+        font-size: 15px;
+    }
+    .intro-card {
+        padding: 1em 1em;
+        transform: translate(-50%, -50%);
+    }
+    .log-in-btn, .get-started-btn {
+        font-size: 16px;
+    }
+}
+
+/* Mobile M */
+@media (max-width : 420px ) {
+    .intro-card h3 {
+        font-size: 65px;
+    }
+    .intro-card p {
+        font-size: 15px;
+    }
+    .intro-card {
+        padding: 1em 1em;
+        transform: translate(-50%, -50%);
+    }
+    .log-in-btn, .get-started-btn {
+        font-size: 14px;
+        padding: 1em 1.5em;
+    }
+}
+
+/* Mobile S */
+@media (max-width : 360px ) {
+    .intro-card h3 {
+        font-size: 50px;
+    }
+    .intro-card p {
+        font-size: 15px;
+    }
+    .intro-card {
+        padding: 1em 1em;
+        transform: translate(-50%, -50%);
+    }
+    .log-in-btn, .get-started-btn {
+        font-size: 12px;
+        padding: 1em 0.9em;
+    }
+}
+
+/* Guides Section */
 
 #guides-section {
     background-color: #000000;
