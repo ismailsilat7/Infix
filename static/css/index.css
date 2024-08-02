@@ -30,6 +30,8 @@
     align-items: center;
     padding: 1em 3em;
     text-align: center;
+    /* width: auto; */
+    white-space: nowrap;
 }
 .intro-card h3 {
     font-family: 'Platform-Regular';
@@ -56,8 +58,21 @@
     font-size: 18px;
 }
 
+/* Laptop L */
+@media (min-width : 1440px ) {
+    .intro-card h3 {
+        font-size: 160px;
+    }
+    .intro-card p {
+        font-size: 35px;
+    }
+    .log-in-btn, .get-started-btn {
+        font-size: 22px;
+    }
+}
+
 /* Laptop */
-@media (max-width : 1024px ) {
+@media (max-width : 1050px ) {
     .intro-card h3 {
         font-size: 90px;
     }
