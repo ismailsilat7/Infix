@@ -26,7 +26,17 @@
 <div id="works-section"></div>
 
 <!-- trust-section -->
-<div id="trust-section"></div>
+<div id="trust-section">
+    <div class="trust-heading"><p class="trusted">Trusted by students of</p></div>
+    <div class="logos">
+        <div class="logos-slide">
+            <img src="../static/images/trusted-logos/1.png" alt="Cedar College Logo"><img src="../static/images/trusted-logos/2.png" alt="Nixor College Logo"><img src="../static/images/trusted-logos/3.png" alt="Eden College Logo"><img src="../static/images/trusted-logos/4.png" alt="Habib Public School Logo"><img src="../static/images/trusted-logos/5.png" alt="Alpha College Logo"><img src="../static/images/trusted-logos/6.png" alt="Mama Parsi Girls School Logo"><img src="../static/images/trusted-logos/7.png" alt="Sceptre College Logo"><img src="../static/images/trusted-logos/8.png" alt="BeasonHouse Schooling System Logo"><img src="../static/images/trusted-logos/9.png" alt="Karachi Grammar School Logo"><img src="../static/images/trusted-logos/10.png" alt="Hexis College Logo"><img src="../static/images/trusted-logos/11.png" alt="The Lyceum Logo"><img src="../static/images/trusted-logos/12.png" alt="The City School Logo">
+        </div>
+        <div class="logos-slide">
+            <img src="../static/images/trusted-logos/1.png" alt="Cedar College Logo"><img src="../static/images/trusted-logos/2.png" alt="Nixor College Logo"><img src="../static/images/trusted-logos/3.png" alt="Eden College Logo"><img src="../static/images/trusted-logos/4.png" alt="Habib Public School Logo"><img src="../static/images/trusted-logos/5.png" alt="Alpha College Logo"><img src="../static/images/trusted-logos/6.png" alt="Mama Parsi Girls School Logo"><img src="../static/images/trusted-logos/7.png" alt="Sceptre College Logo"><img src="../static/images/trusted-logos/8.png" alt="BeasonHouse Schooling System Logo"><img src="../static/images/trusted-logos/9.png" alt="Karachi Grammar School Logo"><img src="../static/images/trusted-logos/10.png" alt="Hexis College Logo"><img src="../static/images/trusted-logos/11.png" alt="The Lyceum Logo"><img src="../static/images/trusted-logos/12.png" alt="The City School Logo">
+        </div>
+    </div>
+</div>
 
 <!-- guides-section -->
 <div id="guides-section">
@@ -41,3 +51,8 @@
 
 
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+<script>
+    var copy = document.querySelector(".logos-slide").cloneNode(true)
+    document.querySelector('.logos').appendChild(copy)
+</script>
