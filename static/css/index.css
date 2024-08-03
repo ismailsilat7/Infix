@@ -58,6 +58,63 @@
     font-size: 18px;
 }
 
+/* Path Section */
+
+#path-section {
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+#path-section h1 {
+    font-family: 'Platform-Bold';
+    font-size: 80px;
+    color: white;
+}
+#path-section h1 span {
+    color: #858585;
+}
+.paths-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+.olevel-path, .alevel-path {
+    width: 30vw;
+    min-height: 20vh;
+    padding: 1em 2em;
+    background-color: white;
+    border: 2px solid black;
+    box-shadow: 8px 8px 3px 0 rgba(255, 255, 255, 0.651);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.olevel-path:hover, .alevel-path:hover {
+    cursor: pointer;
+    transform: translate(0px, -20px);
+}
+.line-one {
+    font-size: 50px;
+    font-weight: bold;
+}
+.line-two {
+    font-size: 25px; 
+    margin: 1em 0;
+}
+.line-three {
+    font-size: 20px;
+    color: white;
+    background-color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: lighter;
+    align-self: flex-start;
+}
+
 /* Laptop L */
 @media (min-width : 1440px ) {
     .intro-card h3 {
@@ -69,6 +126,9 @@
     .log-in-btn, .get-started-btn {
         font-size: 22px;
     }
+    #path-section h1 {
+        font-size: 100px;
+    }
 }
 
 /* Laptop */
@@ -78,6 +138,38 @@
     }
     .intro-card p {
         font-size: 20px;
+    }
+    .line-one {
+        font-size: 40px;
+    }
+    .line-two {
+        font-size: 16px; 
+    }
+    .line-three {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width : 725px ) {
+    #path-section h1 {
+        font-size: 60px;
+    }
+    .paths-container {
+        flex-direction: column;
+    }
+    .olevel-path, .alevel-path {
+        width: 50vw;
+    }
+    .line-one {
+        font-size: 22px;
+    }
+    .line-two {
+        font-size: 15px; 
+    }
+    .line-three {
+        font-size: 10px;
+        padding: 5px 10px;
     }
 }
 
@@ -98,6 +190,15 @@
     }
     .log-in-btn, .get-started-btn {
         font-size: 16px;
+    }
+    #path-section h1 {
+        font-size: 45px;
+    }
+    .paths-container {
+        flex-direction: column;
+    }
+    .olevel-path, .alevel-path {
+        width: 50vw;
     }
 }
 
@@ -135,54 +236,19 @@
         font-size: 12px;
         padding: 1em 0.9em;
     }
-}
-
-/* Path Section */
-
-#path-section {
-    background-color: black;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-}
-#path-section h1 {
-    font-family: 'Platform-Bold';
-    font-size: 80px;
-    color: white;
-}
-#path-section span {
-    color: #858585;
-}
-.paths-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2em;
-    max-width: 75vw;
-}
-.olevel-path, .alevel-path {
-    padding: 1em 2em;
-    background-color: white;
-    border: 2px solid black;
-    box-shadow: 5px 5px 2px 0 rgba(255, 255, 255, 0.322);
-}
-.olevel-path:hover, .alevel-path:hover {
-    cursor: pointer;
-    transform: translate(0px, -20px);
-}
-.line-one {
-    font-size: 50px;
-    font-weight: bold;
-}
-.line-two {
-    font-size: 25px; 
-    margin: 1em 0;
-}
-.line-three {
-    font-size: 20px;
-    color: #858585;
+    #path-section h1 {
+        font-size: 35px;
+    }
+    .line-one {
+        font-size: 20px;
+    }
+    .line-two {
+        font-size: 12px; 
+    }
+    .line-three {
+        font-size: 8px;
+        padding: 5px 10px;
+    }
 }
 
 /* Trust Section */
