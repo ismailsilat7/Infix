@@ -1,68 +1,5 @@
 /* Video */
 
-#trust-section {
-    box-sizing: border-box;
-    background-color: #ffffff;
-    min-height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 80px;
-}
-
-.trusted {
-    font-family: 'Platform-Bold';
-    font-size: 80px;
-}
-
-@keyframes slide {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%);
-    }
-}
-
-.logos {
-    overflow: hidden;
-    padding: 60px 0;
-    white-space: nowrap;
-    position: relative;
-}
-
-.logos:hover .logos-slide {
-    animation-play-state: paused;
-}
-
-.logos:before, .logos:after {
-    position: absolute;
-    top:0;
-    width: 250px;
-    height: 100%;
-    content: "";
-    z-index: 2;
-}
-
-.logos:before {
-    left: 0;
-    background: linear-gradient(to left ,rgba(255,255,255,0), white);
-}
-
-.logos:after {
-    right: 0;
-    background: linear-gradient(to right ,rgba(255,255,255,0), white);
-}
-
-.logos-slide {
-    display: inline-block;
-    animation: 35s slide infinite linear;
-}
-
-.logos-slide img {
-    height: 100px;
-    margin: 0 40px;
-}
 #intro-section {
     height: 100vh;
     display: flex;
@@ -74,6 +11,7 @@
 #intro-section video {
     object-fit: cover;
     width: 100%;
+    max-height: 100%;
 }
 
 .intro-card {
@@ -93,7 +31,6 @@
     align-items: center;
     padding: 1em 3em;
     text-align: center;
-    /* width: auto; */
     white-space: nowrap;
 }
 .intro-card h3 {
@@ -198,6 +135,120 @@
         font-size: 12px;
         padding: 1em 0.9em;
     }
+}
+
+/* Path Section */
+
+#path-section {
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+#path-section h1 {
+    font-family: 'Platform-Bold';
+    font-size: 80px;
+    color: white;
+}
+#path-section span {
+    color: #858585;
+}
+.paths-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    max-width: 75vw;
+}
+.olevel-path, .alevel-path {
+    padding: 1em 2em;
+    background-color: white;
+    border: 2px solid black;
+    box-shadow: 5px 5px 2px 0 rgba(255, 255, 255, 0.322);
+}
+.olevel-path:hover, .alevel-path:hover {
+    cursor: pointer;
+    transform: translate(0px, -20px);
+}
+.line-one {
+    font-size: 50px;
+    font-weight: bold;
+}
+.line-two {
+    font-size: 25px; 
+    margin: 1em 0;
+}
+.line-three {
+    font-size: 20px;
+    color: #858585;
+}
+
+/* Trust Section */
+
+#trust-section {
+    box-sizing: border-box;
+    background-color: #ffffff;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 80px;
+}
+
+.trusted {
+    font-family: 'Platform-Bold';
+    font-size: 80px;
+}
+
+@keyframes slide {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.logos {
+    overflow: hidden;
+    padding: 60px 0;
+    white-space: nowrap;
+    position: relative;
+}
+
+.logos:hover .logos-slide {
+    /* animation-play-state: paused; */
+}
+
+.logos:before, .logos:after {
+    position: absolute;
+    top:0;
+    width: 250px;
+    height: 100%;
+    content: "";
+    z-index: 2;
+}
+
+.logos:before {
+    left: 0;
+    background: linear-gradient(to left ,rgba(255,255,255,0), white);
+}
+
+.logos:after {
+    right: 0;
+    background: linear-gradient(to right ,rgba(255,255,255,0), white);
+}
+
+.logos-slide {
+    display: inline-block;
+    animation: 35s slide infinite linear;
+}
+
+.logos-slide img {
+    height: 100px;
+    margin: 0 40px;
 }
 
 /* Guides Section */
