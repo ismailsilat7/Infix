@@ -76,6 +76,17 @@ a {
     color: rgba(225,225,225,1);
 }
 
+#active {
+    border-bottom: #ffffff solid 2px;
+    padding-bottom: 5px;
+    color: #ffffff;
+}
+
+#inactive:hover {
+    border-bottom: #ffffff solid 2px;
+    padding-bottom: 5px;
+}
+
 .hamburger {
     display: none;
     cursor: pointer;
