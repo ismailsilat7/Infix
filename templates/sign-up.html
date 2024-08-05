@@ -7,20 +7,15 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
+{% block HomeActive %}inactive{% endblock %}
+{% block SignUpActive %}active{% endblock %}
 
 {% block content %}
-<div id="signup-page">
-  <div class="nav">
-    <div class="logo">
-      <img src="{{ url_for('static', filename='images/logo-b.png') }}" alt="logo">
-      <a href="./" class="logo-title">DueTrack</a>
-    </div>
-  </div>
   
   <div class="main-container">
       <div class="up-form">
         <h2>Create <span style="display: block">new account</span></h2>
-        <form action="/sign-up" method="post">
+        <form action="/signup" method="post">
           <div class="up-inputs">
             <div class="input-container">
               <i class="ri-user-fill"></i>
@@ -46,7 +41,7 @@
             </div>
           </div>
           <div class="up-submit">
-            <a href="{{ url_for('sign_in') }}">Already have an account?</a>
+            <a href="/login">Already have an account?</a>
             <button type="submit">Sign up</button>
           </div>
         </form>
@@ -54,7 +49,7 @@
     <img class="up-img" src="{{ url_for('static', filename='images/up-img.gif') }}" alt="">
   </div>
 </div>
-{% endblock %}
+
 <script>
   // eye icon toggle 
   const pwdInput = document.getElementById('pwd')
@@ -90,3 +85,4 @@
     }
   })
 </script>
+{% endblock %}
