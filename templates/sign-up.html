@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Sign up - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+
+{% block content %}
+<div id="signup-page">
+  <div class="nav">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo-b.png') }}" alt="logo">
+      <a href="./" class="logo-title">DueTrack</a>
+    </div>
+  </div>
+  
+  <div class="main-container">
+      <div class="up-form">
+        <h2>Create <span style="display: block">new account</span></h2>
+        <form action="/sign-up" method="post">
+          <div class="up-inputs">
+            <div class="input-container">
+              <i class="ri-user-fill"></i>
+              <input type="text" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="input-container">
+              <i class="ri-emotion-happy-line"></i>
+              <input type="text" name="nickname" placeholder="Nickname (for authentication)" required>
+            </div>
+            <div class="input-container">
+              <i class="ri-mail-fill"></i>
+              <input type="text" name="name" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+              <i class="ri-lock-2-line"></i>
+              <input type="password" name="pwd" placeholder="Password" id="pwd" required>
+              <i class="ri-eye-close-line" style="font-size: 26px;cursor: pointer;" id="toggle-one"></i>
+            </div>
+            <div class="input-container">
+              <i class="ri-lock-2-fill"></i>
+              <input type="password" name="confirm-pwd" placeholder="Confirm Password" id="confirm-pwd" required disabled>
+              <i class="ri-eye-close-line" style="font-size: 26px; cursor: pointer;" id="toggle-two"></i>
+            </div>
+          </div>
+          <div class="up-submit">
+            <a href="{{ url_for('sign_in') }}">Already have an account?</a>
+            <button type="submit">Sign up</button>
+          </div>
+        </form>
+      </div>
+    <img class="up-img" src="{{ url_for('static', filename='images/up-img.gif') }}" alt="">
+  </div>
+</div>
+{% endblock %}
+<script>
+  // eye icon toggle 
+  const pwdInput = document.getElementById('pwd')
+  const confirmpwdInput = document.getElementById('confirm-pwd')
+  const toggleBtnOne = document.getElementById('toggle-one')
+  const toggleBtnTwo = document.getElementById('toggle-two')
+  toggleBtnOne.addEventListener('click', ()=> {
+    if (pwdInput.type === 'password') {
+      pwdInput.type = 'text'
+      toggleBtnOne.className = 'ri-eye-line'
+    } else {
+      pwdInput.type = 'password'
+      toggleBtnOne.className = 'ri-eye-close-line'
+    }
+  })
+  toggleBtnTwo.addEventListener('click', () => {
+    if (confirmpwdInput.type === 'password') {
+      confirmpwdInput.type = 'text'
+      toggleBtnTwo.className = 'ri-eye-line'
+    } else {
+      confirmpwdInput.type = 'password'
+      toggleBtnTwo.className = 'ri-eye-close-line'
+    }
+  })
+  // handling disabled pwd 
+  pwdInput.addEventListener('input', () => {
+    if (pwdInput.value.length > 0) {
+      confirmpwdInput.disabled = false
+
+    } else {
+      confirmpwdInput.disabled = true
+      confirmpwdInput.value = ""
+    }
+  })
+</script>
