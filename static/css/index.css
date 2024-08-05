@@ -12,6 +12,8 @@
     object-fit: cover;
     width: 100%;
     max-height: 100%;
+    position: fixed;
+    z-index: -5000;
 }
 
 .intro-card {
@@ -276,11 +278,14 @@
     }
 }
 
-/* Mobile L */
-@media (max-width : 500px ) {
-    #intro-section video{
+@media (max-width : 590px) {
+    #intro-section video {
         display: none;
     }
+}
+
+/* Mobile L */
+@media (max-width : 500px ) {
     .intro-card h3 {
         font-size: 70px;
     }
@@ -392,7 +397,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    margin: 80px;
+    padding: 80px;
 }
 
 .trusted {
@@ -552,6 +557,7 @@
     }
     #trust-section {
         margin: 30px;
+        padding: 0;
     }
     .trusted {
         font-size: 30px;
