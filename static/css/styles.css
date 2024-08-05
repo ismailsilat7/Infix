@@ -24,6 +24,10 @@ html {
     transition: all ease 0.3s;
 }
 
+body, html {
+    overflow-x: hidden;
+}
+
 /* Navbar */
 #navbar {
     box-sizing: border-box;
