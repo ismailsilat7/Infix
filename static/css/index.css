@@ -230,7 +230,7 @@
         gap: 1em;
     }
     .step {
-        width: 30vw;
+        width: 50vw;
         height: 22vh;
     }
     .step .head  {
@@ -272,13 +272,13 @@
         gap: 1em;
     }
     .step {
-        width: 50vw;
+        width: 55vw;
     }
 }
 
 /* Mobile L */
 @media (max-width : 500px ) {
-    #intro-section video{
+     #intro-section video{
         display: none;
     }
     .intro-card h3 {
