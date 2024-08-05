@@ -17,15 +17,19 @@ db = SQL("sqlite:///data/infix.db")
 def index():
     return render_template("index.html")
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template('login.html')
+    return render_template('log-in.html')
 
-@app.route('/register')
-def register():
-    return render_template('register.html')
+@app.route("/signup", methods=["GET", "POST"])
+def sign_up():
+    if request.method == "POST":
+        return redirect("/login")
+    return render_template("sign-up.html")
 
-
+@app.route("/changepassword", methods=["GET", "POST"])
+def change_password():
+    return render_template("change-password.html")
 
 
 
