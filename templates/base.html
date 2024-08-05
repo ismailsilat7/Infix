@@ -20,12 +20,14 @@
       <a href="#" class="logo"><img src="../static/images/White text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
       <div class="nav">
         <ul class="nav-list">
-          <li class="nav-item"><a href="#" class="nav-link" id="active">Home</a></li>
-          <li class="nav-item"><a href="#" class="nav-link" id="inactive">About</a></li>
-          <li class="nav-item"  ><a href="#" class="nav-link" id="inactive">Get Started</a></li>
+          <li class="nav-item"><a href="/" class="nav-link" id="{% block HomeActive %}active{% endblock %}">Home</a></li>
+          <li class="nav-item"><a href="#" class="nav-link" id="{% block AboutActive %}inactive{% endblock %}">About</a></li>
+          <li class="nav-item"  ><a href="/signup" class="nav-link" id="{% block SignUpActive %}inactive{% endblock %}">Get Started</a></li>
+          <li class="nav-item"  ><a href="/login" class="nav-link" id="{% block LogInActive %}inactive{% endblock %}">Log In</a></li>
         </ul>
       </div>
       <div class="hamburger">
+        <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
