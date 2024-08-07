@@ -1,0 +1,11 @@
+
+
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT NOT NULL,
+    nickname TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    hash TEXT NOT NULL
+);
+
