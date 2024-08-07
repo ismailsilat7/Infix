@@ -2,6 +2,7 @@ from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
+from helpers import login_required
 
 app = Flask(__name__)
 
@@ -13,6 +14,16 @@ Session(app)
 # Initialize database connection
 db = SQL("sqlite:///data/infix.db")
 
+# Ensures responses aren't cached to keep info for users up to date
+@app.after_request
+def after_request(response):
+    """Ensure responses aren't cached"""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = "0"
+    response.headers["Pragma"] = "no-cache"
+    return response
+
+# Other routes
 @app.route("/")
 def index():
     return render_template("index.html")
