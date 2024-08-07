@@ -17,7 +17,6 @@ db = SQL("sqlite:///data/infix.db")
 # Ensures responses aren't cached to keep info for users up to date
 @app.after_request
 def after_request(response):
-    """Ensure responses aren't cached"""
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = "0"
     response.headers["Pragma"] = "no-cache"
