@@ -27,7 +27,7 @@
             </div>
             <div class="input-container">
               <i class="ri-mail-fill"></i>
-              <input type="text" name="name" placeholder="Email" required>
+              <input type="text" name="email" placeholder="Email" required>
             </div>
             <div class="input-container">
               <i class="ri-lock-2-line"></i>
@@ -44,7 +44,10 @@
             <a href="/login">Already have an account?</a>
             <button type="submit">Sign up</button>
           </div>
+          {% include 'flash.html' %}
+
         </form>
+        
       </div>
     <img class="up-img" src="{{ url_for('static', filename='images/up-img.gif') }}" alt="">
   </div>

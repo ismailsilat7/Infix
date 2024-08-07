@@ -15,11 +15,11 @@
       <img class="in-img" src="{{ url_for('static', filename='images/in-img.gif') }}" alt="">
       <div class="in-form">
         <h2>Sign in</h2>
-        <form action="/signin" method="post">
+        <form action="/login" method="post">
           <div class="in-inputs">
             <div class="input-container">
               <i class="ri-mail-fill"></i>
-              <input type="text" name="name" placeholder="Email" required autofocus>
+              <input type="text" name="email" placeholder="Email" required autofocus>
             </div>
             <div class="input-container">
               <i class="ri-lock-2-line"></i>
@@ -32,6 +32,7 @@
             <a href="/signup">New here? <span style="display: block;">Create Account!</span></a>
             <button type="submit">Sign in</button>
           </div>
+          {% include 'flash.html' %}
         </form>
       </div>
   </div>
