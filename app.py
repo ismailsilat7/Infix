@@ -17,7 +17,7 @@ db = SQL("sqlite:///data/infix.db")
 def index():
     return render_template("index.html")
 
-@app.route('/login', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template('log-in.html')
 
