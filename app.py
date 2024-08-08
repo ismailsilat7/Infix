@@ -154,9 +154,8 @@ def change_password():
 
 @app.route("/logout")
 def log_out():
-    flash("You have been logged out", "success")
     session.clear()
-    return redirect("index.html")
+    return redirect("/")
 
 
 
