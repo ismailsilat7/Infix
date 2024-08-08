@@ -45,7 +45,6 @@ def login():
         else:
             # remember user and redirect to index page
             session["user_id"] = rows[0]["id"]
-            session['logged_in'] = True
             # flash("Log In Successfull", "success")
             return render_template('index.html')
 
@@ -155,7 +154,6 @@ def change_password():
 
 @app.route("/logout")
 def log_out():
-    # session.pop('logged_in', None)
     session.clear()
     return redirect("/")
 
