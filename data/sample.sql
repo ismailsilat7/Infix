@@ -59,3 +59,21 @@ CREATE TABLE IF NOT EXISTS progress (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (topic_id) REFERENCES topics(id)
 );
+
+-- Mark topics as completed
+INSERT INTO progress (user_id, topic_id, completed, completed_at)
+VALUES 
+    (1, 101, TRUE, CURRENT_TIMESTAMP),
+    (1, 102, TRUE, CURRENT_TIMESTAMP),
+    (1, 103, TRUE, CURRENT_TIMESTAMP)
+ON CONFLICT(user_id, topic_id) DO UPDATE SET
+    completed = TRUE,
+    completed_at = CURRENT_TIMESTAMP;
+
+-- Calculate progress percentage directly
+SELECT 
+    COUNT(CASE WHEN completed = TRUE THEN 1 END) AS completed_topics,
+    COUNT(*) AS total_topics,
+    (COUNT(CASE WHEN completed = TRUE THEN 1 END) * 100.0 / COUNT(*)) AS progress_percentage
+FROM progress
+WHERE user_id = 1;
