@@ -1,6 +1,3 @@
-
-
-
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     fullname TEXT NOT NULL,
@@ -8,4 +5,3 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE,
     hash TEXT NOT NULL
 );
-
