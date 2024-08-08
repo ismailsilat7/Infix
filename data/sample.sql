@@ -48,3 +48,14 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (topic_id) REFERENCES topics(id)
 );
+
+-- progress table
+CREATE TABLE IF NOT EXISTS progress (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    topic_id INTEGER NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    completed_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (topic_id) REFERENCES topics(id)
+);
