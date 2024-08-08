@@ -43,8 +43,10 @@ def login():
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("pwd")):
             flash("Invalid email and/or password", "warning")
         else:
-            # remember user and redirect to dashboard
+            # remember user and redirect to index page
+            session["user_id"] = rows[0]["id"]
             flash("Log In Successfull", "success")
+            return render_template('index.html')
 
     return render_template('log-in.html')
 
