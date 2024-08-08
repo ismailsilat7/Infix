@@ -22,8 +22,13 @@
         <ul class="nav-list">
           <li class="nav-item"><a href="/" class="nav-link" id="{% block HomeActive %}active{% endblock %}">Home</a></li>
           <li class="nav-item"><a href="#" class="nav-link" id="{% block AboutActive %}inactive{% endblock %}">About</a></li>
-          <li class="nav-item"  ><a href="/signup" class="nav-link" id="{% block SignUpActive %}inactive{% endblock %}">Get Started</a></li>
-          <li class="nav-item"  ><a href="/login" class="nav-link" id="{% block LogInActive %}inactive{% endblock %}">Log In</a></li>
+          {% if session.get('user_id') %}
+            <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a href="/signup" class="nav-link" id="{% block SignUpActive %}inactive{% endblock %}">Get Started</a></li>
+            <li class="nav-item"><a href="/login" class="nav-link" id="{% block LogInActive %}inactive{% endblock %}">Log In</a></li>
+          {% endif %}
         </ul>
       </div>
       <div class="hamburger">

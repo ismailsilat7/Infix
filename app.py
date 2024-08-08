@@ -147,12 +147,16 @@ def change_password():
                     if id:
                         # forget user
                         flash("Password Updated, Please Login again", "success")
+                        session.clear()
                          
     
     return render_template("change-password.html")
 
-
-
+@app.route("/logout")
+def log_out():
+    flash("You have been logged out", "success")
+    session.clear()
+    return redirect("index.html")
 
 
 
