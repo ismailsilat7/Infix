@@ -168,40 +168,40 @@ def select_path():
 @login_required 
 @app.route('/dashboard')
 def dashboard():
-    user_id = session['user_id']
+    # user_id = session['user_id']
 
-    # Get user's name
-    user_info = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)
-    fullname = user_info[0]['fullname'] if user_info else None
-    first_name = fullname.split()[0] if fullname else None
+    # # Get user's name
+    # user_info = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)
+    # fullname = user_info[0]['fullname'] if user_info else None
+    # first_name = fullname.split()[0] if fullname else None
 
-    # Get the user's selected path id
-    user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)
-    path_id = user_path_id[0]['path_id'] if user_path_id else None
+    # # Get the user's selected path id
+    # user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)
+    # path_id = user_path_id[0]['path_id'] if user_path_id else None
 
-    # Get path name based on path_id
-    user_path_name = db.execute("SELECT name FROM paths WHERE id = ?", path_id)
-    path_name = user_path_name[0]['name'] if user_path_name else None
+    # # Get path name based on path_id
+    # user_path_name = db.execute("SELECT name FROM paths WHERE id = ?", path_id)
+    # path_name = user_path_name[0]['name'] if user_path_name else None
 
-    # Get the user's enrolled courses
-    enrolled_courses = db.execute("""
-        SELECT c.name 
-        FROM courses c 
-        JOIN user_paths up ON c.path_id = up.path_id
-        WHERE up.user_id = ?
-    """, user_id)
+    # # Get the user's enrolled courses
+    # enrolled_courses = db.execute("""
+    #     SELECT c.name 
+    #     FROM courses c 
+    #     JOIN user_paths up ON c.path_id = up.path_id
+    #     WHERE up.user_id = ?
+    # """, user_id)
 
-    # Get the user's bookmarks along with topic details
-    bookmarks = db.execute("""
-        SELECT t.title, t.id AS topic_id
-        FROM bookmarks b
-        JOIN topics t ON b.topic_id = t.id
-        WHERE b.user_id = ?
-    """, user_id)
+    # # Get the user's bookmarks along with topic details
+    # bookmarks = db.execute("""
+    #     SELECT t.title, t.id AS topic_id
+    #     FROM bookmarks b
+    #     JOIN topics t ON b.topic_id = t.id
+    #     WHERE b.user_id = ?
+    # """, user_id)
 
-    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
+    # return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
     
-
+    return render_template('dashboard.html')
 
 
 
