@@ -46,7 +46,7 @@ def login():
             # remember user and redirect to index page
             session["user_id"] = rows[0]["id"]
             # flash("Log In Successfull", "success")
-            return render_template('index.html')
+            return redirect('/dashboard')
 
     return render_template('log-in.html')
 
