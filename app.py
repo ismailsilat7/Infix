@@ -173,7 +173,7 @@ def dashboard():
     # Get user's name
     user_info = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)
     fullname = user_info[0]['fullname'] if user_info else None
-    user_name = fullname.split()[0] if fullname else None
+    first_name = fullname.split()[0] if fullname else None
 
     # Get the user's selected path id
     user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)
@@ -191,7 +191,15 @@ def dashboard():
         WHERE up.user_id = ?
     """, user_id)
 
-    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses)
+    # Get the user's bookmarks along with topic details
+    bookmarks = db.execute("""
+        SELECT t.title, t.id AS topic_id
+        FROM bookmarks b
+        JOIN topics t ON b.topic_id = t.id
+        WHERE b.user_id = ?
+    """, user_id)
+
+    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
     
 
 
