@@ -152,6 +152,7 @@ def change_password():
     
     return render_template("change-password.html")
 
+@login_required
 @app.route("/logout")
 def log_out():
     session.clear()
