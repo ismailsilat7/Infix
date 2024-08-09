@@ -165,8 +165,29 @@ def select_path():
 
     return redirect('/dashboard')
 
+@login_required 
+@app.route('/dashboard')
+def dashboard():
+    user_id = session['user_id']
 
+    # Get the user's selected path id
+    user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)
+    path_id = user_path_id[0]['path_id'] if user_path_id else None
 
+    # Get path name based on path_id
+    user_path_name = db.execute("SELECT name FROM paths WHERE id = ?", path_id)
+    path_name = user_path_name[0]['name'] if user_path_name else None
+
+    # Get the user's enrolled courses
+    enrolled_courses = db.execute("""
+        SELECT c.name 
+        FROM courses c 
+        JOIN user_paths up ON c.path_id = up.path_id
+        WHERE up.user_id = ?
+    """, user_id)
+
+    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses)
+    
 
 
 
