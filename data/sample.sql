@@ -10,25 +10,34 @@ CREATE TABLE IF NOT EXISTS users (
 -- paths table
 CREATE TABLE IF NOT EXISTS paths (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT NOT NULL UNIQUE
 );
+
+INSERT INTO paths (name)
+VALUES
+('O Levels'), ('A Levels');
 
 -- user_paths table
 CREATE TABLE IF NOT EXISTS user_paths (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL UNIQUE,
     path_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (path_id) REFERENCES paths(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (path_id) REFERENCES paths(id) ON DELETE CASCADE
 );
+
+-- Example: Switching user with id 1 from A Level (path_id = 1) to O Level (path_id = 2)
+UPDATE user_paths
+SET path_id = 2
+WHERE user_id = 1;
 
 -- course table
 CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     path_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    course_code INTEGER NOT NULL,
-    FOREIGN KEY (path_id) REFERENCES paths(id)
+    course_code INTEGER NOT NULL UNIQUE,
+    FOREIGN KEY (path_id) REFERENCES paths(id) ON DELETE CASCADE
 );
 
 -- topics table
@@ -36,7 +45,7 @@ CREATE TABLE IF NOT EXISTS topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     course_id INTEGER NOT NULL,
     title TEXT NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES courses(id)
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
 
 -- bookmarks table
@@ -45,8 +54,8 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     user_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (topic_id) REFERENCES topics(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
 );
 
 -- progress table
@@ -56,8 +65,8 @@ CREATE TABLE IF NOT EXISTS progress (
     topic_id INTEGER NOT NULL,
     completed BOOLEAN DEFAULT FALSE,
     completed_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (topic_id) REFERENCES topics(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
 );
 
 -- Mark topics as completed
