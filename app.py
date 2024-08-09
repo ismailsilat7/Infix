@@ -170,6 +170,11 @@ def select_path():
 def dashboard():
     user_id = session['user_id']
 
+    # Get user's name
+    user_info = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)
+    fullname = user_info[0]['fullname'] if user_info else None
+    user_name = fullname.split()[0] if fullname else None
+
     # Get the user's selected path id
     user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)
     path_id = user_path_id[0]['path_id'] if user_path_id else None
