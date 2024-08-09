@@ -23,3 +23,12 @@ document.querySelector('.log-in-btn').addEventListener('click', function() {
 document.querySelector('.get-started-btn').addEventListener('click', function() {
   window.location.href = '/signup';
 });
+
+// path redirects
+function selectPath() {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/selectpath';
+  document.body.appendChild(form);
+  form.submit();
+}
