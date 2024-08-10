@@ -55,7 +55,7 @@
     </div>
     <div class="main-container">
       <div class="intro-container">
-        <h1 style="font-family: 'Platform-Regular';">Hi, {{ first_name }}!</h1>
+        <h1 class="greet-user">Hi, {{ first_name }}!</h1>
         <p>Always stay updated in your infix dashboard</p>
         <div class="path-container">
           <h1>{{ path_name }}</h1>
@@ -86,8 +86,8 @@
           </div> -->
           {% for course in enrolled_courses %}
           <div class="course-card">
-            <h3>{{ course.name }}</h3>
-            <button><a href="/course/{{ course.name | replace(' ', '-') }}">View</a></button>
+            <h3>{{ course.name}} <br> <div class="course-code">{{ course.course_code }}</div></h3>
+            <button><a href="/course/{{ course.course_code | replace(' ', '-') }}">View</a></button>
           </div>
           {% endfor %}
         </div>

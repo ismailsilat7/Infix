@@ -36,9 +36,14 @@ CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     path_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    course_code INTEGER NOT NULL UNIQUE,
+    course_code TEXT NOT NULL UNIQUE,
     FOREIGN KEY (path_id) REFERENCES paths(id) ON DELETE CASCADE
 );
+
+-- path_id for O Levels is 1, A Levels is 2
+INSERT INTO courses (path_id, name, course_code)
+VALUES
+(2,'Chemistry', '9701-AS'),(2,'Chemistry', '9701-A2'),(2,'Computer Science', '9618-AS'),(2,'Computer Science', '9618-A2'),(2,'Mathematics', '9709-AS'),(2,'Mathematics', '9709-A2'),(2,'Physics', '9702-AS'),(2,'Physics', '9702-A2'),(1,'Biology','5090'),(1,'Chemistry','5070'),(1,'Computer Science','2210'),(1,'English Language','1123'),(1,'Islamiyat','2058'),(1,'Mathematics (Syllabus D)','4024'),(1,'Pakistan Studies','2059'),(1,'Physics','5054'),(1,'Urdu','3248');
 
 -- user_courses table
 CREATE TABLE IF NOT EXISTS user_courses (
@@ -48,6 +53,11 @@ CREATE TABLE IF NOT EXISTS user_courses (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
+
+INSERT INTO user_courses (user_id, course_id)
+VALUES
+(2,4),(2,2),(2,6),(2,8),(1,4),(1,2),(1,6),(1,8)
+ON CONFLICT DO NOTHING;
 
 -- topics table
 CREATE TABLE IF NOT EXISTS topics (
