@@ -168,9 +168,10 @@ button {
   background-color: black;
   color: white;
   border-radius: 15px;
-  padding: 0.5em 3em;
+  padding: 0.5em 2.5em;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
 }
 .course-card a {
   font-size: 16px;
+  font-family: "Figtree";
 }
