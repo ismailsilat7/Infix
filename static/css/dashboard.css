@@ -156,7 +156,7 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   width: 320px;
   text-align: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.61);
@@ -169,6 +169,7 @@ button {
   color: white;
   border-radius: 15px;
   padding: 0.5em 3em;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
 }
 .course-card a {
   font-size: 16px;
