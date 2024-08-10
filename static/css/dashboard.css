@@ -62,6 +62,7 @@ button {
   padding: 1.5em 1.5em;
   padding-bottom: 3em;
   border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
 }
 .menu-item {
   font-size: 16px;
@@ -88,7 +89,6 @@ button {
   font-size: 14px;
 }
 .main-container {
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -107,6 +107,7 @@ button {
   border-radius: 10px;
   padding: 1.5em 2em;
   position: relative;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
 }
 .intro-container h1 {
   font-size: 40px;
