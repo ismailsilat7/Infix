@@ -68,6 +68,8 @@ def sign_up():
             flash("Must enter email", "warning")
         elif not re.match(email_regex, request.form.get("email")):
             flash("Invalid email format", category="warning")
+        elif not request.form.get("path") and request.form.get('path') not in ['O Levels','A Levels']:
+            flash("Must select valid path!", "warning")
         elif not request.form.get("pwd"):
             flash("Must enter password", "warning")
         elif not request.form.get("confirm-pwd"):
@@ -88,6 +90,7 @@ def sign_up():
             else:
                 # Ensure email doesn't already exist
                 email = request.form.get("email")
+                path = request.form.get("path")
                 if db.execute("SELECT email FROM users WHERE email = ?", email):
                     unique = False
                     flash("This email is already registered", "warning")
@@ -100,6 +103,16 @@ def sign_up():
                         db.execute(
                             "INSERT INTO users (fullname, nickname, email, hash) VALUES (?,?,?,?)",
                             fullname, nickname, email, hash
+                        )
+                        # Add user's path
+                        user_rows = db.execute(
+                            "SELECT id FROM users WHERE email = ?", email
+                        )
+                        path_rows = db.execute(
+                            "SELECT id FROM paths WHERE name = ?", path
+                        )
+                        db.execute (
+                            "INSERT INTO user_paths (user_id, path_id) VALUES (?,?)", user_rows[0]["id"], path_rows[0]["id"]
                         )
                         flash("Your account has been successfully registered, Please log in", "success")
     

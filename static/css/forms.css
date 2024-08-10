@@ -44,13 +44,29 @@
   font-size: 18px;
 }
 
+.input-container select {
+  padding: 5px;
+  font-size: 18px;
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: 'Figtree';
+  appearance: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+
+
+
 .up-inputs {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-input {
+input, select {
   padding: 5px;
   font-size: 16px;
   width: 100%;
@@ -255,10 +271,10 @@ button:hover {
   .up-inputs, .in-inputs {
     gap: 15px;
   }
-  input {
+  input, select{
     font-size: 14px;
   }
-  .input-container i {
+  .input-container i, .input-container select {
     font-size: 16px !important;
   }
   .up-submit button, .in-submit button, .up-submit a {
@@ -304,7 +320,7 @@ button:hover {
   .change-inputs input {
     font-size: 18px;
   }
-  .change-inputs .input-container i {
+  .change-inputs .input-container i, .input-container select {
     font-size: 16px;
   }
   .change-inputs {
@@ -326,10 +342,10 @@ button:hover {
   .up-inputs, .in-inputs {
     gap: 10px;
   }
-  input {
+  input, select {
     font-size: 12px;
   }
-  .input-container i {
+  .input-container i, .input-container select {
     font-size: 14px !important;
   }
   .up-submit button, .in-submit button, .up-submit a {
