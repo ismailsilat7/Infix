@@ -202,7 +202,6 @@ def dashboard():
 
     return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
     
-    return render_template('dashboard.html')
 
 @app.route('/course/<course_name>')
 @login_required
