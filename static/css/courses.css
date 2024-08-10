@@ -1,5 +1,5 @@
 #courses-container {
-    padding: 130px;
+    padding: 130px 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
