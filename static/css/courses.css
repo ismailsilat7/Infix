@@ -59,9 +59,9 @@
 
 .buttons {
     display: flex;
-    width: 85%;
-    justify-content: space-around;
-    gap: 5px;
+    width: 100%;
+    justify-content: center;
+    gap: 15px;
 }
 
 button {
