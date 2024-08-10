@@ -1,5 +1,5 @@
 #courses-container {
-    padding: 130px;
+    padding: 130px 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,7 +39,7 @@
 }
 .course-card {
     background-color: lightgray;
-    padding: 0.5em 1em;
+    padding: 1em 1.5em;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -59,8 +59,9 @@
 
 .buttons {
     display: flex;
-    width: 80%;
-    justify-content: space-around;
+    width: 100%;
+    justify-content: center;
+    gap: 15px;
 }
 
 button {
@@ -68,8 +69,8 @@ button {
     padding: 8px 16px;
     border: none;
     outline: none;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 15px;
+    font-size: 16px;
     cursor: pointer;
     border: 1px solid #000;
 }
@@ -89,8 +90,8 @@ button {
     color: #fff;
 }
 
-button:hover{
+/* button:hover{
     background-color: #fff;
     color: #000;
-}
+} */
 

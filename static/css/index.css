@@ -145,7 +145,8 @@
     justify-content: space-around;
     align-items: center;
     padding: 2em 1em;
-    border: solid 2px white;
+    border: solid 3px white;
+    border-radius: 20% 10% 20% 10%;
     width: 22vw;
     min-height: 50vh;
     text-align: center;
@@ -153,6 +154,7 @@
 .step img {
     width: 150px;
     height: auto;
+    filter: drop-shadow(0 0 5px white);
 }
 .step .head {
     font-size: 30px;
