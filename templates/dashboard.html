@@ -86,7 +86,7 @@
           </div> -->
           {% for course in enrolled_courses %}
           <div class="course-card">
-            <h3>{{ course.name}} <br> <div class="course-code-dashboard">{{ course.course_code }}</div></h3>
+            <h3>{{ course.name}} <br> <div class="course-code">{{ course.course_code }}</div></h3>
             <button><a href="/course/{{ course.course_code | replace(' ', '-') }}">View</a></button>
           </div>
           {% endfor %}
