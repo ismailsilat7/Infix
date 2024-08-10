@@ -96,7 +96,6 @@ a {
   justify-content: flex-start;
   align-items: flex-start;
 }
-
 .intro-container {
   background-color: black;
   color: white;
@@ -109,4 +108,15 @@ a {
   border-radius: 10px;
   padding: 1.5em 2em;
 }
-
+.intro-container h1 {
+  font-size: 40px;
+}
+.intro-container p {
+  font-size: 16px;
+}
+.courses-container {
+  padding: 1.5em 2em;
+}
+.courses-container .head {
+  font-size: 18px;
+}

@@ -203,6 +203,22 @@ def dashboard():
     
     return render_template('dashboard.html')
 
+@app.route('/course/<course_name>')
+@login_required
+def course_detail(course_name):
+    # Convert the course_name from URL-friendly format back to the original format if needed
+    course_name = course_name.replace('-', ' ')
+
+    # Get the course details using the course name
+    course = db.execute("SELECT * FROM courses WHERE name = ?", course_name)
+    if not course:
+        return "Course not found", 404
+
+    course_id = course[0]['id']
+    topics = db.execute("SELECT * FROM topics WHERE course_id = ?", course_id)
+
+    return render_template('course_detail.html', course=course[0], topics=topics)
+
 
 
 
