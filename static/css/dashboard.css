@@ -148,6 +148,15 @@ button {
   flex-wrap: wrap;
   gap: 20px;
 }
+.greet-user {
+  font-family: 'Platform-Regular'; 
+  font-size: 60px; 
+  letter-spacing: 2.5px;
+}
+.course-code-dashboard {
+  font-size: 16px; 
+  opacity: 60%;
+}
 .course-card {
   background-color: lightgray;
   padding: 1em 3em;
