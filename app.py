@@ -215,12 +215,56 @@ def dashboard():
     """, user_id)
 
     return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
-    
+
+
+@app.route('/courses')
+@login_required
+def courses():
+    user_id = session['user_id']
+    # Get the user's path
+    result = db.execute("""
+        SELECT paths.name AS user_path
+        FROM paths
+        JOIN user_paths ON paths.id = user_paths.path_id
+        WHERE user_paths.user_id = ?
+    """, user_id)
+    if result:
+        path = result[0]["user_path"]
+    else:
+        flash("Please select a path to view courses")
+        return redirect("/selectpath")
+    user_path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)[0]["path_id"]
+    # Get the user's enrolled courses
+    enrolled_courses = db.execute("""
+        SELECT courses.name, courses.course_code
+        FROM courses
+        JOIN user_courses ON courses.id = user_courses.course_id
+        WHERE user_courses.user_id = ?
+    """, user_id)
+
+    #boolean to check if there are any enrolled courses
+    enrolled = len(enrolled_courses) > 0
+
+    other_courses = db.execute("""
+        SELECT courses.name, courses.course_code
+        FROM courses
+        WHERE courses.id NOT IN (
+            SELECT user_courses.course_id
+            FROM user_courses
+            WHERE user_courses.user_id = ?
+        ) AND courses.path_id = ?
+    """, user_id, user_path_id)
+    # boolean to check if there are any courses to add
+    to_add = len(other_courses) > 0
+
+    return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add)
+
+
 
 @app.route('/course/<course_code>')
 @login_required
 def course_detail(course_code):
-
+    
     # Get the course details using the course name
     course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
     if not course:
@@ -231,9 +275,42 @@ def course_detail(course_code):
 
     return render_template('course_detail.html', course=course[0], topics=topics)
 
+@app.route('/enrollcourse/<course_code>')
+@login_required
+def enroll_course(course_code):
+    user_id = session['user_id']
+    # Get the course details using the course name
+    course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
+    if not course:
+        return "Course not found", 404
 
+    course_id = course[0]['id']
 
+    db.execute("""
+        INSERT INTO user_courses (user_id, course_id)
+        VALUES
+        (?,?)
+    """, user_id, course_id)
+    flash("Course Enrolled!")
+    return redirect('/courses')
 
+@app.route('/dropcourse/<course_code>')
+@login_required
+def drop_course(course_code):
+    user_id = session['user_id']
+    # Get the course details using the course name
+    course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
+    if not course:
+        return "Course not found", 404
+
+    course_id = course[0]['id']
+
+    db.execute("""
+        DELETE FROM user_courses
+        WHERE user_id = ? AND course_id = ?
+    """, user_id, course_id)
+    flash("Course Deleted!")
+    return redirect('/courses')
 
 
 
