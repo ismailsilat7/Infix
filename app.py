@@ -187,9 +187,10 @@ def dashboard():
     enrolled_courses = db.execute("""
         SELECT c.name 
         FROM courses c 
-        JOIN user_paths up ON c.path_id = up.path_id
-        WHERE up.user_id = ?
+        JOIN user_courses uc ON c.id = uc.course_id
+        WHERE uc.user_id = ?
     """, user_id)
+
 
     # Get the user's bookmarks along with topic details
     bookmarks = db.execute("""
