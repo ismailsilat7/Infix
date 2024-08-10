@@ -198,11 +198,11 @@ def dashboard():
 
     # Get the user's enrolled courses
     enrolled_courses = db.execute("""
-        SELECT c.name 
-        FROM courses c 
-        JOIN user_courses uc ON c.id = uc.course_id
-        WHERE uc.user_id = ?
-    """, user_id)
+        SELECT courses.name, courses.course_code
+        FROM courses
+        JOIN user_courses ON courses.id = user_courses.course_id
+        WHERE user_courses.user_id = ?
+    """, user_id)   
 
 
     # Get the user's bookmarks along with topic and course names
@@ -217,14 +217,12 @@ def dashboard():
     return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
     
 
-@app.route('/course/<course_name>')
+@app.route('/course/<course_code>')
 @login_required
-def course_detail(course_name):
-    # Convert the course_name from URL-friendly format back to the original format if needed
-    course_name = course_name.replace('-', ' ')
+def course_detail(course_code):
 
     # Get the course details using the course name
-    course = db.execute("SELECT * FROM courses WHERE name = ?", course_name)
+    course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
     if not course:
         return "Course not found", 404
 
