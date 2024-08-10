@@ -31,6 +31,15 @@ CREATE TABLE IF NOT EXISTS courses (
     FOREIGN KEY (path_id) REFERENCES paths(id)
 );
 
+-- user_courses table
+CREATE TABLE IF NOT EXISTS user_courses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
 -- topics table
 CREATE TABLE IF NOT EXISTS topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

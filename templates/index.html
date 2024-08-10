@@ -6,22 +6,22 @@
 
 
 {% block content %}
-
-{% if not session.get('user_id') %}
     <!-- Video -->
     <div id="intro-section">
         <video autoplay loop muted src="../static/intro.mp4"></video>
         <div class="intro-card">
             <h3>Let's Infix</h3>
             <p>Ace your IGCSEs</p>
+            {% if not session.get('user_id') %}
             <div class="intro-btn-container">
                 <div class="whitebgBtn log-in-btn"><a href="/login">Log in</a></div>
                 <div class="whitebgBtn-contrast get-started-btn"><a href="/signup">Get Started</a></div>
             </div>
+            {% endif %}
         </div>
     </div>
-{% endif %}
 
+{% if not session.get('user_id') %}
 <!-- path section -->
 <div id="path-section">
     <h1><span>Choose your</span> Path</h1>
@@ -38,6 +38,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <!-- trust-section -->
 <div id="trust-section">
