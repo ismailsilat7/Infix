@@ -50,14 +50,13 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 2em;
   padding: 1em;
   width: 100vw;
   height: 100vh;
 }
 .sidebar-container {
   background-color: black;
-  color: white;
-  font-size: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,6 +64,17 @@ a {
   padding: 0.5em 1.5em;
   padding-bottom: 3em;
   border-radius: 10px;
+}
+.menu-item {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all ease 0.1s;
+}
+.menu-item:hover {
+  color: rgba(255, 255, 255);
+}
+.active {
+  color: rgba(255, 255, 255);
 }
 .sidebar-container img {
   width: 100px;
@@ -80,5 +90,14 @@ a {
   font-size: 14px;
 }
 .main-container {
-  background-color: darkgray;
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 70vw;
+  height: 20vh;
+  border-radius: 10px;
+  padding: 1em 1.5em;
 }
