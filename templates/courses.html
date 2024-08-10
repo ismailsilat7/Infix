@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Courses - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/courses.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+
+<div id="courses-container">
+    <div class="header">
+        <h1>Courses - <span class="path-name">{{ path }}</span></h1>
+    </div>
+    <div class="courses">
+        {% if enrolled %}
+        <div class="enrolled-courses">
+            {% if to_add %}
+                <div class="head">Enrolled Courses</div>
+            {% else %}
+                <div class="add-change">
+                    <div class="head">Enrolled Courses</div>
+                    <div class="change-path"><a href="/changepath"><button class="change">Change Path</button></a></div>
+                </div>
+            {% endif %}
+            <div class="cards-container">
+            {% for course in enrolled_courses %}
+            <div class="course-card">
+                <h3>{{ course.name }} <br> <div class="course-code">{{ course.course_code }}</div></h3>
+                <div class="buttons">
+                    <a href="/course/{{ course.course_code | replace(' ', '-') }}">
+                        <button class="resume">View Course</button>
+                    </a>
+                    <a href="/dropcourse/{{ course.course_code | replace(' ', '-') }}">
+                        <button class="drop">Drop Course</button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            {% include 'flash.html' %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if to_add %}
+        <div class="add-courses">
+            <div class="add-change">
+                <div class="head">Add Courses</div>
+                <div class="change-path"><a href="/changepath"><button class="change">Change Path</button></a></div>
+            </div>
+            
+            <div class="cards-container">
+            {% for course in other_courses %}
+            <div class="course-card">
+                <h3>{{ course.name }} <br> <div class="course-code">{{ course.course_code }}</div></h3>
+                <div class="buttons">
+                    <a href="/course/{{ course.course_code | replace(' ', '-') }}">
+                        <button class="view">View Course</button>
+                    </a>
+                    <a href="/enrollcourse/{{ course.course_code | replace(' ', '-') }}">
+                        <button class="enroll">Enroll Course</button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
