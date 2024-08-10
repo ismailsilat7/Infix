@@ -7,6 +7,11 @@ CREATE TABLE IF NOT EXISTS users (
     hash TEXT NOT NULL
 );
 
+INSERT INTO users (fullname,nickname,email, hash)
+VALUES
+('Mr Khan', 'admin123', 'khan@gmail.com', 'dkjsdkasjdkajsdksjahdkjas'), ('Ali Kashif', 'ali.kashif', 'alikashif5917@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas'), ('Ismail Silat', 'ismail.silat', 'ismailsilat7@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas')
+ON CONFLICT DO NOTHING;
+
 -- paths table
 CREATE TABLE IF NOT EXISTS paths (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
