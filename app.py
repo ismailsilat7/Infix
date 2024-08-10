@@ -192,11 +192,12 @@ def dashboard():
     """, user_id)
 
 
-    # Get the user's bookmarks along with topic details
+    # Get the user's bookmarks along with topic and course names
     bookmarks = db.execute("""
-        SELECT t.title, t.id AS topic_id
+        SELECT t.title, t.id AS topic_id, c.name AS course_name
         FROM bookmarks b
         JOIN topics t ON b.topic_id = t.id
+        JOIN courses c ON t.course_id = c.id
         WHERE b.user_id = ?
     """, user_id)
 
