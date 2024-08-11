@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Confirmation - Infix{% endblock %}
+{% block title %}Change Path - Infix{% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
 {% endblock %}
@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block confirmation %}
-<div id="confirmation-container">
+<div style="padding: 0px 100px !important;" id="confirmation-container">
     <div class="confirmation-card">
         <div class="drop-container">
-            <h3><span style="color: red;">Drop Course </span><br> {{ course_name + " " + course_code }}?</h3>
-            <p>If you proceed to drop course, you'll lose all saved progress!</p>
+            <h3>Change path from {{ current_path_name }} to {{ other_path_name }}?</h3>
+            <p>You can access your enrolled courses of {{ current_path_name }} by changing path again!</p>
             <div class="drop-btn-container">
-                <a href="/courses"><div class="whitebgBtn">Cancel</div></a>
-                <a href="/dropcourse/{{ course_code | replace(' ', '-') }}"><div class="whitebgBtn-contrast" style="color: #ffffff !important;">Drop Course</div></a>
+                <a href="/dashboard"><div class="whitebgBtn">Cancel</div></a>
+                <a href="/changepath/{{ other_path_name }}"><div class="whitebgBtn-contrast" style=" color: #ffffff;">Change Path</div></a>
             </div>
         </div>
     </div>
