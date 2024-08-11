@@ -16,8 +16,8 @@
 <div id="confirmation-container">
     <div class="confirmation-card">
         <div class="drop-container">
-            <h3>Drop Course <br> {{ course_name + " " + course_code }}</h3>
-            <p>If you proceed to drop course, you'll lose all saved progress</p>
+            <h3><span style="color: red;">Drop Course </span><br> {{ course_name + " " + course_code }}?</h3>
+            <p>If you proceed to drop course, you'll lose all saved progress!</p>
             <div class="drop-btn-container">
                 <div class="whitebgBtn"><a href="/courses">Cancel</a></div>
                 <div class="whitebgBtn-contrast"><a href="/dropcourse/{{ course_code | replace(' ', '-') }}">Drop Course</a></div>
