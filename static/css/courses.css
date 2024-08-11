@@ -6,6 +6,12 @@
     align-items: center;
     gap: 1em;
 }
+
+.header h1 {
+    font-family: 'Platform-Regular';
+    font-size: 40px;
+}
+
 .courses {
     display: flex;
     flex-direction: column-reverse;
