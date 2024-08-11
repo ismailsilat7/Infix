@@ -159,7 +159,7 @@ button {
   opacity: 60%;
 }
 .course-card {
-  background-color: lightgray;
+  background-color: rgb(228, 228, 228);
   padding: 1em 3em;
   border-radius: 10px;
   display: flex;
