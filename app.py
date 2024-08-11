@@ -363,6 +363,12 @@ def change_to_path(path_name):
     """, path_id, user_id)
     return redirect('/dashboard')
 
+@app.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+    user_id = session['user_id']
+    return render_template("settings.html")
+
 
 
 
