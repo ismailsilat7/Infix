@@ -313,7 +313,14 @@ def drop_course(course_code):
     return redirect('/courses')
 
 
-
+@app.route('/dropcourseconfirmation/<course_code>')
+@login_required
+def dropcourse_confirmation(course_code):
+    course_name = db.execute("""
+        SELECT name FROM courses
+        WHERE course_code = ?
+    """, course_code)[0]["name"]
+    return render_template('dropcourse-confirmation.html', course_code=course_code, course_name=course_name)
 
 
 

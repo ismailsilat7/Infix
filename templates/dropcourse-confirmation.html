@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Confirmation - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dropcourse-confirmation.css') }}">
+{% endblock %}
+
+{% block nav %}
+<div id="navbar">
+    <div class="navbar-content">
+      <a href="#" class="logo"><img src="../static/images/White text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
+  </div>
+</div>
+{% endblock %}
+
+{% block confirmation %}
+<div id="confirmation-container">
+    <div class="confirmation-card">
+        <div class="drop-container">
+            <h3>Drop Course <br> {{ course_name + " " + course_code }}</h3>
+            <p>If you proceed to drop course, you'll lose all saved progress</p>
+            <div class="drop-btn-container">
+                <div class="whitebgBtn"><a href="/courses">Cancel</a></div>
+                <div class="whitebgBtn-contrast"><a href="/dropcourse/{{ course_code | replace(' ', '-') }}">Drop Course</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

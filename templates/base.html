@@ -15,6 +15,7 @@
 </head>
 <body>
   <!-- navbar -->
+  {% block nav %}
   <div id="navbar">
     <div class="navbar-content">
       <a href="#" class="logo"><img src="../static/images/White text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
@@ -40,14 +41,17 @@
       </div>
     </div>
   </div>
-
+  {% endblock %}
 
   <!-- main -->
   {% block content %}
   {% endblock %}
   
+  {% block confirmation %}
+  {% endblock %}
   
   <!-- footer -->
+  {% block footer %}
   <div id="footer">
     <div class="infix-logo-top">
       <img src="../static/images/Black text, no bg.png" alt="Infix Logo Black" class="infix-logo">
@@ -74,6 +78,7 @@
     </div>
   </div>
   <div class="copyright">Copyright © Infix - 2024</div>
+  {% endblock %}
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
