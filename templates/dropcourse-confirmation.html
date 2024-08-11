@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Confirmation - Infix{% endblock %}
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dropcourse-confirmation.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
 {% endblock %}
 
 {% block nav %}
@@ -19,8 +19,8 @@
             <h3><span style="color: red;">Drop Course </span><br> {{ course_name + " " + course_code }}?</h3>
             <p>If you proceed to drop course, you'll lose all saved progress!</p>
             <div class="drop-btn-container">
-                <div class="whitebgBtn"><a href="/courses">Cancel</a></div>
-                <div class="whitebgBtn-contrast"><a href="/dropcourse/{{ course_code | replace(' ', '-') }}">Drop Course</a></div>
+                <a href="/courses"><div class="whitebgBtn">Cancel</div></a>
+                <a href="/dropcourse/{{ course_code | replace(' ', '-') }}"><div class="whitebgBtn-contrast" style="color: #ffffff !important;">Drop Course</div></a>
             </div>
         </div>
     </div>
