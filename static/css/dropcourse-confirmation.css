@@ -1,3 +1,11 @@
+#navbar {
+    background-color: white;
+}
+.navbar-content {
+    justify-content: center;
+}
+
+
 #confirmation-container {
     display: flex;
     justify-content: center;
