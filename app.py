@@ -14,7 +14,7 @@ Session(app)
 
 # Initialize database connection
 db = SQL("sqlite:///data/infix.db")
-
+db.execute('PRAGMA foreign_keys = ON')
 # Ensures responses aren't cached to keep info for users up to date
 @app.after_request
 def after_request(response):
