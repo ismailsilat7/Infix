@@ -170,9 +170,27 @@ button {
   width: 320px;
   text-align: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.61);
+  position: relative;
+}
+.texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  z-index: 1;
+}
+.texture img {
+  object-fit: cover;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 .course-card h3 {
   font-size: 24px;
+  z-index: 2;
 }
 .course-card button {
   background-color: black;
@@ -180,6 +198,7 @@ button {
   border-radius: 15px;
   padding: 0.5em 2.5em;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
+  z-index: 2;
 }
 .course-card a {
   font-size: 16px;

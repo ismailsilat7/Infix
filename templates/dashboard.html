@@ -69,6 +69,9 @@
             <div class="course-card">
               <h3>{{ course.name}} <br> <div class="course-code">{{ course.course_code }}</div></h3>
               <button><a href="/course/{{ course.course_code | replace(' ', '-') }}">View</a></button>
+              <div class="texture">
+                <img src="../static/images/card-bg.png" alt="">
+              </div>
             </div>
           {% endfor %}
          {% else %}
