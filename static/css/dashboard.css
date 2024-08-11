@@ -79,6 +79,7 @@ button {
   width: 100px;
   height: auto;
   align-self: center;
+  cursor: pointer;
 }
 .menu-item {
   display: flex;
