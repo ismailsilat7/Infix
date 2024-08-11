@@ -64,37 +64,16 @@
       <div class="courses-container">
         <p class="head">Enrolled Courses</p>
         <div class="cards-container">
-          <!-- <div class="course-card">
-            <h3>Mathematics</h3>
-            <button><a href="">View</a></button>
-          </div>
-          <div class="course-card">
-            <h3>Physics</h3>
-            <button><a href="">View</a></button>
-          </div>
-          <div class="course-card">
-            <h3>Computer Science</h3>
-            <button><a href="">View</a></button>
-          </div>
-          <div class="course-card">
-            <h3>Chemistry</h3>
-            <button><a href="">View</a></button>
-          </div>
-          <div class="course-card">
-            <h3>Biology</h3>
-            <button><a href="">View</a></button>
-          </div> -->
          {% if enrolled_courses %}
-         {% for course in enrolled_courses %}
-         <div class="course-card">
-           <h3>{{ course.name}} <br> <div class="course-code">{{ course.course_code }}</div></h3>
-           <button><a href="/course/{{ course.course_code | replace(' ', '-') }}">View</a></button>
-         </div>
-         {% endfor %}
+          {% for course in enrolled_courses %}
+            <div class="course-card">
+              <h3>{{ course.name}} <br> <div class="course-code">{{ course.course_code }}</div></h3>
+              <button><a href="/course/{{ course.course_code | replace(' ', '-') }}">View</a></button>
+            </div>
+          {% endfor %}
          {% else %}
-         <h1>No enrolled courses</h1>
+          <h1>No enrolled courses</h1>
          {% endif %}
-
         </div>
       </div>
     </div>

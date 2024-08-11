@@ -16,6 +16,7 @@
 .drop-container p {
     font-size: 30px;
     margin: 30px 0;
+    color: red;
 }
 .drop-btn-container {
     display: flex;
