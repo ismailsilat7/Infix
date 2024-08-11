@@ -61,8 +61,9 @@
           <h1>{{ path_name }}</h1>
         </div>
       </div>
-      {% include 'flash.html' %}
+      
       <div class="courses-container">
+        {% include 'flash.html' %}
         <p class="head">Enrolled Courses</p>
         <div class="cards-container">
          {% if enrolled_courses %}

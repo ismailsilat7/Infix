@@ -352,7 +352,9 @@ def change_to_path(path_name):
         SELECT id FROM paths
         WHERE name = ?
     """, path_name)
-    if result:
+    if not result:
+        return redirect('/dashboard')
+    else:
         path_id = result[0]["id"]
     db.execute("""
         UPDATE user_paths
