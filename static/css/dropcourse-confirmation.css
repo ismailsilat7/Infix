@@ -27,8 +27,8 @@
     color: rgb(0, 0, 0);
     display: inline-block;
     padding: 10px 5px;
-    border-top: dashed black 2px;
-    border-bottom: dashed black 2px;
+    border-top: solid black 2px;
+    border-bottom: solid black 2px;
 }
 .drop-btn-container {
     display: flex;
