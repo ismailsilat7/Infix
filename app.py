@@ -201,8 +201,10 @@ def dashboard():
         SELECT courses.name, courses.course_code
         FROM courses
         JOIN user_courses ON courses.id = user_courses.course_id
+        JOIN user_paths ON user_paths.user_id = user_courses.user_id
         WHERE user_courses.user_id = ?
-    """, user_id)   
+        AND courses.path_id = user_paths.path_id
+    """, user_id)  
 
 
     # Get the user's bookmarks along with topic and course names
@@ -239,7 +241,9 @@ def courses():
         SELECT courses.name, courses.course_code
         FROM courses
         JOIN user_courses ON courses.id = user_courses.course_id
+        JOIN user_paths ON user_paths.user_id = user_courses.user_id
         WHERE user_courses.user_id = ?
+        AND courses.path_id = user_paths.path_id
     """, user_id)
 
     #boolean to check if there are any enrolled courses
@@ -322,10 +326,40 @@ def dropcourse_confirmation(course_code):
     """, course_code)[0]["name"]
     return render_template('dropcourse-confirmation.html', course_code=course_code, course_name=course_name)
 
+@app.route("/changepath")
+@login_required
+def change_path():
+    user_id = session['user_id']
+    user_path_id = db.execute("""
+        SELECT path_id FROM user_paths
+        WHERE user_id = ?
+    """, user_id)[0]["path_id"]
+    current_path_name = db.execute("""
+        SELECT name FROM paths 
+        WHERE id = ?
+    """, user_path_id)[0]["name"]
+    other_path_name = db.execute("""
+        SELECT name FROM paths
+        WHERE NOT id = ?
+    """, user_path_id)[0]["name"]
+    return render_template('change-path.html', user_path_id = user_path_id, current_path_name = current_path_name, other_path_name = other_path_name)
 
-
-
-
+@app.route('/changepath/<path_name>')
+@login_required
+def change_to_path(path_name):
+    user_id = session['user_id']
+    result = db.execute("""
+        SELECT id FROM paths
+        WHERE name = ?
+    """, path_name)
+    if result:
+        path_id = result[0]["id"]
+    db.execute("""
+        UPDATE user_paths
+        SET path_id = ?
+        WHERE user_id = ?
+    """, path_id, user_id)
+    return redirect('/dashboard')
 
 
 
