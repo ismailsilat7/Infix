@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Change Path - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+{% endblock %}
+
+{% block nav %}
+<div id="navbar">
+    <div class="navbar-content">
+      <a href="/" class="logo"><img src="../static/images/black text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
+  </div>
+</div>
+{% endblock %}
+
+{% block confirmation %}
+<div style="padding: 0px 100px !important;" id="confirmation-container">
+    <div class="confirmation-card">
+        <div class="drop-container">
+            <h3>Change path from {{ current_path_name }} to {{ other_path_name }}?</h3>
+            <p>You can access your enrolled courses of {{ current_path_name }} by changing path again!</p>
+            <div class="drop-btn-container">
+                <a href="/dashboard"><div class="whitebgBtn">Cancel</div></a>
+                <a href="/changepath/{{ other_path_name }}"><div class="whitebgBtn-contrast" style=" color: #ffffff;">Change Path</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
