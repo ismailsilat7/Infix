@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Infix - Dashboard</title>
   <link rel="icon" href="{{url_for ('static', filename='images/favicon.png') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
   <!-- fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,8 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class="dashboard">
+  <!-- {% include 'flash.html' %} -->
+  <div class="settings">
     <div class="sidebar-container">
       <img class="logo-dash" src="../static/images/White text, no bg.png">
       <div class="menu-item">
@@ -49,16 +50,48 @@
         <a href="/settings">Settings</a>
       </div>
       <div class="menu-item">
+        <a href=''></a>
+      </div>
+      <div class="menu-item">
         <i class="ri-logout-box-r-fill"></i>
         <a href="/logout">Logout</a>
       </div>
     </div>
     <div class="main-container">
-      
+      <form action="/settings" method="post">
+        <div class="input-container">
+          <h1>Full Name</h1>
+          <input type="text" class="fullname" name = "fullname" value = "{{ user.fullname }}" required>
+        </div>
+        <div class="input-container">
+          <h1>Nickname</h1>
+          <input type="text" class="nickname" name = "nickname" value = "{{ user.nickname }}" required>
+        </div>
+        <div class="input-container">
+          <h1>Email</h1>
+          <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
+        </div>
+        {% include 'flash.html' %}
+        <div class="btns-container">
+          <a href="/changepassword">Change Password?</a>
+          <button class="submit" type="submit">Save</button>
+        </div>
+      </form>
+        <div class="danger-container">
+          <button class="delete">Delete Account</button>
+          <button class="reset">Reset Progress</button>
+        </div>
     </div>
   </div>
-
-
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script>
+    const deleteBtn = document.querySelector('.delete')
+    const resetBtn = document.querySelector('.reset')
+    deleteBtn.addEventListener('click', () => {
+      window.location.href = '/reset-confirmation';
+    })
+    resetBtn.addEventListener('click', () => {
+      window.location.href = '/delete-confirmation';
+    })
+  </script>
 </body>
 </html>

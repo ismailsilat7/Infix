@@ -44,7 +44,7 @@ button {
   border: none;
 }
 
-.dashboard {
+.settings {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -90,117 +90,109 @@ button {
   font-size: 14px;
 }
 .main-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   width: 70vw;
 }
-.intro-container {
-  background-color: black;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  width: 100%;
-  height: 25vh;
-  border-radius: 10px;
-  padding: 1.5em 2em;
-  position: relative;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
-}
-.intro-container h1 {
-  font-size: 50px;
-}
-.intro-container p {
-  font-size: 16px;
-}
-.path-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.2;
-}
-.path-container h1 {
-  font-size: 200px; 
-}
-.courses-container {
-  padding: 1.5em 2em;
+form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
   gap: 1em;
+  width: 50vw;
+  /* background-color: red; */
 }
-.courses-container .head {
-  font-size: 20px;
-  font-family: 'Platform-Regular';
-}
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.greet-user {
-  font-family: 'Platform-Regular'; 
-  font-size: 60px; 
-  letter-spacing: 2.5px;
-}
-.course-code {
-  font-size: 16px; 
-  opacity: 60%;
-}
-.course-card {
-  background-color: rgb(228, 228, 228);
-  padding: 1em 3em;
-  border-radius: 10px;
+.input-container {
+  background-color: black;
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.61);
-  position: relative;
-}
-.texture {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-  z-index: 1;
-}
-.texture img {
-  object-fit: cover;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.course-card h3 {
-  font-size: 24px;
-  z-index: 2;
-}
-.course-card button {
-  background-color: black;
-  color: white;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 1.5em 2em;
   border-radius: 15px;
-  padding: 0.5em 2.5em;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
-  z-index: 2;
+  width: 100%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
 }
-.course-card a {
+.input-container h1 {
+  font-family: 'Platform-Light';
+  font-size: 35px;
+}
+input {
+  color: white;
+  padding: 5px;
   font-size: 16px;
-  font-family: "Figtree";
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  font-family: 'Figtree';
+  letter-spacing: 1px;
+}
+input:focus {
+  border-bottom: 1px solid rgba(255, 255, 255, 1);
+}
+.btns-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0em 0.5em 2em;
+  margin-bottom: 1em;
+  /* background-color: yellow; */
+}
+.btns-container a {
+  font-size: 20px;
+}
+button {
+  border: none;
+  padding: 10px 40px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  border: 2px solid black;
+  box-shadow: 0 0 8px black;
+  font-family: 'Figtree';
+}
+button:hover {
+  color: white;
+  background-color: black;
+}
+.danger-container {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  padding: 1.5em 2em;
+  border-radius: 15px;
+  border: solid 2px black;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
+  
+}
+.delete {
+  background-color: #ff0f0f;
+  color: white;
+  box-shadow: 0 0 8px rgb(121, 0, 0);
+  border: solid 2px #ff0f0f;
+}
+.delete:hover {
+  color: #ff0f0f;
+  background-color: white;
+  border-color: #ff0f0f;
+  box-shadow: 0 0 0 0;
+}
+.reset {
+  background-color: #ff0f0f;
+  color: white;
+  box-shadow: 0 0 8px rgb(121, 0, 0);
+  border: solid 2px #ff0f0f;
+}
+.reset:hover {
+  color: #ff0f0f;
+  background-color: white;
+  border-color: #ff0f0f;
+  box-shadow: 0 0 0 0;
 }
