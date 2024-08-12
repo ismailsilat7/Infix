@@ -60,15 +60,15 @@
       <form action="/settings" method="post">
         <div class="input-container">
           <h1>Full Name</h1>
-          <input type="text" class="fullname" name = "fullname" value = "Ali Kashif" required>
+          <input type="text" class="fullname" name = "fullname" value = "{{ user.fullname }}" required>
         </div>
         <div class="input-container">
           <h1>Nickname</h1>
-          <input type="text" class="nickname" name = "nickname" value = "ali.kashif" required>
+          <input type="text" class="nickname" name = "nickname" value = "{{ user.nickname }}" required>
         </div>
         <div class="input-container">
           <h1>Email</h1>
-          <input type="text" class="fullname" name = "email" value = "alikashif5917@gmail.com" required>
+          <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
         </div>
         <div class="btns-container">
           <a href="/changepassword">Change Password?</a>

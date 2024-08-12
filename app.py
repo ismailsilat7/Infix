@@ -366,19 +366,43 @@ def change_to_path(path_name):
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
-    user_id = session['user_id']
+    email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    user_id = session["user_id"]
+    
+    if request.method == "POST":
+        fullname = request.form.get("fullname")
+        nickname = request.form.get("nickname")
+        email = request.form.get("email")
+        
+        current_user = db.execute("SELECT fullname, nickname, email FROM users WHERE id = ?", user_id)[0]
+        current_fullname = current_user['fullname']
+        current_nickname = current_user['nickname']
+        current_email = current_user['email']
+
+        # Validate input
+        if not fullname:
+            flash("Must enter name", "warning")
+        elif not nickname or len(nickname) < 3:
+            flash("Nickname must include at least 3 characters", "warning")
+        elif not email or not re.match(email_regex, email):
+            flash("Invalid email format", "warning")
+        else:
+            if (fullname == current_fullname and 
+                nickname == current_nickname and 
+                email == current_email):
+                flash("No changes made to update", "info")
+            else:
+                existing_user = db.execute("SELECT * FROM users WHERE (nickname = ? OR email = ?) AND id != ?", nickname, email, user_id)
+                if existing_user:
+                    flash("Nickname and/or Email already exists", "warning")
+                else:
+                    db.execute("UPDATE users SET fullname = ?, nickname = ?, email = ? WHERE id = ?", fullname, nickname, email, user_id)
+                    flash("Settings updated successfully", "success")
     
 
+    user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
+    return render_template("settings.html", user=user)
 
-
-
-
-
-
-
-
-
-    return render_template("settings.html")
 
 
 
