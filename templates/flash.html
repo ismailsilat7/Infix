@@ -13,6 +13,11 @@
         color: #721c24;
     }
 
+    .alert-info {
+      color: #856404;
+      background-color: #fff3cd;
+  }
+
     .alert-success {
         background-color: #d4edda;
         color: #155724;
@@ -40,6 +45,12 @@
                   <button type="button" class="close" data-dismiss="alert"> 
                     <span aria-hidden="true">&times;</span></button>
                 </div>
+              {% elif category=="info" %}
+              <div class="alert alert-info alert-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert"> 
+                  <span aria-hidden="true">&times;</span></button>
+              </div>
               {% endif %}
             {% endfor %}
           {% endif %}
