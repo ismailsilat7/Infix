@@ -89,12 +89,12 @@ button {
 .menu-item i {
   font-size: 14px;
 }
-.main-container {
+form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 70vw;
+  gap: 1em;
 }
 .input-container {
   background-color: black;
@@ -107,14 +107,51 @@ button {
   padding: 1.5em 2em;
   width: 50vw;
   border-radius: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
+}
+.input-container h1 {
+  font-family: 'Platform-Light';
+  font-size: 35px;
 }
 input {
   color: white;
   padding: 5px;
-  font-size: 18px;
+  font-size: 16px;
   width: 100%;
   border: none;
-  background-color: red;
+  background: none;
   outline: none;
   width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  font-family: 'Figtree';
+  letter-spacing: 1px;
+}
+input:focus {
+  border-bottom: 1px solid rgba(255, 255, 255, 1);
+}
+.btns-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2em;
+  /* background-color: yellow; */
+}
+.btns-container a {
+  font-size: 20px;
+
+}
+.submit {
+  border: none;
+  padding: 10px 40px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  border: 2px solid black;
+  box-shadow: 0 0 8px black;
+  font-family: 'Figtree';
+}
+.submit:hover {
+  color: white;
+  background-color: black;
 }
