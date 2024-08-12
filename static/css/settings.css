@@ -134,7 +134,7 @@ input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 2em;
+  padding: 0.5em 0em 0.5em 2em;
   /* background-color: yellow; */
 }
 .btns-container a {
