@@ -95,6 +95,8 @@ form {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 1em;
+  width: 50vw;
+  /* background-color: red; */
 }
 .input-container {
   background-color: black;
@@ -105,8 +107,8 @@ form {
   align-items: flex-start;
   gap: 10px;
   padding: 1.5em 2em;
-  width: 50vw;
   border-radius: 15px;
+  width: 100%;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
 }
 .input-container h1 {
@@ -135,13 +137,13 @@ input:focus {
   justify-content: space-between;
   align-items: center;
   padding: 0.5em 0em 0.5em 2em;
+  margin-bottom: 1em;
   /* background-color: yellow; */
 }
 .btns-container a {
   font-size: 20px;
-
 }
-.submit {
+button {
   border: none;
   padding: 10px 40px;
   font-size: 18px;
@@ -151,7 +153,40 @@ input:focus {
   box-shadow: 0 0 8px black;
   font-family: 'Figtree';
 }
-.submit:hover {
+button:hover {
   color: white;
   background-color: black;
+}
+.danger-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+  padding: 1.5em 2em;
+  border-top: solid 2px black;
+  width: 100%;
+}
+.delete {
+  background-color: #ff0f0f;
+  color: white;
+  box-shadow: 0 0 8px rgb(121, 0, 0);
+  border: solid 2px #ff0f0f;
+}
+.delete:hover {
+  color: #ff0f0f;
+  background-color: white;
+  border-color: #ff0f0f;
+  box-shadow: 0 0 0 0;
+}
+.reset {
+  background-color: #ff0f0f;
+  color: white;
+  box-shadow: 0 0 8px rgb(121, 0, 0);
+  border: solid 2px #ff0f0f;
+}
+.reset:hover {
+  color: #ff0f0f;
+  background-color: white;
+  border-color: #ff0f0f;
+  box-shadow: 0 0 0 0;
 }
