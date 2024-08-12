@@ -3,7 +3,7 @@
 
 
 -- CREATING 3 USERS - DON'T FORGET TO RESET HASH VIA FORGET PASSWORD FEATURE
-INSERT INTO users (fullname,nickname,email, hash)
+INSERT INTO users (fullname,username,email, hash)
 VALUES
 ('Mr Khan', 'admin123', 'khan@gmail.com', 'dkjsdkasjdkajsdksjahdkjas'), ('Ali Kashif', 'ali.kashif', 'alikashif5917@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas'), ('Ismail Silat', 'ismail.silat', 'ismailsilat7@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas')
 ON CONFLICT DO NOTHING;
