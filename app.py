@@ -390,7 +390,7 @@ def settings():
             if (fullname == current_fullname and 
                 nickname == current_nickname and 
                 email == current_email):
-                flash("No changes made to update", "info")
+                flash("No updated changes made", "info")
             else:
                 existing_user = db.execute("SELECT * FROM users WHERE (nickname = ? OR email = ?) AND id != ?", nickname, email, user_id)
                 if existing_user:
