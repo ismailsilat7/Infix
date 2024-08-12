@@ -8,7 +8,6 @@
 {% block HomeActive %}inactive{% endblock %}
 
 {% block content %}
-
 <div id="courses-container">
     <div class="header">
         <h1>Courses - <span class="path-name">{{ path }}</span></h1>
@@ -41,11 +40,13 @@
                   </div>
             </div>
             {% endfor %}
-            {% include 'flash.html' %}
+            
             </div>
         </div>
         {% endif %}
-
+        <div class="flash">
+            {% include 'flash.html' %}
+        </div>
         {% if to_add %}
         <div class="add-courses">
             <div class="add-change">
