@@ -87,6 +87,15 @@
   </div>
 
 
-
+  <script>
+    const deleteBtn = document.querySelector('.delete')
+    const resetBtn = document.querySelector('.reset')
+    deleteBtn.addEventListener('click', () => {
+      window.location.href = 'templates/delete-acc.html'
+    })
+    resetBtn.addEventListener('click', () => {
+      window.location.href = 'reset-acc.html'
+    })
+  </script>
 </body>
 </html>
