@@ -44,7 +44,7 @@ button {
   border: none;
 }
 
-.dashboard {
+.settings {
   display: flex;
   justify-content: center;
   align-items: flex-start;

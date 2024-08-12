@@ -13,7 +13,8 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class="dashboard">
+  <!-- {% include 'flash.html' %} -->
+  <div class="settings">
     <div class="sidebar-container">
       <img class="logo-dash" src="../static/images/White text, no bg.png">
       <div class="menu-item">
@@ -70,6 +71,7 @@
           <h1>Email</h1>
           <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
         </div>
+        {% include 'flash.html' %}
         <div class="btns-container">
           <a href="/changepassword">Change Password?</a>
           <button class="submit" type="submit">Save</button>
