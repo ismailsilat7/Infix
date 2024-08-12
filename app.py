@@ -178,8 +178,9 @@ def select_path():
 
     return redirect('/dashboard')
 
-@login_required 
+
 @app.route('/dashboard')
+@login_required 
 def dashboard():
     user_id = session['user_id']
 
@@ -372,6 +373,19 @@ def settings():
 
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    user_id = session.get('user_id')
+    if user_id:
+        result = db.execute("""
+            SELECT fullname FROM users 
+            WHERE id = ?
+        """, (user_id,))
+        fullname = result[0]['fullname'] if result else None
+        name = fullname.split()[0] if fullname else None
+    else:
+        name = None
+    return render_template('404.html', user_id=user_id, name=name), 404
 
 
 
