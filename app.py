@@ -367,6 +367,17 @@ def change_to_path(path_name):
 @login_required
 def settings():
     user_id = session['user_id']
+    
+
+
+
+
+
+
+
+
+
+
     return render_template("settings.html")
 
 
