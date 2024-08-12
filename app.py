@@ -403,6 +403,19 @@ def settings():
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
     return render_template("settings.html", user=user)
 
+@app.route("/delete-confirmation", methods=["GET", "POST"])
+@login_required
+def delete_account():
+    if request.method == "POST":
+        user_id = session["user_id"]
+        # Delete the user from the database
+        db.execute("DELETE FROM users WHERE id = ?", user_id)
+        # Clear the session and redirect to the homepage
+        session.clear()
+        flash("Your account has been deleted.", "success")
+        return redirect("/")
+
+    return render_template("delete_confirmation.html")
 
 
 
