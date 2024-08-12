@@ -58,10 +58,10 @@ def sign_up():
         # Validate form input
         if not request.form.get("name"):
             flash("Must enter name", "warning")
-        elif not request.form.get("nickname"):
-            flash("Must enter nickname", "warning")
-        elif len(request.form.get("nickname")) < 3:
-            flash("Nickname must include at least 3 characters", "warning")
+        elif not request.form.get("username"):
+            flash("Must enter username", "warning")
+        elif len(request.form.get("username")) < 3:
+            flash("Username must include at least 3 characters", "warning")
         elif len(request.form.get("name")) < 7:
             flash("Name must include at least 7 characters", "warning")
         elif not request.form.get("email"):
@@ -83,10 +83,10 @@ def sign_up():
             fullname = request.form.get("name")
             
             # Ensure username doesn't already exist
-            nickname = request.form.get("nickname")
-            if db.execute("SELECT nickname FROM users WHERE nickname = ?", nickname):
+            username = request.form.get("username")
+            if db.execute("SELECT username FROM users WHERE username = ?", username):
                 unique = False
-                flash("Whoa, someone already has that nickname, please choose a different one", "warning")
+                flash("Whoa, someone already has that username, please choose a different one", "warning")
             else:
                 # Ensure email doesn't already exist
                 email = request.form.get("email")
@@ -101,8 +101,8 @@ def sign_up():
                     if unique:
                         # Store user in database
                         db.execute(
-                            "INSERT INTO users (fullname, nickname, email, hash) VALUES (?,?,?,?)",
-                            fullname, nickname, email, hash
+                            "INSERT INTO users (fullname, username, email, hash) VALUES (?,?,?,?)",
+                            fullname, username, email, hash
                         )
                         # Add user's path
                         user_rows = db.execute(
@@ -124,8 +124,8 @@ def change_password():
     if request.method == 'POST':
         if not request.form.get("email"):
                 flash("Must enter email", "warning")
-        elif not request.form.get("nickname"):
-            flash("Must enter nickname", "warning")
+        elif not request.form.get("username"):
+            flash("Must enter username", "warning")
         elif not request.form.get("new-pwd"):
                 flash("Must enter password", "warning")
         elif not request.form.get("confirm-new-pwd"):
@@ -136,13 +136,13 @@ def change_password():
             flash("Passwords don't match", "warning")
         else:
             email = request.form.get("email")
-            nickname = request.form.get("nickname")
+            username = request.form.get("username")
             rows = db.execute (
-                "SELECT nickname from users WHERE email = ?", email
+                "SELECT username from users WHERE email = ?", email
             )
-            # Ensure email exists and nickname is correct
-            if len(rows) != 1 or nickname.lower() != rows[0]["nickname"].lower():
-                flash("Invalid email and/or nickname", "warning")
+            # Ensure email exists and username is correct
+            if len(rows) != 1 or username.lower() != rows[0]["username"].lower():
+                flash("Invalid email and/or username", "warning")
             else:
                 newpwd = request.form.get("new-pwd")
                 hash = generate_password_hash(newpwd)
@@ -159,8 +159,9 @@ def change_password():
                     )
                     if id:
                         # forget user
-                        flash("Password Updated, Please Login again", "success")
                         session.clear()
+                        flash("Password Updated, Please Login", "success")
+                        return redirect('/login')
                          
     
     return render_template("change-password.html")
@@ -290,13 +291,16 @@ def enroll_course(course_code):
         return "Course not found", 404
 
     course_id = course[0]['id']
-
+    course_name = db.execute("""
+        SELECT name FROM courses
+        WHERE course_code = ?
+    """, course_code)[0]['name']
     db.execute("""
         INSERT INTO user_courses (user_id, course_id)
         VALUES
         (?,?)
     """, user_id, course_id)
-    flash("Course Enrolled!")
+    flash(f"You have enrolled in {course_name + ' ' + course_code}", "success")
     return redirect('/courses')
 
 @app.route('/dropcourse/<course_code>')
@@ -309,12 +313,15 @@ def drop_course(course_code):
         return "Course not found", 404
 
     course_id = course[0]['id']
-
+    course_name = db.execute("""
+        SELECT name FROM courses
+        WHERE course_code = ?
+    """, course_code)[0]['name']
     db.execute("""
         DELETE FROM user_courses
         WHERE user_id = ? AND course_id = ?
     """, user_id, course_id)
-    flash("Course Deleted!")
+    flash(f"You have dropped {course_name + ' ' + course_code}", "success")
     return redirect('/courses')
 
 
@@ -354,6 +361,7 @@ def change_to_path(path_name):
         WHERE name = ?
     """, path_name)
     if not result:
+        flash(f"Invalid path", "warning")
         return redirect('/dashboard')
     else:
         path_id = result[0]["id"]
@@ -362,6 +370,7 @@ def change_to_path(path_name):
         SET path_id = ?
         WHERE user_id = ?
     """, path_id, user_id)
+    flash(f"Changed path to {path_name}", "success")
     return redirect('/dashboard')
 
 @app.route("/settings", methods=["GET", "POST"])
@@ -372,32 +381,32 @@ def settings():
     
     if request.method == "POST":
         fullname = request.form.get("fullname")
-        nickname = request.form.get("nickname")
+        username = request.form.get("username")
         email = request.form.get("email")
         
-        current_user = db.execute("SELECT fullname, nickname, email FROM users WHERE id = ?", user_id)[0]
+        current_user = db.execute("SELECT fullname, username, email FROM users WHERE id = ?", user_id)[0]
         current_fullname = current_user['fullname']
-        current_nickname = current_user['nickname']
+        current_username = current_user['username']
         current_email = current_user['email']
 
         # Validate input
         if not fullname:
             flash("Must enter name", "warning")
-        elif not nickname or len(nickname) < 3:
-            flash("Nickname must include at least 3 characters", "warning")
+        elif not username or len(username) < 3:
+            flash("Username must include at least 3 characters", "warning")
         elif not email or not re.match(email_regex, email):
             flash("Invalid email format", "warning")
         else:
             if (fullname == current_fullname and 
-                nickname == current_nickname and 
+                username == current_username and 
                 email == current_email):
                 flash("No updated changes made", "info")
             else:
-                existing_user = db.execute("SELECT * FROM users WHERE (nickname = ? OR email = ?) AND id != ?", nickname, email, user_id)
+                existing_user = db.execute("SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?", username, email, user_id)
                 if existing_user:
-                    flash("Nickname and/or Email already exists", "warning")
+                    flash("Username and/or Email already exists", "warning")
                 else:
-                    db.execute("UPDATE users SET fullname = ?, nickname = ?, email = ? WHERE id = ?", fullname, nickname, email, user_id)
+                    db.execute("UPDATE users SET fullname = ?, username = ?, email = ? WHERE id = ?", fullname, username, email, user_id)
                     flash("Settings updated successfully", "success")
     
 
@@ -408,8 +417,8 @@ def settings():
 @login_required
 def delete_account():
     user_id = session["user_id"]
-    user = db.execute("SELECT nickname FROM users WHERE id = ?", user_id)[0]
-    user_name = user['nickname']
+    user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
+    user_name = user['username']
     if request.method == "POST":
         db.execute("DELETE FROM users WHERE id = ?", user_id)
         session.clear()
@@ -420,14 +429,14 @@ def delete_account():
 @login_required
 def reset_progress():
     user_id = session["user_id"]
-    user = db.execute("SELECT nickname FROM users WHERE id = ?", user_id)[0]
-    user_name = user['nickname']
+    user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
+    user_name = user['username']
     if request.method == "POST":
-        user = db.execute("SELECT fullname, nickname, email, password_hash, path FROM users WHERE id = ?", user_id)[0]
+        user = db.execute("SELECT fullname, username, email, password_hash, path FROM users WHERE id = ?", user_id)[0]
         db.execute("DELETE FROM users WHERE id = ?", user_id)
         new_user_id = db.execute(
-            "INSERT INTO users (fullname, nickname, email, password_hash, path) VALUES (?, ?, ?, ?, ?)",
-            user['fullname'], user['nickname'], user['email'], user['password_hash'], user['path']
+            "INSERT INTO users (fullname, username, email, password_hash, path) VALUES (?, ?, ?, ?, ?)",
+            user['fullname'], user['username'], user['email'], user['password_hash'], user['path']
         )
         session["user_id"] = new_user_id
         return redirect("/dashboard")

@@ -6,6 +6,10 @@
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 0.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 300px;
     }
 
     .alert-danger {
@@ -22,6 +26,15 @@
         background-color: #d4edda;
         color: #155724;
     }
+    .alert #close {
+        color: inherit;
+        background: none;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0 !important;
+    }
 
   </style>
           {% if messages %}
@@ -29,17 +42,21 @@
               {% if category=="error" or category=="warning" %}
                 <div class="alert alert-danger alert-dismissable fade show" role="alert">
                   {{ message }}
+                  <button type="button" id="close">&times;</button>
                 </div>
               {% elif category=="success" %}
                 <div class="alert alert-success alert-dismissable fade show" role="alert">
                   {{ message }}
+                  <button type="button" id="close">&times;</button>
                 </div>
               {% elif category=="info" %}
               <div class="alert alert-info alert-dismissable fade show" role="alert">
                 {{ message }}
+                <button type="button" id="close">&times;</button>
               </div>
               {% endif %}
             {% endfor %}
           {% endif %}
         {% endwith %}
+  <script src="{{ url_for('static', filename='js/flash.js') }}" ></script>
 {% endblock %}
