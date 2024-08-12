@@ -89,6 +89,9 @@ button {
 .menu-item i {
   font-size: 14px;
 }
+.main-container {
+  width: 70vw;
+}
 form {
   display: flex;
   flex-direction: column;
@@ -158,13 +161,16 @@ button:hover {
   background-color: black;
 }
 .danger-container {
+  width: 100%;
   display: flex;
   justify-content: center;
   gap: 30px;
   align-items: center;
   padding: 1.5em 2em;
-  border-top: solid 2px black;
-  width: 100%;
+  border-radius: 15px;
+  border: solid 2px black;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
+  
 }
 .delete {
   background-color: #ff0f0f;
