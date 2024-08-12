@@ -290,13 +290,16 @@ def enroll_course(course_code):
         return "Course not found", 404
 
     course_id = course[0]['id']
-
+    course_name = db.execute("""
+        SELECT name FROM courses
+        WHERE course_code = ?
+    """, course_code)[0]['name']
     db.execute("""
         INSERT INTO user_courses (user_id, course_id)
         VALUES
         (?,?)
     """, user_id, course_id)
-    flash("Course Enrolled!")
+    flash(f"You have enrolled in {course_name + ' ' + course_code}", "success")
     return redirect('/courses')
 
 @app.route('/dropcourse/<course_code>')
@@ -309,12 +312,15 @@ def drop_course(course_code):
         return "Course not found", 404
 
     course_id = course[0]['id']
-
+    course_name = db.execute("""
+        SELECT name FROM courses
+        WHERE course_code = ?
+    """, course_code)[0]['name']
     db.execute("""
         DELETE FROM user_courses
         WHERE user_id = ? AND course_id = ?
     """, user_id, course_id)
-    flash("Course Deleted!")
+    flash(f"You have dropped {course_name + ' ' + course_code}", "success")
     return redirect('/courses')
 
 
@@ -354,6 +360,7 @@ def change_to_path(path_name):
         WHERE name = ?
     """, path_name)
     if not result:
+        flash(f"Invalid path", "warning")
         return redirect('/dashboard')
     else:
         path_id = result[0]["id"]
@@ -362,6 +369,7 @@ def change_to_path(path_name):
         SET path_id = ?
         WHERE user_id = ?
     """, path_id, user_id)
+    flash(f"Changed path to {path_name}", "success")
     return redirect('/dashboard')
 
 @app.route("/settings", methods=["GET", "POST"])
