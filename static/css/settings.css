@@ -161,7 +161,7 @@ button:hover {
   background-color: black;
 }
 .danger-container {
-  width: 100%;
+  width: 50vw;
   display: flex;
   justify-content: center;
   gap: 30px;

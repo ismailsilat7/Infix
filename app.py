@@ -406,17 +406,31 @@ def settings():
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
 def delete_account():
+    user_id = session["user_id"]
+    user = db.execute("SELECT nickname FROM users WHERE id = ?", user_id)[0]
+    user_name = user['nickname']
     if request.method == "POST":
-        user_id = session["user_id"]
-        # Delete the user from the database
         db.execute("DELETE FROM users WHERE id = ?", user_id)
-        # Clear the session and redirect to the homepage
         session.clear()
-        flash("Your account has been deleted.", "success")
         return redirect("/")
+    return render_template("delete_confirmation.html", user_name = user_name)
 
-    return render_template("delete_confirmation.html")
-
+@app.route("/reset-confirmation", methods=["GET", "POST"])
+@login_required
+def reset_progress():
+    user_id = session["user_id"]
+    user = db.execute("SELECT nickname FROM users WHERE id = ?", user_id)[0]
+    user_name = user['nickname']
+    if request.method == "POST":
+        user = db.execute("SELECT fullname, nickname, email, password_hash, path FROM users WHERE id = ?", user_id)[0]
+        db.execute("DELETE FROM users WHERE id = ?", user_id)
+        new_user_id = db.execute(
+            "INSERT INTO users (fullname, nickname, email, password_hash, path) VALUES (?, ?, ?, ?, ?)",
+            user['fullname'], user['nickname'], user['email'], user['password_hash'], user['path']
+        )
+        session["user_id"] = new_user_id
+        return redirect("/dashboard")
+    return render_template("reset_confirmation.html", user_name = user_name)
 
 
 
