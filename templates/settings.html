@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Infix - Dashboard</title>
   <link rel="icon" href="{{url_for ('static', filename='images/favicon.png') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
   <!-- fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,11 +54,21 @@
       </div>
     </div>
     <div class="main-container">
-      
+      <form action="/settings">
+        <!-- User info -->
+        <input type="hidden" name="action" value="update">
+        <div class="input-container">
+          <h1>Name</h1>
+          <input type="text" class="fullname" name = "fullname" value = "Ali Kashif" required>
+        </div>
+
+
+
+      </form>
     </div>
   </div>
 
 
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
 </body>
 </html>

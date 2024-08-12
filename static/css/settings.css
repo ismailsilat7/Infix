@@ -96,111 +96,25 @@ button {
   align-items: flex-start;
   width: 70vw;
 }
-.intro-container {
+.input-container {
   background-color: black;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  width: 100%;
-  height: 25vh;
-  border-radius: 10px;
-  padding: 1.5em 2em;
-  position: relative;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
-}
-.intro-container h1 {
-  font-size: 50px;
-}
-.intro-container p {
-  font-size: 16px;
-}
-.path-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: white;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  opacity: 0.2;
-}
-.path-container h1 {
-  font-size: 200px; 
-}
-.courses-container {
-  padding: 1.5em 2em;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
-  gap: 1em;
-}
-.courses-container .head {
-  font-size: 20px;
-  font-family: 'Platform-Regular';
-}
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.greet-user {
-  font-family: 'Platform-Regular'; 
-  font-size: 60px; 
-  letter-spacing: 2.5px;
-}
-.course-code {
-  font-size: 16px; 
-  opacity: 60%;
-}
-.course-card {
-  background-color: rgb(228, 228, 228);
-  padding: 1em 3em;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.61);
-  position: relative;
-}
-.texture {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-  z-index: 1;
-}
-.texture img {
-  object-fit: cover;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.course-card h3 {
-  font-size: 24px;
-  z-index: 2;
-}
-.course-card button {
-  background-color: black;
-  color: white;
+  gap: 10px;
+  padding: 1.5em 2em;
+  width: 50vw;
   border-radius: 15px;
-  padding: 0.5em 2.5em;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.932);
-  z-index: 2;
 }
-.course-card a {
-  font-size: 16px;
-  font-family: "Figtree";
+input {
+  color: white;
+  padding: 5px;
+  font-size: 18px;
+  width: 100%;
+  border: none;
+  background-color: red;
+  outline: none;
+  width: 100%;
 }

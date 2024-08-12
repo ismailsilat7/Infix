@@ -1,3 +1,7 @@
+-- THIS IS SCHEMA, USED TO CREATE TABLES
+-- TO RUN, TYPE .read schema.sql IN THE SQLite3 TERMINAL
+-- THEN RUN settingupdb.sql TO CREATE TEST USERS (.read settingupdb.sql)
+
 -- users table
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -7,21 +11,11 @@ CREATE TABLE IF NOT EXISTS users (
     hash TEXT NOT NULL
 );
 
-INSERT INTO users (fullname,nickname,email, hash)
-VALUES
-('Mr Khan', 'admin123', 'khan@gmail.com', 'dkjsdkasjdkajsdksjahdkjas'), ('Ali Kashif', 'ali.kashif', 'alikashif5917@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas'), ('Ismail Silat', 'ismail.silat', 'ismailsilat7@gmail.com', 'hdbasdbsajhbdasbdjashbdhjsadjhas')
-ON CONFLICT DO NOTHING;
-
 -- paths table
 CREATE TABLE IF NOT EXISTS paths (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE
 );
-
-INSERT INTO paths (name)
-VALUES
-('O Levels'), ('A Levels')
-ON CONFLICT(name) DO NOTHING;
 
 -- user_paths table
 CREATE TABLE IF NOT EXISTS user_paths (
@@ -41,12 +35,6 @@ CREATE TABLE IF NOT EXISTS courses (
     FOREIGN KEY (path_id) REFERENCES paths(id) ON DELETE CASCADE
 );
 
--- path_id for O Levels is 1, A Levels is 2
-INSERT INTO courses (path_id, name, course_code)
-VALUES
-(2,'Chemistry', '9701-AS'),(2,'Chemistry', '9701-A2'),(2,'Computer Science', '9618-AS'),(2,'Computer Science', '9618-A2'),(2,'Mathematics', '9709-AS'),(2,'Mathematics', '9709-A2'),(2,'Physics', '9702-AS'),(2,'Physics', '9702-A2'),(1,'Biology','5090'),(1,'Chemistry','5070'),(1,'Computer Science','2210'),(1,'English Language','1123'),(1,'Islamiyat','2058'),(1,'Mathematics (Syllabus D)','4024'),(1,'Pakistan Studies','2059'),(1,'Physics','5054'),(1,'Urdu','3248')
-ON CONFLICT DO NOTHING;
-
 -- user_courses table
 CREATE TABLE IF NOT EXISTS user_courses (
     user_id INTEGER NOT NULL,
@@ -55,11 +43,6 @@ CREATE TABLE IF NOT EXISTS user_courses (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
-
-INSERT INTO user_courses (user_id, course_id)
-VALUES
-(2,4),(2,2),(2,6),(2,8),(1,4),(1,2),(1,6),(1,8)
-ON CONFLICT DO NOTHING;
 
 -- topics table
 CREATE TABLE IF NOT EXISTS topics (
