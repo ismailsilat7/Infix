@@ -1,0 +1,64 @@
+{% block verify %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/verify.css') }}">
+
+  <div id="verification-container">
+      <div class="in-form">
+        <h2 id="verify" >Verify yourself</h2>
+        <form action="/{{ verification_purpose }}" method="post">
+          <div class="in-inputs">
+            <div class="input-container">
+              <i class="ri-mail-fill"></i>
+              <input type="text" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+              <i class="ri-lock-2-line"></i>
+              <input type="password" name="pwd" placeholder="Password" id="pwd" required>
+              <i class="ri-eye-close-line" style="font-size: 26px;cursor: pointer;" id="toggle-one"></i>
+            </div>
+          </div>
+          <div class="in-submit">
+            <a href="/dashboard" class="whitebgBtn">Cancel</span></a>
+            <button type="submit" class="whitebgBtn-contrast" style="color: #ffffff !important; width: 200px;">{{ action }} Account</button>
+          </div>
+          {% include 'flash.html' %}
+        </form>
+      </div>
+  </div>
+</div>
+
+<script>
+  // eye icon toggle 
+  const pwdInput = document.getElementById('pwd')
+  const confirmpwdInput = document.getElementById('confirm-pwd')
+  const toggleBtnOne = document.getElementById('toggle-one')
+  const toggleBtnTwo = document.getElementById('toggle-two')
+  toggleBtnOne.addEventListener('click', ()=> {
+    if (pwdInput.type === 'password') {
+      pwdInput.type = 'text'
+      toggleBtnOne.className = 'ri-eye-line'
+    } else {
+      pwdInput.type = 'password'
+      toggleBtnOne.className = 'ri-eye-close-line'
+    }
+  })
+  toggleBtnTwo.addEventListener('click', () => {
+    if (confirmpwdInput.type === 'password') {
+      confirmpwdInput.type = 'text'
+      toggleBtnTwo.className = 'ri-eye-line'
+    } else {
+      confirmpwdInput.type = 'password'
+      toggleBtnTwo.className = 'ri-eye-close-line'
+    }
+  })
+  // handling disabled pwd 
+  pwdInput.addEventListener('input', () => {
+    if (pwdInput.value.length > 0) {
+      confirmpwdInput.disabled = false
+
+    } else {
+      confirmpwdInput.disabled = true
+      confirmpwdInput.value = ""
+    }
+  })
+</script>
+{% endblock %}
