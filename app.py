@@ -540,8 +540,8 @@ def callback():
         return "An error occurred during the authentication process.", 500
 
     # Check if the user exists in the database
-    existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id,))
-    if not existing_user:
+    existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id))
+    if len(existing_user) == 0:
         db.execute(
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
             (google_id, email, fullname, "GOOGLE_OAUTH", username)
