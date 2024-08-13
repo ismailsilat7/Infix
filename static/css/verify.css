@@ -1,0 +1,146 @@
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    border-bottom: solid 2px rgb(148, 148, 148);
+  }
+  
+.input-container:focus-within{
+    border-bottom: solid 2px black;
+}
+  
+.input-container i {
+    font-size: 18px;
+}
+
+.input-container select {
+    padding: 5px;
+    font-size: 18px;
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-family: 'Figtree';
+    appearance: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+input, select {
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-family: 'Figtree';
+}
+
+input:disabled {
+    cursor: not-allowed;
+}
+
+.in-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.in-form h2 {
+    font-family: "Platform-Light";
+    font-size: 55px;
+    line-height: 80%;
+}
+
+.in-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.in-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.in-submit a {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.in-submit {
+    margin-top: 30px;
+}
+
+#verification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    background-color: #ffffff;
+    margin-top: 80px;
+    padding: 5px;
+}
+
+
+@media (max-width : 900px) {
+    .in-img {
+      width: 280px;
+    }
+    .in-form h2 {
+      font-size: 45px;
+    } 
+  }
+  
+  @media (max-width : 768px) {
+    .in-form h2 {
+      font-size: 40px;
+    } 
+    .in-inputs {
+      gap: 15px;
+    }
+    input, select{
+      font-size: 14px;
+    }
+    .input-container i, .input-container select {
+      font-size: 16px !important;
+    }
+  }
+  
+  @media (max-width : 550px) {
+    .in-form h2 {
+      font-size: 55px;
+    }
+    .in-form h2 {
+      text-align: center;
+    }
+    h2 > span {
+      display: inline-block !important;
+    }
+    .input-container select {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width : 400px) {
+    .in-form h2 {
+      font-size: 45px;
+    }
+    .in-inputs {
+      gap: 10px;
+    }
+    input, select {
+      font-size: 12px;
+    }
+    .input-container i, .input-container select {
+      font-size: 14px !important;
+    }
+  }
+  
+
