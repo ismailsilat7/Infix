@@ -541,7 +541,6 @@ def callback():
 
     # Check if the user exists in the database
     existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id,))
-
     if not existing_user:
         db.execute(
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
