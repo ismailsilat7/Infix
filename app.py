@@ -62,8 +62,8 @@ def sign_up():
             flash("Must enter username", "warning")
         elif len(request.form.get("username")) < 3:
             flash("Username must include at least 3 characters", "warning")
-        elif len(request.form.get("name")) < 7:
-            flash("Name must include at least 7 characters", "warning")
+        elif len(request.form.get("name")) < 5:
+            flash("Name must include at least 5 characters", "warning")
         elif not request.form.get("email"):
             flash("Must enter email", "warning")
         elif not re.match(email_regex, request.form.get("email")):
@@ -390,8 +390,8 @@ def settings():
         current_email = current_user['email']
 
         # Validate input
-        if not fullname:
-            flash("Must enter name", "warning")
+        if not fullname or len(fullname) < 5:
+            flash("Fullname must include at least 5 characters", "warning")
         elif not username or len(username) < 3:
             flash("Username must include at least 3 characters", "warning")
         elif not email or not re.match(email_regex, email):
