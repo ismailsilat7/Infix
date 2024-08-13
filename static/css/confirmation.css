@@ -5,7 +5,6 @@
     justify-content: center;
 }
 
-
 #confirmation-container {
     display: flex;
     justify-content: center;
@@ -52,7 +51,7 @@
     .drop-container h3 {
         font-size: 80px;
     }
-    .drop-container p {
+    .drop-container p, h2 {
         font-size: 25px;
     }
 }
@@ -61,7 +60,7 @@
     .drop-container h3 {
         font-size: 60px;
     }
-    .drop-container p {
+    .drop-container p, h2 {
         font-size: 20px;
     }
 }
