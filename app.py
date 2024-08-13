@@ -474,7 +474,8 @@ app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
 app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET")
 app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
 
-
+# Initialize OAuth client
+client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
 
 
 
