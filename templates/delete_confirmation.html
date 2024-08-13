@@ -1,10 +1,46 @@
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  ISMAIL janu yai lai username <br> {{ user_name }}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Confirmation - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+{% endblock %}
+
+{% block nav %}
+<div id="navbar">
+    <div class="navbar-content">
+      <a href="/" class="logo"><img src="../static/images/black text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
+  </div>
+</div>
+{% endblock %}
+
+{% block confirmation %}
+<style>
+  #confirmation-container {
+    text-align: center;
+  }
+  .drop-btn-container {
+    justify-content: center;
+  }
+</style>
+
+<div id="confirmation-container">
+    <div class="confirmation-card">
+        <div class="drop-container">
+            <h3><span style="color: red;">Delete Account</span> <br>with username  {{user_name}}?</h3>
+            <p>You will lose all your saved details. This action is non-revocable.</p>
+            
+            <div class="drop-btn-container">
+                <a href="/dashboard"><div class="whitebgBtn">Cancel</div></a>
+                <a href="#verify"><div class="whitebgBtn-contrast" style="color: #ffffff !important;">Confirm</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include 'verify.html' %}
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
