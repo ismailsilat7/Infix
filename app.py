@@ -7,8 +7,10 @@ from helpers import login_required
 import re
 from oauthlib.oauth2 import WebApplicationClient
 import requests
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv()
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -467,9 +469,9 @@ def trial():
     return render_template('trial.html')
 
 # Configure your app with Google OAuth credentials
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID", "your_client_id")
-app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET", "your_client_secret")
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
+app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET")
 app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
 
 
