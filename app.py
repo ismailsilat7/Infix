@@ -416,31 +416,85 @@ def settings():
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
 def delete_account():
+    action = "Delete"
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    
     if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("pwd")
+        
+        if not email:
+            flash("Please enter your email!", "warning")
+            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+        
+        if not password:
+            flash("Please enter your password!", "warning")
+            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+        
+        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+        
+        if not (user_email == email and check_password_hash(user_hash, password)):
+            flash("Incorrect email or password", "warning")
+            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+        
+        # Delete user account
         db.execute("DELETE FROM users WHERE id = ?", user_id)
         session.clear()
+        
+        flash("Your account has been deleted", "success")
         return redirect("/")
-    return render_template("delete_confirmation.html", user_name = user_name)
+    
+    return render_template("delete_confirmation.html", user_name=user_name, action=action, verification_purpose="delete-confirmation")
+
 
 @app.route("/reset-confirmation", methods=["GET", "POST"])
 @login_required
 def reset_progress():
+    action = "Reset"
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    
     if request.method == "POST":
-        user = db.execute("SELECT fullname, username, email, password_hash, path FROM users WHERE id = ?", user_id)[0]
+        email = request.form.get("email")
+        password = request.form.get("pwd")
+        
+        if not email:
+            flash("Please enter email!", "warning")
+            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
+        
+        if not password:
+            flash("Please enter password", "warning")
+            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
+        
+        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+        
+        if not (user_email == email and check_password_hash(user_hash, password)):
+            flash("Incorrect email or password", "warning")
+            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
+        
+        user = db.execute("SELECT fullname, username, email, hash FROM users WHERE id = ?", user_id)[0]
+        path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)[0]['path_id']
         db.execute("DELETE FROM users WHERE id = ?", user_id)
-        new_user_id = db.execute(
-            "INSERT INTO users (fullname, username, email, password_hash, path) VALUES (?, ?, ?, ?, ?)",
-            user['fullname'], user['username'], user['email'], user['password_hash'], user['path']
+        db.execute(
+            "INSERT INTO users (id, fullname, username, email, hash) VALUES (?, ?, ?, ?, ?)",
+            user_id , user['fullname'], user['username'], user['email'], user['hash']
         )
-        session["user_id"] = new_user_id
+        db.execute("""
+            INSERT INTO user_paths (user_id, path_id)
+            VALUES
+            (?,?)
+        """, user_id, path_id )
+        session["user_id"] = user_id
+        flash("Your account has been reset", "success")
         return redirect("/dashboard")
-    return render_template("reset_confirmation.html", user_name = user_name)
+    
+    return render_template("reset_confirmation.html", user_name=user_name, action=action, verification_purpose="reset-confirmation")
+
 
 
 
