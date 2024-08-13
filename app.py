@@ -9,6 +9,7 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 from dotenv import load_dotenv
 import json
+from oauthlib.oauth2 import InsecureTransportError
 
 app = Flask(__name__)
 load_dotenv()
@@ -548,8 +549,12 @@ def callback():
 
 
 
+# error handling
 
-
+@app.errorhandler(InsecureTransportError)
+def handle_insecure_transport_error(e):
+    # Render a custom error page
+    return render_template('insecure-error.html')
 
 
 
