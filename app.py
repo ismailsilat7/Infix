@@ -10,6 +10,8 @@ import requests
 from dotenv import load_dotenv
 import json
 from oauthlib.oauth2 import InsecureTransportError
+# JUST FOR LOCAL
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
 load_dotenv()
