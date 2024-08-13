@@ -461,10 +461,10 @@ def page_not_found(e):
 
 
 
-
-app.route("/studyguides")
+@app.route("/studyguides", methods=["GET", "POST"])
+@login_required
 def trial():
-    render_template('trial.html')
+    return render_template('trial.html')
 
 
 
