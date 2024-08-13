@@ -508,12 +508,15 @@ def callback():
         redirect_url=request.base_url,
         code=code
     )
-    token_response = requests.post(
+    try:
+        token_response = requests.post(
         token_url,
         headers=headers,
         data=body,
         auth=(app.config['GOOGLE_CLIENT_ID'], app.config['GOOGLE_CLIENT_SECRET']),
     )
+    except:
+        return "An error occurred during the authentication process.", 500
 
     # Parse the tokens
     client.parse_request_body_response(json.dumps(token_response.json()))
@@ -524,11 +527,14 @@ def callback():
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
     # Get the user’s information
-    user_info = userinfo_response.json()
-    email = user_info["email"]
-    fullname = user_info["name"]
-    google_id = user_info["sub"]
-    username = email.split('@')[0]
+    try:
+        user_info = userinfo_response.json()
+        email = user_info["email"]
+        fullname = user_info["name"]
+        google_id = user_info["sub"]
+        username = email.split('@')[0]
+    except:
+        return "An error occurred during the authentication process.", 500
 
     # Check if the user exists in the database
     existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id,))
