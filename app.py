@@ -477,8 +477,8 @@ app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/op
 # Initialize OAuth client
 client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
 
-@app.route('/google/login')
-def login():
+@app.route('/google-login')
+def google_login():
     # Get Google's provider configuration
     google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
     authorization_endpoint = google_provider_cfg['authorization_endpoint']
@@ -491,7 +491,7 @@ def login():
     )
     return redirect(request_uri)
 
-@app.route('/google/login/callback')
+@app.route('/google-login/callback')
 def callback():
     # Get authorization code Google sent back to you
     code = request.args.get('code')
@@ -534,10 +534,10 @@ def callback():
     if not existing_user:
         # User doesn't exist, so add them to the database
         db.execute(
-            "INSERT INTO users (google_id, email, fullname) VALUES (?, ?, ?)",
-            (google_id, user_email, user_name)
+            "INSERT INTO users (google_id, email, fullname, hash) VALUES (?, ?, ?, ?)",
+            (google_id, user_email, user_name, "GOOGLE_OAUTH")
         )
-    return redirect(url_for('dashboard'))
+    return redirect('/dashboard')
 
 
 
