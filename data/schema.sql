@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     hash TEXT NOT NULL
+    google_id TEXT
 );
 
 -- paths table

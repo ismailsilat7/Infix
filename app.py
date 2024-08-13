@@ -477,6 +477,70 @@ app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/op
 # Initialize OAuth client
 client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
 
+@app.route('/google/login')
+def login():
+    # Get Google's provider configuration
+    google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
+    authorization_endpoint = google_provider_cfg['authorization_endpoint']
+
+    # Create the request URL for Google login
+    request_uri = client.prepare_request_uri(
+        authorization_endpoint,
+        redirect_uri=request.base_url + "/callback",
+        scope=["openid", "email", "profile"],
+    )
+    return redirect(request_uri)
+
+@app.route('/google/login/callback')
+def callback():
+    # Get authorization code Google sent back to you
+    code = request.args.get('code')
+
+    # Get Google's provider configuration
+    google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
+    token_endpoint = google_provider_cfg["token_endpoint"]
+
+    # Prepare and send a request to get tokens
+    token_url, headers, body = client.prepare_token_request(
+        token_endpoint,
+        authorization_response=request.url,
+        redirect_url=request.base_url,
+        code=code
+    )
+    token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(app.config['GOOGLE_CLIENT_ID'], app.config['GOOGLE_CLIENT_SECRET']),
+    )
+
+    # Parse the tokens
+    client.parse_request_body_response(json.dumps(token_response.json()))
+
+    # Get user info from Google
+    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    uri, headers, body = client.add_token(userinfo_endpoint)
+    userinfo_response = requests.get(uri, headers=headers, data=body)
+
+    # Get the user’s information
+    user_info = userinfo_response.json()
+    user_email = user_info["email"]
+    user_name = user_info["name"]
+    google_id = user_info["sub"]
+
+    # Check if the user exists in the database
+    existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id,))
+
+    if not existing_user:
+        # User doesn't exist, so add them to the database
+        db.execute(
+            "INSERT INTO users (google_id, email, fullname) VALUES (?, ?, ?)",
+            (google_id, user_email, user_name)
+        )
+    return redirect(url_for('dashboard'))
+
+
+
 
 
 
