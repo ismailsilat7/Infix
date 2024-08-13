@@ -462,5 +462,25 @@ def page_not_found(e):
 
 
 
+app.route("/studyguides")
+def trial():
+    render_template('trial.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
