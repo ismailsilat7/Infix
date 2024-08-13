@@ -1,9 +1,12 @@
+import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
 import re
+from oauthlib.oauth2 import WebApplicationClient
+import requests
 
 app = Flask(__name__)
 
@@ -459,14 +462,15 @@ def page_not_found(e):
     return render_template('404.html', user_id=user_id, name=name), 404
 
 
-
-
 @app.route("/studyguides", methods=["GET", "POST"])
-@login_required
 def trial():
     return render_template('trial.html')
 
-
+# Configure your app with Google OAuth credentials
+app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID", "your_client_id")
+app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET", "your_client_secret")
+app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
 
 
 
