@@ -477,7 +477,7 @@ app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/op
 # Initialize OAuth client
 client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
 
-@app.route('/google-login')
+@app.route('/auth/google', methods=["GET"])
 def google_login():
     # Get Google's provider configuration
     google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
@@ -491,7 +491,7 @@ def google_login():
     )
     return redirect(request_uri)
 
-@app.route('/google-login/callback')
+@app.route('/auth/google/callback')
 def callback():
     # Get authorization code Google sent back to you
     code = request.args.get('code')
