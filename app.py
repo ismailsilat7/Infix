@@ -8,6 +8,7 @@ import re
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 from dotenv import load_dotenv
+import json
 
 app = Flask(__name__)
 load_dotenv()
@@ -524,18 +525,18 @@ def callback():
 
     # Get the user’s information
     user_info = userinfo_response.json()
-    user_email = user_info["email"]
-    user_name = user_info["name"]
+    email = user_info["email"]
+    fullname = user_info["name"]
     google_id = user_info["sub"]
+    username = email.split('@')[0]
 
     # Check if the user exists in the database
     existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id,))
 
     if not existing_user:
-        # User doesn't exist, so add them to the database
         db.execute(
-            "INSERT INTO users (google_id, email, fullname, hash) VALUES (?, ?, ?, ?)",
-            (google_id, user_email, user_name, "GOOGLE_OAUTH")
+            "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
+            (google_id, email, fullname, "GOOGLE_OAUTH", username)
         )
     return redirect('/dashboard')
 
