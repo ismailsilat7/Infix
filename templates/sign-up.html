@@ -53,8 +53,12 @@
             <button type="submit">Sign up</button>
           </div>
           {% include 'flash.html' %}
-
         </form>
+        <div class="oauth sign">
+          <span class="flat-color-icons--google"></span>
+          <button><a href="/auth/google">Sign in with Google</a></button>
+        </div>
+
         
       </div>
     <img class="up-img" src="{{ url_for('static', filename='images/up-img.gif') }}" alt="">
@@ -62,6 +66,11 @@
 </div>
 
 <script>
+  // OAuth
+  const OAuthContainer = document.querySelector('.oauth')
+  OAuthContainer.addEventListener('click', ()=> {
+    window.location.href = '/auth/google'
+  })
   // eye icon toggle 
   const pwdInput = document.getElementById('pwd')
   const confirmpwdInput = document.getElementById('confirm-pwd')

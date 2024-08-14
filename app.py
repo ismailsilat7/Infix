@@ -1,11 +1,20 @@
+import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
 import re
+from oauthlib.oauth2 import WebApplicationClient
+import requests
+from dotenv import load_dotenv
+import json
+from oauthlib.oauth2 import InsecureTransportError
+# JUST FOR LOCAL
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
+load_dotenv()
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -62,8 +71,8 @@ def sign_up():
             flash("Must enter username", "warning")
         elif len(request.form.get("username")) < 3:
             flash("Username must include at least 3 characters", "warning")
-        elif len(request.form.get("name")) < 7:
-            flash("Name must include at least 7 characters", "warning")
+        elif len(request.form.get("name")) < 5:
+            flash("Name must include at least 5 characters", "warning")
         elif not request.form.get("email"):
             flash("Must enter email", "warning")
         elif not re.match(email_regex, request.form.get("email")):
@@ -196,7 +205,7 @@ def dashboard():
 
     # Get path name based on path_id
     user_path_name = db.execute("SELECT name FROM paths WHERE id = ?", path_id)
-    path_name = user_path_name[0]['name'] if user_path_name else None
+    path_name = user_path_name[0]['name'] if user_path_name else 'A Levels'
 
     # Get the user's enrolled courses
     enrolled_courses = db.execute("""
@@ -390,8 +399,8 @@ def settings():
         current_email = current_user['email']
 
         # Validate input
-        if not fullname:
-            flash("Must enter name", "warning")
+        if not fullname or len(fullname) < 5:
+            flash("Fullname must include at least 5 characters", "warning")
         elif not username or len(username) < 3:
             flash("Username must include at least 3 characters", "warning")
         elif not email or not re.match(email_regex, email):
@@ -411,7 +420,8 @@ def settings():
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
-    return render_template("settings.html", user=user)
+    google_id = db.execute("SELECT google_id FROM users WHERE id = ?", session["user_id"])[0]
+    return render_template("settings.html", user=user, google_id = google_id)
 
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
@@ -511,6 +521,115 @@ def page_not_found(e):
     else:
         name = None
     return render_template('404.html', user_id=user_id, name=name), 404
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Configure your app with Google OAuth credentials
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
+app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET")
+app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
+
+# Initialize OAuth client
+client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
+
+@app.route('/auth/google', methods=["GET"])
+def google_login():
+    # Get Google's provider configuration
+    google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
+    authorization_endpoint = google_provider_cfg['authorization_endpoint']
+
+    # Create the request URL for Google login
+    request_uri = client.prepare_request_uri(
+        authorization_endpoint,
+        redirect_uri=request.base_url + "/callback",
+        scope=["openid", "email", "profile"],
+    )
+    return redirect(request_uri)
+
+@app.route('/auth/google/callback')
+def callback():
+    # Get authorization code Google sent back to you
+    code = request.args.get('code')
+
+    # Get Google's provider configuration
+    google_provider_cfg = requests.get(app.config['GOOGLE_DISCOVERY_URL']).json()
+    token_endpoint = google_provider_cfg["token_endpoint"]
+
+    # Prepare and send a request to get tokens
+    token_url, headers, body = client.prepare_token_request(
+        token_endpoint,
+        authorization_response=request.url,
+        redirect_url=request.base_url,
+        code=code
+    )
+    try:
+        token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(app.config['GOOGLE_CLIENT_ID'], app.config['GOOGLE_CLIENT_SECRET']),
+    )
+    except:
+        return "An error occurred during the authentication process.", 500
+
+    # Parse the tokens
+    client.parse_request_body_response(json.dumps(token_response.json()))
+
+    # Get user info from Google
+    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    uri, headers, body = client.add_token(userinfo_endpoint)
+    userinfo_response = requests.get(uri, headers=headers, data=body)
+
+    # Get the user’s information
+    try:
+        user_info = userinfo_response.json()
+        email = user_info["email"]
+        fullname = user_info["name"]
+        google_id = user_info["sub"]
+        username = email.split('@')[0]
+    except:
+        return "An error occurred during the authentication process.", 500
+
+    # Check if the user exists in the database
+    existing_user = db.execute("SELECT * FROM users WHERE google_id = ?", (google_id))
+    if len(existing_user) == 0:
+        db.execute(
+            "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
+            google_id, email, fullname, "GOOGLE_OAUTH", username
+        )
+    rows = db.execute (
+            "SELECT * from users WHERE email = ?", email
+            )
+    session['user_id'] = rows[0]['id']
+    return redirect('/dashboard')
+
+
+
+# error handling
+
+@app.errorhandler(InsecureTransportError)
+def handle_insecure_transport_error(e):
+    # Render a custom error page
+    return render_template('insecure-error.html')
+
+
+
+
+
 
 
 
