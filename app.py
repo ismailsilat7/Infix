@@ -467,25 +467,33 @@ def delete_account():
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    google_id = db.execute(""" 
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    with_google = False
+    if len(google_id) > 0:
+        with_google = True
     
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("pwd")
-        
-        if not email:
-            flash("Please enter your email!", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
-        
-        if not password:
-            flash("Please enter your password!", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
-        
-        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
-        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
-        
-        if not (user_email == email and check_password_hash(user_hash, password)):
-            flash("Incorrect email or password", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+        if not with_google:
+            email = request.form.get("email")
+            password = request.form.get("pwd")
+            
+            if not email:
+                flash("Please enter your email!", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+            
+            if not password:
+                flash("Please enter your password!", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+            
+            user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+            user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+            
+            if not (user_email == email and check_password_hash(user_hash, password)):
+                flash("Incorrect email or password", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
         
         # Delete user account
         db.execute("DELETE FROM users WHERE id = ?", user_id)
@@ -504,25 +512,33 @@ def reset_progress():
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    google_id = db.execute(""" 
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    with_google = False
+    if len(google_id) > 0:
+        with_google = True
     
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("pwd")
-        
-        if not email:
-            flash("Please enter email!", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
-        
-        if not password:
-            flash("Please enter password", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
-        
-        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
-        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
-        
-        if not (user_email == email and check_password_hash(user_hash, password)):
-            flash("Incorrect email or password", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
+        if not with_google:
+            email = request.form.get("email")
+            password = request.form.get("pwd")
+            
+            if not email:
+                flash("Please enter email!", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
+            
+            if not password:
+                flash("Please enter password", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
+            
+            user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+            user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+            
+            if not (user_email == email and check_password_hash(user_hash, password)):
+                flash("Incorrect email or password", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
         
         user = db.execute("SELECT fullname, username, email, hash FROM users WHERE id = ?", user_id)[0]
         path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)[0]['path_id']
@@ -540,7 +556,7 @@ def reset_progress():
         flash("Your account has been reset", "success")
         return redirect("/dashboard")
     
-    return render_template("reset_confirmation.html", user_name=user_name, action=action, verification_purpose="reset-confirmation")
+    return render_template("reset_confirmation.html", user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
 
 
 
