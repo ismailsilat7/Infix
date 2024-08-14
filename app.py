@@ -396,7 +396,8 @@ def settings():
     if request.method == "POST":
         fullname = request.form.get("fullname")
         username = request.form.get("username")
-        email = request.form.get("email")
+        if not with_google:
+            email = request.form.get("email")
         
         current_user = db.execute("SELECT fullname, username, email FROM users WHERE id = ?", user_id)[0]
         current_fullname = current_user['fullname']
@@ -408,20 +409,35 @@ def settings():
             flash("Fullname must include at least 5 characters", "warning")
         elif not username or len(username) < 3:
             flash("Username must include at least 3 characters", "warning")
-        elif not email or not re.match(email_regex, email):
+        elif not with_google and (not email or not re.match(email_regex, email)):
             flash("Invalid email format", "warning")
         else:
             if (fullname == current_fullname and 
-                username == current_username and 
-                email == current_email):
-                flash("No updated changes made", "info")
+                username == current_username):
+                if with_google:
+                    flash("No changes made", "info")
+                elif email == current_email:
+                    flash("No changes made", "info")
             else:
-                existing_user = db.execute("SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?", username, email, user_id)
+                query = "SELECT * FROM users WHERE username = ? AND id != ?"
+                params = [username, user_id]
+                
+                if not with_google:
+                    query = "SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?"
+                    params = [username, email, user_id]
+                
+                existing_user = db.execute(query, *params)
                 if existing_user:
                     flash("Username and/or Email already exists", "warning")
                 else:
-                    db.execute("UPDATE users SET fullname = ?, username = ?, email = ? WHERE id = ?", fullname, username, email, user_id)
-                    flash("Settings updated successfully", "success")
+                    update_query = "UPDATE users SET fullname = ?, username = ?"
+                    update_params = [fullname, username, user_id]
+                    if not with_google:
+                        update_query += ", email = ?"
+                        update_params.insert(2, email)  # Insert email before user_id
+                    # Finalize the query and update the user information
+                    db.execute(update_query + " WHERE id = ?", *update_params)
+                    flash("Changes made!", "success")
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
