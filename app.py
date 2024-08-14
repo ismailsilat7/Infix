@@ -9,7 +9,6 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 from dotenv import load_dotenv
 import json
-from oauthlib.oauth2 import InsecureTransportError
 # JUST FOR LOCAL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -685,16 +684,6 @@ def select_path_oauth():
 
             return redirect(url_for('dashboard'))
     return render_template('select-path.html')
-
-
-
-
-# error handling
-
-@app.errorhandler(InsecureTransportError)
-def handle_insecure_transport_error(e):
-    # Render a custom error page
-    return render_template('insecure-error.html')
 
 
 
