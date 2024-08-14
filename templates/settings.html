@@ -76,9 +76,15 @@
           {% endif %}
         </div>
         {% include 'flash.html' %}
+        {% if not with_google %}
         <div class="btns-container">
-          <a href="/changepassword">Change Password?</a>
-          <button class="submit" type="submit">Save</button>
+            <a href="/changepassword">Change Password?</a>
+            <button class="submit" type="submit">Save</button>
+        {% else %}
+        <div class="btns-container" style="justify-content: flex-end;">
+            <button class="submit" type="submit" >Save</button>
+        {% endif %}
+          
         </div>
       </form>
         <div class="danger-container">
