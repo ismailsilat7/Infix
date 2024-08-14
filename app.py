@@ -546,7 +546,10 @@ def callback():
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
             google_id, email, fullname, "GOOGLE_OAUTH", username
         )
-    session['google_id'] = google_id
+    rows = db.execute (
+            "SELECT * from users WHERE email = ?", email
+             )
+    session['user_id'] = rows[0]['id']
     return redirect('/dashboard')
 
 
