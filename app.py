@@ -596,17 +596,17 @@ def callback():
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
             google_id, email, fullname, "GOOGLE_OAUTH", username
         )
+        existed = False
     else:
-        rows = db.execute (
-            "SELECT * from users WHERE email = ?", email
-            )
-        session['user_id'] = rows[0]['id']
-        return redirect('/dashboard')
+        existed = True
     rows = db.execute (
             "SELECT * from users WHERE email = ?", email
             )
     session['user_id'] = rows[0]['id']
-    return redirect('/selectpathoauth')
+    if existed:
+        return redirect('/dashboard')
+    else:
+        return redirect('/selectpathoauth')
 
 @app.route("/selectpathoauth", methods=["GET", "POST"])
 @login_required
