@@ -385,7 +385,14 @@ def change_to_path(path_name):
 def settings():
     email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     user_id = session["user_id"]
-    
+    result = db.execute("""
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    if len(result[0]["google_id"]) > 0:
+        with_google = True
+    else:
+        with_google = False
     if request.method == "POST":
         fullname = request.form.get("fullname")
         username = request.form.get("username")
@@ -418,8 +425,7 @@ def settings():
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
-    google_id = db.execute("SELECT google_id FROM users WHERE id = ?", session["user_id"])[0]
-    return render_template("settings.html", user=user, google_id = google_id)
+    return render_template("settings.html", user=user,  with_google = with_google)
 
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
