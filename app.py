@@ -181,7 +181,7 @@ def log_out():
     session.clear()
     return redirect("/")
 
-@app.route("/selectpath", methods = ['POST'])
+@app.route("/selectpath", methods = ['POST', 'GET'])
 def select_path():
     if not session.get('user_id'):
         return render_template('sign-up.html')
