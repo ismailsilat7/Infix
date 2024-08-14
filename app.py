@@ -611,8 +611,8 @@ def select_path_oauth():
 
         if path_id and selected_path:
             user_id = session["user_id"]
-            db.execute("INSERT INTO user_paths (user_id, path_id) VALUES (?, ?, ?)", 
-                       (user_id, path_id))
+            db.execute("INSERT INTO user_paths (user_id, path_id) VALUES (?, ?)", 
+                       user_id, path_id)
 
             return redirect(url_for('dashboard'))
     return render_template('select-path.html')
