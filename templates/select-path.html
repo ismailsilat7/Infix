@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Page not found - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/404.css') }}">
+{% endblock %}
+
+{% block nav %}
+<div id="navbar">
+    <div class="navbar-content">
+      <a href="/" class="logo"><img src="../static/images/black text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
+  </div>
+</div>
+{% endblock %}
+
+{% block notfound %}
+<div class="error-container">
+    <div class="confused-img">
+        <img src="{{ url_for('static', filename='images/confused-student.png') }}" alt="Confused student, unaware of where he should go">
+    </div>
+    <div class="error-code">
+        <p>404 - Page not found</p>
+    </div>
+    <div class="wrong-turn">
+        {% if name %}
+            <p class="dont-worry">Don't worry {{ name }}, even the best students take a wrong turn sometimes</p>
+        {% else %}
+            <p class="dont-worry">Don't worry, even the best students take a wrong turn sometimes</p>
+        {% endif %}
+    </div>
+    <div class="get-back">
+        {% if user_id %}
+            <a href="/dashboard"><button>GET BACK TO DASHBOARD</button></a>
+        {% else %}
+            <a href="/"><button>GET BACK TO HOMEPAGE</button></a>
+        {% endif %}
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/error.js') }}" ></script>
+{% endblock %}
+{% block footer %}
+{% endblock %}

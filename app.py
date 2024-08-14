@@ -185,9 +185,8 @@ def log_out():
 def select_path():
     if not session.get('user_id'):
         return render_template('sign-up.html')
-    if request.method == 'GET':
-        render_template('select-path.html')
-    return redirect('/dashboard')
+    # return redirect('/dashboard')
+    return render_template('select-path.html')
 
 
 @app.route('/dashboard')
