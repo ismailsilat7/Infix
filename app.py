@@ -468,9 +468,19 @@ def page_not_found(e):
     return render_template('404.html', user_id=user_id, name=name), 404
 
 
-@app.route("/studyguides", methods=["GET", "POST"])
-def trial():
-    return render_template('trial.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Configure your app with Google OAuth credentials
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
