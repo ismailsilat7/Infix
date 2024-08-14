@@ -55,7 +55,6 @@
           {% include 'flash.html' %}
         </form>
         <div class="oauth-sign">
-          <!-- <i class="ri-google-fill"></i> -->
           <span class="flat-color-icons--google"></span>
           <button><a href="/auth/google">Sign in with Google</a></button>
         </div>
@@ -99,6 +98,10 @@
       confirmpwdInput.disabled = true
       confirmpwdInput.value = ""
     }
+  })
+  const OAuthContainer = document.querySelector('.oauth-sign')
+  OAuthContainer.addEventListener('click', ()=> {
+    window.location.href = '/auth/google'
   })
 </script>
 {% endblock %}

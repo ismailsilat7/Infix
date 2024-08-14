@@ -110,13 +110,15 @@ input:disabled {
 
 .oauth-sign {
   border: solid 2px black;
-  padding: 5px 0px;
+  padding: 5px 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 1em;
   align-items: center;
   width: 100%;
   margin-top: -5%;
   border-radius: 30px;
+  cursor: pointer;
 }
 .oauth-sign i {
   font-size: 30px;
