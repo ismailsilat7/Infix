@@ -546,6 +546,7 @@ def callback():
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
             google_id, email, fullname, "GOOGLE_OAUTH", username
         )
+    session['google_id'] = google_id
     return redirect('/dashboard')
 
 
