@@ -69,7 +69,11 @@
         </div>
         <div class="input-container">
           <h1>Email</h1>
-          <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
+          {% if with_google %}
+            <p class="fullname">{{ user.email }}</p>
+          {% else %}
+            <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
+          {% endif %}
         </div>
         {% include 'flash.html' %}
         <div class="btns-container">
