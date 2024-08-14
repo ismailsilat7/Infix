@@ -185,9 +185,7 @@ def log_out():
 def select_path():
     if not session.get('user_id'):
         return render_template('sign-up.html')
-    # return redirect('/dashboard')
-    return render_template('select-path.html')
-
+    return redirect('/dashboard')
 
 @app.route('/dashboard')
 @login_required 
@@ -524,19 +522,6 @@ def page_not_found(e):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Configure your app with Google OAuth credentials
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
@@ -615,7 +600,23 @@ def callback():
             "SELECT * from users WHERE email = ?", email
             )
     session['user_id'] = rows[0]['id']
-    return redirect('/dashboard')
+    return redirect('/selectpathoauth')
+
+@app.route("/selectpathoauth", methods=["GET", "POST"])
+@login_required
+def select_path_oauth():
+    if request.method == "POST":
+        path_id = request.form.get('path_id')
+        selected_path = request.form.get('selected_path')
+
+        if path_id and selected_path:
+            user_id = session["user_id"]
+            db.execute("INSERT INTO user_paths (user_id, path_id) VALUES (?, ?, ?)", 
+                       (user_id, path_id))
+
+            return redirect(url_for('dashboard'))
+    return render_template('select-path.html')
+
 
 
 
