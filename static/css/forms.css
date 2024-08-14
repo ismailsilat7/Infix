@@ -108,7 +108,7 @@ input:disabled {
   margin-top: 40px;
 }
 
-.oauth-sign {
+.oauth {
   border: solid 2px black;
   padding: 5px 0;
   display: flex;
@@ -120,15 +120,15 @@ input:disabled {
   border-radius: 30px;
   cursor: pointer;
 }
-.oauth-sign i {
+.oauth i {
   font-size: 30px;
 }
-.oauth-sign button {
+.oauth button {
   outline: none;
   background: none;
   border: none;
 }
-.oauth-sign a {
+.oauth a {
   font-size: 20px;
   font-family: 'Figtree';
 }

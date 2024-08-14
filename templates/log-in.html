@@ -34,7 +34,7 @@
           </div>
           {% include 'flash.html' %}
         </form>
-        <div class="oauth-sign">
+        <div class="oauth log">
           <span class="flat-color-icons--google"></span>
           <button><a href="/auth/google">Log in with Google</a></button>
         </div>
@@ -44,6 +44,11 @@
 
 
 <script>
+  // OAuth
+  const OAuthContainer = document.querySelector('.oauth')
+  OAuthContainer.addEventListener('click', () => {
+    window.location.href = '/auth/google'
+  })
   // eye icon toggle 
   const pwdInput = document.getElementById('pwd')
   const confirmpwdInput = document.getElementById('confirm-pwd')
