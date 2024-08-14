@@ -108,6 +108,29 @@ input:disabled {
   margin-top: 40px;
 }
 
+.oauth-sign {
+  border: solid 2px black;
+  padding: 5px 0px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-top: -5%;
+  border-radius: 30px;
+}
+.oauth-sign i {
+  font-size: 30px;
+}
+.oauth-sign button {
+  outline: none;
+  background: none;
+  border: none;
+}
+.oauth-sign a {
+  font-size: 20px;
+  font-family: 'Figtree';
+}
+
 /* log-in */
 
 .in-form {
