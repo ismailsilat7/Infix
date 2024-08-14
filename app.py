@@ -24,6 +24,21 @@ Session(app)
 # Initialize database connection
 db = SQL("sqlite:///data/infix.db")
 db.execute('PRAGMA foreign_keys = ON')
+from functools import wraps
+def non_google_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id =  session.get("user_id")
+        google_id = db.execute(""" 
+            SELECT google_id FROM users
+            WHERE id = ?
+        """, user_id)
+        if len(google_id) > 0:
+            return redirect("/invalid")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 # Ensures responses aren't cached to keep info for users up to date
 @app.after_request
 def after_request(response):
@@ -129,6 +144,8 @@ def sign_up():
     return render_template("sign-up.html")
 
 @app.route("/changepassword", methods=["GET", "POST"])
+@login_required
+@non_google_required
 def change_password():
     if request.method == 'POST':
         if not request.form.get("email"):
@@ -175,8 +192,8 @@ def change_password():
     
     return render_template("change-password.html")
 
-@login_required
 @app.route("/logout")
+@login_required
 def log_out():
     session.clear()
     return redirect("/")
