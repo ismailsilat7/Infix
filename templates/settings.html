@@ -72,12 +72,10 @@
           <input type="text" class="fullname" name = "email" value = "{{ user.email }}" required>
         </div>
         {% include 'flash.html' %}
-        {% if not google_id %}
         <div class="btns-container">
-            <a href="/changepassword">Change Password?</a>
-            <button class="submit" type="submit">Save</button>
+          <a href="/changepassword">Change Password?</a>
+          <button class="submit" type="submit">Save</button>
         </div>
-        {% endif %}
       </form>
         <div class="danger-container">
           <button class="delete">Delete Account</button>
