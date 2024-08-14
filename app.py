@@ -482,18 +482,18 @@ def delete_account():
             
             if not email:
                 flash("Please enter your email!", "warning")
-                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
             
             if not password:
                 flash("Please enter your password!", "warning")
-                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
             
             user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
             user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
             
             if not (user_email == email and check_password_hash(user_hash, password)):
                 flash("Incorrect email or password", "warning")
-                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
         
         # Delete user account
         db.execute("DELETE FROM users WHERE id = ?", user_id)
@@ -502,7 +502,7 @@ def delete_account():
         flash("Your account has been deleted", "success")
         return redirect("/")
     
-    return render_template("delete_confirmation.html", user_name=user_name, action=action, verification_purpose="delete-confirmation")
+    return render_template("delete_confirmation.html", user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
 
 
 @app.route("/reset-confirmation", methods=["GET", "POST"])
@@ -542,11 +542,19 @@ def reset_progress():
         
         user = db.execute("SELECT fullname, username, email, hash FROM users WHERE id = ?", user_id)[0]
         path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)[0]['path_id']
+        if with_google:
+            google_id = db.execute("SELECT google_id FROM users WHERE id = ?", user_id)[0]['google_id']
         db.execute("DELETE FROM users WHERE id = ?", user_id)
-        db.execute(
-            "INSERT INTO users (id, fullname, username, email, hash) VALUES (?, ?, ?, ?, ?)",
-            user_id , user['fullname'], user['username'], user['email'], user['hash']
-        )
+        if with_google:
+            db.execute(
+                "INSERT INTO users (id, fullname, username, email, hash, google_id) VALUES (?, ?, ?, ?, ?, ?)",
+                user_id , user['fullname'], user['username'], user['email'], user['hash'], google_id
+            )
+        else:
+            db.execute(
+                "INSERT INTO users (id, fullname, username, email, hash) VALUES (?, ?, ?, ?, ?)",
+                user_id , user['fullname'], user['username'], user['email'], user['hash']
+            )
         db.execute("""
             INSERT INTO user_paths (user_id, path_id)
             VALUES
