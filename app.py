@@ -544,7 +544,7 @@ def callback():
     if len(existing_user) == 0:
         db.execute(
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
-            (google_id, email, fullname, "GOOGLE_OAUTH", username)
+            google_id, email, fullname, "GOOGLE_OAUTH", username
         )
     return redirect('/dashboard')
 
