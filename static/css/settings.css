@@ -58,6 +58,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: stretch;
   gap: 2em;
   padding: 1.5em 1.5em;
   padding-bottom: 3em;
@@ -90,7 +91,11 @@ button {
   font-size: 14px;
 }
 .main-container {
-  width: 70vw;
+  
+  background-color: white;
+  border-radius: 10px;
+  padding: 50px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.932);
 }
 form {
   display: flex;
