@@ -205,7 +205,7 @@ def dashboard():
 
     # Get path name based on path_id
     user_path_name = db.execute("SELECT name FROM paths WHERE id = ?", path_id)
-    path_name = user_path_name[0]['name'] if user_path_name else None
+    path_name = user_path_name[0]['name'] if user_path_name else 'A Levels'
 
     # Get the user's enrolled courses
     enrolled_courses = db.execute("""
@@ -420,7 +420,8 @@ def settings():
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
-    return render_template("settings.html", user=user)
+    google_id = db.execute("SELECT google_id FROM users WHERE id = ?", session["user_id"])[0]
+    return render_template("settings.html", user=user, google_id = google_id)
 
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
@@ -558,7 +559,7 @@ def callback():
         )
     rows = db.execute (
             "SELECT * from users WHERE email = ?", email
-             )
+            )
     session['user_id'] = rows[0]['id']
     return redirect('/dashboard')
 
