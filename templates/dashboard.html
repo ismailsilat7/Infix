@@ -44,6 +44,12 @@
         <i class="ri-guide-line"></i>
         <a href="/changepath">Change Path</a>
       </div>
+      {% if no_password %}
+      <div class="menu-item">
+        <i class="ri-key-line"></i>
+        <a href='/setpassword'>Set Password</a>
+      </div>
+      {% endif %}
       <div class="menu-item">
         <i class="ri-settings-5-line"></i>
         <a href="/settings">Settings</a>
