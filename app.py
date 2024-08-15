@@ -27,13 +27,16 @@ from functools import wraps
 def non_google_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        user_id =  session.get("user_id")
+        user_id = session.get("user_id")
         google_id = db.execute(""" 
             SELECT google_id FROM users
             WHERE id = ?
         """, user_id)
-        if len(google_id) > 0:
+        
+        # Ensure google_id is being checked correctly
+        if google_id and google_id[0]["google_id"] is not None:
             return redirect("/invalid")
+        
         return f(*args, **kwargs)
     return decorated_function
 
@@ -144,52 +147,68 @@ def sign_up():
 
 @app.route("/changepassword", methods=["GET", "POST"])
 @login_required
-@non_google_required
 def change_password():
+    user_id = session.get('user_id')
+    
+    result = db.execute("SELECT hash FROM users WHERE id = ?", user_id)
+    
+    # Redirect user to set new password if they have no password set
+    if "GOOGLE_OAUTH" == result[0]['hash']:
+        return redirect('/setnewpassword')
+
     if request.method == 'POST':
+        # Validate form inputs
         if not request.form.get("email"):
-                flash("Must enter email", "warning")
-        elif not request.form.get("username"):
-            flash("Must enter username", "warning")
+            flash("Must enter email", "warning")
+            return render_template("change-password.html")
+        elif not request.form.get("prev-password"):
+            flash("Must enter previous password", "warning")
+            return render_template("change-password.html")
         elif not request.form.get("new-pwd"):
-                flash("Must enter password", "warning")
+            flash("Must enter password", "warning")
+            return render_template("change-password.html")
         elif not request.form.get("confirm-new-pwd"):
             flash("Please confirm password", "warning")
+            return render_template("change-password.html")
         elif len(request.form.get("new-pwd")) < 8:
             flash("Password must include at least 8 characters", "warning")
+            return render_template("change-password.html")
         elif request.form.get("confirm-new-pwd") != request.form.get("new-pwd"):
             flash("Passwords don't match", "warning")
-        else:
-            email = request.form.get("email")
-            username = request.form.get("username")
-            rows = db.execute (
-                "SELECT username from users WHERE email = ?", email
-            )
-            # Ensure email exists and username is correct
-            if len(rows) != 1 or username.lower() != rows[0]["username"].lower():
-                flash("Invalid email and/or username", "warning")
-            else:
-                newpwd = request.form.get("new-pwd")
-                hash = generate_password_hash(newpwd)
-                # check if new password same as old password
-                rows = db.execute(
-                    "SELECT hash FROM users WHERE email = ?", email
-                )
-                if check_password_hash(rows[0]["hash"], newpwd):
-                    flash("New password cannot be same as old password", "warning")
-                else:
-                    # update password
-                    id = db.execute(
-                        "UPDATE users SET hash = ? WHERE email = ?", hash, email
-                    )
-                    if id:
-                        # forget user
-                        session.clear()
-                        flash("Password Updated, Please Login", "success")
-                        return redirect('/login')
-                         
-    
+            return render_template("change-password.html")
+
+        # Check previous password
+        email = request.form.get("email")
+        prev_password = request.form.get("prev-password")
+        rows = db.execute("SELECT hash FROM users WHERE email = ?", email)
+
+        if len(rows) != 1 or not check_password_hash(rows[0]['hash'], prev_password):
+            flash("Invalid email and/or password", "warning")
+            return render_template("change-password.html")
+
+        # Check if the email belongs to the logged-in user
+        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+        if user_email != email:
+            flash("Please enter your own email/username", "warning")
+            return render_template("change-password.html")
+
+        # Check if new password is same as old password
+        newpwd = request.form.get("new-pwd")
+        if check_password_hash(rows[0]["hash"], newpwd):
+            flash("New password cannot be same as old password", "warning")
+            return render_template("change-password.html")
+
+        # Update password
+        hash = generate_password_hash(newpwd)
+        db.execute("UPDATE users SET hash = ? WHERE email = ?", hash, email)
+
+        # Clear session and redirect to login
+        session.clear()
+        flash("Password Updated, Please Login", "success")
+        return redirect('/login')
+
     return render_template("change-password.html")
+
 
 @app.route("/logout")
 @login_required
@@ -207,7 +226,14 @@ def select_path():
 @login_required 
 def dashboard():
     user_id = session['user_id']
-
+    result = db.execute("""
+        SELECT hash FROM users
+        WHERE id = ?
+    """, user_id)
+    if "GOOGLE_OAUTH" == result[0]['hash']:
+        no_password = True
+    else:
+        no_password = False
     # Get user's name
     user_info = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)
     fullname = user_info[0]['fullname'] if user_info else None
@@ -241,7 +267,7 @@ def dashboard():
         WHERE b.user_id = ?
     """, user_id)
 
-    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks)
+    return render_template('dashboard.html', path_name = path_name, enrolled_courses = enrolled_courses, first_name = first_name, bookmarks = bookmarks, no_password = no_password)
 
 
 @app.route('/courses')
@@ -409,7 +435,14 @@ def settings():
         with_google = False
     else:
         with_google = True
-    print(with_google)
+    result = db.execute("""
+        SELECT hash FROM users
+        WHERE id = ?
+    """, user_id)
+    if "GOOGLE_OAUTH" == result[0]['hash']:
+        no_password = True
+    else:
+        no_password = False
     if request.method == "POST":
         fullname = request.form.get("fullname")
         username = request.form.get("username")
@@ -458,7 +491,7 @@ def settings():
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
-    return render_template("settings.html", user=user,  with_google = with_google)
+    return render_template("settings.html", user=user,  with_google = with_google, no_password = no_password)
 
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
