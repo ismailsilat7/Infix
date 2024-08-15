@@ -76,7 +76,7 @@
           {% endif %}
         </div>
         {% include 'flash.html' %}
-        {% if not with_google %}
+        {% if not with_google or not no_password %}
         <div class="btns-container">
             <a href="/changepassword">Change Password?</a>
             <button class="submit" type="submit">Save</button>
