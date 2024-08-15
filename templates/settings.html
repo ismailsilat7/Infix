@@ -45,7 +45,13 @@
         <i class="ri-guide-line"></i>
         <a href="/changepath">Change Path</a>
       </div>
-      <div class="menu-item active">
+      {% if no_password %}
+      <div class="menu-item">
+        <i class="ri-key-line"></i>
+        <a href='/setnewpassword'>Set Password</a>
+      </div>
+      {% endif %}
+      <div class="menu-item">
         <i class="ri-settings-5-line"></i>
         <a href="/settings">Settings</a>
       </div>
@@ -81,8 +87,14 @@
             <a href="/changepassword">Change Password?</a>
             <button class="submit" type="submit">Save</button>
         {% else %}
+          {%if no_password %}
+            <div class="btns-container">
+              <a href="/setnewpassword">Set New Password</a>
+              <button class="submit" type="submit" >Save</button>
+          {% else %}
         <div class="btns-container" style="justify-content: flex-end;">
             <button class="submit" type="submit" >Save</button>
+          {% endif %}
         {% endif %}
           
         </div>
