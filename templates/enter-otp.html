@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Change Password - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+<div id="signup-page">
+</div>
+<div class="change-form">
+  <h2>OTP sent to {{ email }}</h2>
+  <p>Please enter OTP within 20 mins of receiving it. If you don't find it in inbox, please check your spam folder</p>
+  <form action="/OTPverification" method="post">
+    <div class="change-inputs">
+        <input type="hidden" name="email" required value="{{ email }}">
+      <div class="input-container">
+        <i class="ri-shield-line"></i>
+        <input type="text" name="otp" placeholder="OTP - One Time Password" required autofocus>
+      </div>
+      <div class="input-container">
+        <i class="ri-lock-2-line"></i>
+        <input type="password" name="new-pwd" placeholder="New Password" id="pwd" required>
+        <i class="ri-eye-close-line" style="font-size: 26px;cursor: pointer;" id="toggle-new-password"></i>
+      </div>
+      <div class="input-container">
+        <i class="ri-lock-2-fill"></i>
+        <input type="password" name="confirm-new-pwd" placeholder="Confirm New Password" id="confirm-pwd" required disabled>
+        <i class="ri-eye-close-line" style="font-size: 26px; cursor: pointer;" id="toggle-confirm-password"></i>
+      </div>
+    </div>
+    {% include 'flash.html' %}
+    <div class="change-submit">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  // eye icon toggle for new password
+  const pwdInput = document.getElementById('pwd');
+  const toggleNewPassword = document.getElementById('toggle-new-password');
+  toggleNewPassword.addEventListener('click', () => {
+    if (pwdInput.type === 'password') {
+      pwdInput.type = 'text';
+      toggleNewPassword.className = 'ri-eye-line';
+    } else {
+      pwdInput.type = 'password';
+      toggleNewPassword.className = 'ri-eye-close-line';
+    }
+  });
+
+  // eye icon toggle for confirm password
+  const confirmpwdInput = document.getElementById('confirm-pwd');
+  const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+  toggleConfirmPassword.addEventListener('click', () => {
+    if (confirmpwdInput.type === 'password') {
+      confirmpwdInput.type = 'text';
+      toggleConfirmPassword.className = 'ri-eye-line';
+    } else {
+      confirmpwdInput.type = 'password';
+      toggleConfirmPassword.className = 'ri-eye-close-line';
+    }
+  });
+
+  // handle enabling/disabling confirm password field
+  pwdInput.addEventListener('input', () => {
+    if (pwdInput.value.length > 0) {
+      confirmpwdInput.disabled = false;
+    } else {
+      confirmpwdInput.disabled = true;
+      confirmpwdInput.value = "";
+    }
+  });
+</script>
+{% endblock %}
