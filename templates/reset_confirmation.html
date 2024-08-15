@@ -29,15 +29,22 @@
             <p>You will lose all your saved progress. This action is non-revocable.</p>
             <div class="drop-btn-container">
                 <a href="/dashboard"><div class="whitebgBtn">Cancel</div></a>
+                {% if with_google %}
+                <a href="#" onclick="sendPostRequest()"><div class="whitebgBtn-contrast" style="color: #ffffff !important;">Confirm</div></a>
+                {% else %}
                 <a href="#verify"><div class="whitebgBtn-contrast" style="color: #ffffff !important;">Confirm</div></a>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-
-{% include 'verify.html' %}
-
+{% if with_google %}
+  <p style="display: none;" class="action">{{action}}</p>
+  <script src="{{ url_for('static', filename='js/confirmation.js') }}" ></script>
+{% else %}
+  {% include 'verify.html' %}
+{% endif %}
 
 {% endblock %}
 

@@ -23,6 +23,21 @@ Session(app)
 # Initialize database connection
 db = SQL("sqlite:///data/infix.db")
 db.execute('PRAGMA foreign_keys = ON')
+from functools import wraps
+def non_google_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id =  session.get("user_id")
+        google_id = db.execute(""" 
+            SELECT google_id FROM users
+            WHERE id = ?
+        """, user_id)
+        if len(google_id) > 0:
+            return redirect("/invalid")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 # Ensures responses aren't cached to keep info for users up to date
 @app.after_request
 def after_request(response):
@@ -128,6 +143,8 @@ def sign_up():
     return render_template("sign-up.html")
 
 @app.route("/changepassword", methods=["GET", "POST"])
+@login_required
+@non_google_required
 def change_password():
     if request.method == 'POST':
         if not request.form.get("email"):
@@ -174,8 +191,8 @@ def change_password():
     
     return render_template("change-password.html")
 
-@login_required
 @app.route("/logout")
+@login_required
 def log_out():
     session.clear()
     return redirect("/")
@@ -384,11 +401,19 @@ def change_to_path(path_name):
 def settings():
     email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     user_id = session["user_id"]
-    
+    result = db.execute("""
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    if len(result[0]["google_id"]) > 0:
+        with_google = True
+    else:
+        with_google = False
     if request.method == "POST":
         fullname = request.form.get("fullname")
         username = request.form.get("username")
-        email = request.form.get("email")
+        if not with_google:
+            email = request.form.get("email")
         
         current_user = db.execute("SELECT fullname, username, email FROM users WHERE id = ?", user_id)[0]
         current_fullname = current_user['fullname']
@@ -400,25 +425,39 @@ def settings():
             flash("Fullname must include at least 5 characters", "warning")
         elif not username or len(username) < 3:
             flash("Username must include at least 3 characters", "warning")
-        elif not email or not re.match(email_regex, email):
+        elif not with_google and (not email or not re.match(email_regex, email)):
             flash("Invalid email format", "warning")
         else:
             if (fullname == current_fullname and 
-                username == current_username and 
-                email == current_email):
-                flash("No updated changes made", "info")
+                username == current_username):
+                if with_google:
+                    flash("No changes made", "info")
+                elif email == current_email:
+                    flash("No changes made", "info")
             else:
-                existing_user = db.execute("SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?", username, email, user_id)
+                query = "SELECT * FROM users WHERE username = ? AND id != ?"
+                params = [username, user_id]
+                
+                if not with_google:
+                    query = "SELECT * FROM users WHERE (username = ? OR email = ?) AND id != ?"
+                    params = [username, email, user_id]
+                
+                existing_user = db.execute(query, *params)
                 if existing_user:
                     flash("Username and/or Email already exists", "warning")
                 else:
-                    db.execute("UPDATE users SET fullname = ?, username = ?, email = ? WHERE id = ?", fullname, username, email, user_id)
-                    flash("Settings updated successfully", "success")
+                    update_query = "UPDATE users SET fullname = ?, username = ?"
+                    update_params = [fullname, username, user_id]
+                    if not with_google:
+                        update_query += ", email = ?"
+                        update_params.insert(2, email)  # Insert email before user_id
+                    # Finalize the query and update the user information
+                    db.execute(update_query + " WHERE id = ?", *update_params)
+                    flash("Changes made!", "success")
     
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]
-    google_id = db.execute("SELECT google_id FROM users WHERE id = ?", session["user_id"])[0]
-    return render_template("settings.html", user=user, google_id = google_id)
+    return render_template("settings.html", user=user,  with_google = with_google)
 
 @app.route("/delete-confirmation", methods=["GET", "POST"])
 @login_required
@@ -427,25 +466,33 @@ def delete_account():
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    google_id = db.execute(""" 
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    with_google = False
+    if len(google_id) > 0:
+        with_google = True
     
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("pwd")
-        
-        if not email:
-            flash("Please enter your email!", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
-        
-        if not password:
-            flash("Please enter your password!", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
-        
-        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
-        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
-        
-        if not (user_email == email and check_password_hash(user_hash, password)):
-            flash("Incorrect email or password", "warning")
-            return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation")
+        if not with_google:
+            email = request.form.get("email")
+            password = request.form.get("pwd")
+            
+            if not email:
+                flash("Please enter your email!", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
+            
+            if not password:
+                flash("Please enter your password!", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
+            
+            user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+            user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+            
+            if not (user_email == email and check_password_hash(user_hash, password)):
+                flash("Incorrect email or password", "warning")
+                return render_template('delete_confirmation.html', user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
         
         # Delete user account
         db.execute("DELETE FROM users WHERE id = ?", user_id)
@@ -454,7 +501,7 @@ def delete_account():
         flash("Your account has been deleted", "success")
         return redirect("/")
     
-    return render_template("delete_confirmation.html", user_name=user_name, action=action, verification_purpose="delete-confirmation")
+    return render_template("delete_confirmation.html", user_name=user_name, action=action, verification_purpose="delete-confirmation", with_google = with_google)
 
 
 @app.route("/reset-confirmation", methods=["GET", "POST"])
@@ -464,33 +511,49 @@ def reset_progress():
     user_id = session["user_id"]
     user = db.execute("SELECT username FROM users WHERE id = ?", user_id)[0]
     user_name = user['username']
+    google_id = db.execute(""" 
+        SELECT google_id FROM users
+        WHERE id = ?
+    """, user_id)
+    with_google = False
+    if len(google_id) > 0:
+        with_google = True
     
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("pwd")
-        
-        if not email:
-            flash("Please enter email!", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
-        
-        if not password:
-            flash("Please enter password", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
-        
-        user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
-        user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
-        
-        if not (user_email == email and check_password_hash(user_hash, password)):
-            flash("Incorrect email or password", "warning")
-            return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation")
+        if not with_google:
+            email = request.form.get("email")
+            password = request.form.get("pwd")
+            
+            if not email:
+                flash("Please enter email!", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
+            
+            if not password:
+                flash("Please enter password", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
+            
+            user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
+            user_hash = db.execute("SELECT hash FROM users WHERE id = ?", user_id)[0]['hash']
+            
+            if not (user_email == email and check_password_hash(user_hash, password)):
+                flash("Incorrect email or password", "warning")
+                return render_template('reset_confirmation.html', user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
         
         user = db.execute("SELECT fullname, username, email, hash FROM users WHERE id = ?", user_id)[0]
         path_id = db.execute("SELECT path_id FROM user_paths WHERE user_id = ?", user_id)[0]['path_id']
+        if with_google:
+            google_id = db.execute("SELECT google_id FROM users WHERE id = ?", user_id)[0]['google_id']
         db.execute("DELETE FROM users WHERE id = ?", user_id)
-        db.execute(
-            "INSERT INTO users (id, fullname, username, email, hash) VALUES (?, ?, ?, ?, ?)",
-            user_id , user['fullname'], user['username'], user['email'], user['hash']
-        )
+        if with_google:
+            db.execute(
+                "INSERT INTO users (id, fullname, username, email, hash, google_id) VALUES (?, ?, ?, ?, ?, ?)",
+                user_id , user['fullname'], user['username'], user['email'], user['hash'], google_id
+            )
+        else:
+            db.execute(
+                "INSERT INTO users (id, fullname, username, email, hash) VALUES (?, ?, ?, ?, ?)",
+                user_id , user['fullname'], user['username'], user['email'], user['hash']
+            )
         db.execute("""
             INSERT INTO user_paths (user_id, path_id)
             VALUES
@@ -500,7 +563,7 @@ def reset_progress():
         flash("Your account has been reset", "success")
         return redirect("/dashboard")
     
-    return render_template("reset_confirmation.html", user_name=user_name, action=action, verification_purpose="reset-confirmation")
+    return render_template("reset_confirmation.html", user_name=user_name, action=action, verification_purpose="reset-confirmation", with_google = with_google)
 
 
 
@@ -595,11 +658,17 @@ def callback():
             "INSERT INTO users (google_id, email, fullname, hash, username) VALUES (?, ?, ?, ?, ?)",
             google_id, email, fullname, "GOOGLE_OAUTH", username
         )
+        existed = False
+    else:
+        existed = True
     rows = db.execute (
             "SELECT * from users WHERE email = ?", email
             )
     session['user_id'] = rows[0]['id']
-    return redirect('/selectpathoauth')
+    if existed:
+        return redirect('/dashboard')
+    else:
+        return redirect('/selectpathoauth')
 
 @app.route("/selectpathoauth", methods=["GET", "POST"])
 @login_required
