@@ -9,6 +9,12 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 from dotenv import load_dotenv
 import json
+from flask import Flask
+from flask_mail import Mail, Message
+import random
+import string
+from datetime import datetime, timedelta, timezone
+
 # JUST FOR LOCAL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -725,8 +731,184 @@ def select_path_oauth():
 
 
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
 
 
+mail = Mail(app)
+
+def generate_random_code():
+    letters_and_digits = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters_and_digits) for i in range(6))  # Generate a 6-character code
+
+@app.route('/setnewpassword', methods = ["GET", "POST"])
+def send_email():
+    if session.get('user_id'):
+        hash = db.execute("""
+            SELECT hash FROM users
+            WHERE id = ?
+        """, session.get('user_id'))[0]['hash']
+        if hash != "GOOGLE_OAUTH":
+            return redirect("/changepassword")
+    if request.method == "POST":
+        email = request.form.get('email')
+        if not email:
+            flash("Please enter email", "warning")
+            return render_template("set-new-password.html")
+        id = db.execute("""
+            SELECT id FROM users
+            WHERE email = ?
+        """, email)
+        if not id:
+            flash("Email not found", "warning")
+            return render_template("set-new-password.html")
+        otp = generate_random_code()
+        db.execute("""
+            INSERT INTO otps (user_id, otp_hash)
+            VALUES (?,?)
+        """, id[0]['id'], generate_password_hash(otp))
+        if session.get("user_id"):
+            google_id = db.execute("""
+                SELECT google_id FROM users
+                WHERE id = ?
+            """, session.get("user_id"))[0]['google_id']
+            if google_id != None:
+                msg = Message("Password Setup Code - Infix", recipients=[email])
+                msg.body = f"""
+                Dear User,
+
+                We have received a request to set up a new password for your Infix account. Please use the following one-time code to complete the setup process:
+
+                Code: {otp}
+
+                This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
+
+                Thank you for using Infix.
+
+                Best regards,
+                The Infix Team
+                """
+            else:
+                return redirect('/changepassword')
+        else:
+            msg = Message("Password Reset Code - Infix", recipients=[email])
+            msg.body = f"""
+            Dear User,
+
+            We have received a request to reset the password for your Infix account. Please use the following one-time code to complete the reset process:
+
+            Code: {otp}
+
+            This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
+
+            Thank you for using Infix.
+
+            Best regards,
+            The Infix Team
+            """
+        msg.body += f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
+        mail.send(msg)
+
+        flash("OTP sent to your email", "info")
+        session['email'] = email
+        return redirect('/OTPverification')
+    return render_template("set-new-password.html")
+
+@app.route('/OTPverification', methods=['POST', 'GET'])
+def verify_otp():
+    email = session.get('email')
+    if not email:
+        flash("Error occurred with email verification, please try again", "warning")
+        return redirect('/setnewpassword')
+
+    user_id = session.get('user_id')
+    if user_id:
+        hash_record = db.execute("""
+            SELECT hash FROM users
+            WHERE id = ?
+        """, user_id)
+        if not hash_record or hash_record[0]['hash'] != "GOOGLE_OAUTH":
+            return redirect("/changepassword")
+
+    if request.method == "POST":
+        otp = request.form.get('otp')
+        password = request.form.get('new-pwd')
+        confirm_password = request.form.get('confirm-new-pwd')
+
+        if not otp:
+            flash("Please enter OTP", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        if len(otp) != 6:
+            flash("OTP only has 6 characters", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        if not password or not confirm_password:
+            flash("Please enter the password in both fields", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        if len(password) < 8:
+            flash("Password must contain at least 8 characters", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        if password != confirm_password:
+            flash("Both password fields must be the same", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        if not user_id:
+            result = db.execute("""
+                SELECT id FROM users
+                WHERE email = ?
+            """, email)
+            if len(result) == 0:
+                flash("Error occurred with email verification, please try again", "warning")
+                session.clear()
+                return redirect("/setnewpassword")
+            else:
+                user_id = result[0]["id"]
+
+        # Retrieve the OTP record
+        otp_record = db.execute("""
+            SELECT otp_hash, generated_at FROM otps
+            WHERE user_id = ?
+            ORDER BY generated_at DESC
+            LIMIT 1
+        """, user_id)
+
+        if len(otp_record) == 0:
+            flash("Error occurred during the verification process. Please try again.", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        # Convert the `generated_at` to a datetime object (assuming stored in UTC)
+        generated_at = datetime.strptime(otp_record[0]["generated_at"], '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
+
+        # Calculate the expiry time
+        time_limit = generated_at + timedelta(minutes=20)
+
+        # Check if the OTP has expired
+        if time_limit < datetime.now(timezone.utc):
+            flash("OTP expired, please try again", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        # Verify the OTP hash
+        if not check_password_hash(otp_record[0]["otp_hash"], otp):
+            flash("Incorrect OTP, make sure you are using the most recent one", "warning")
+            return render_template('enter-otp.html', email=email)
+
+        # Update password
+        hash = generate_password_hash(password)
+        db.execute("UPDATE users SET hash = ? WHERE id = ?", hash, user_id)
+
+        # Clear session and redirect to login
+        session.clear()
+        flash("Password updated. Please log in.", "success")
+        return redirect('/login')
+
+    return render_template('enter-otp.html', email=email)
 
 
 
