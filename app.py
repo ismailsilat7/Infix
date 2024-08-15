@@ -405,10 +405,11 @@ def settings():
         SELECT google_id FROM users
         WHERE id = ?
     """, user_id)
-    if len(result[0]["google_id"]) > 0:
-        with_google = True
-    else:
+    if None == result[0]['google_id']:
         with_google = False
+    else:
+        with_google = True
+    print(with_google)
     if request.method == "POST":
         fullname = request.form.get("fullname")
         username = request.form.get("username")
@@ -469,9 +470,11 @@ def delete_account():
     google_id = db.execute(""" 
         SELECT google_id FROM users
         WHERE id = ?
-    """, user_id)
+    """, user_id)[0]['google_id']
     with_google = False
-    if len(google_id) > 0:
+    if google_id == None:
+        with_google = False
+    elif len(google_id) > 0:
         with_google = True
     
     if request.method == "POST":
@@ -514,9 +517,11 @@ def reset_progress():
     google_id = db.execute(""" 
         SELECT google_id FROM users
         WHERE id = ?
-    """, user_id)
+    """, user_id)[0]["google_id"]
     with_google = False
-    if len(google_id) > 0:
+    if google_id == None:
+        with_google = False
+    elif len(google_id) > 0:
         with_google = True
     
     if request.method == "POST":
