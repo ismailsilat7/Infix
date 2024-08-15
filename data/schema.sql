@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 );
 
 -- progress table
-CREATE TABLE IF NOT EXISTS progress (
+CREATE TABLE IF NOT EXISTS user_topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
