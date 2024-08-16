@@ -881,7 +881,7 @@ def verify_otp():
 
         if len(otp_record) == 0:
             flash("Error occurred during the verification process. Please try again.", "warning")
-            return render_template('enter-otp.html', email=email)
+            return redirect('/setnewpassword')
 
         # Convert the `generated_at` to a datetime object (assuming stored in UTC)
         generated_at = datetime.strptime(otp_record[0]["generated_at"], '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
