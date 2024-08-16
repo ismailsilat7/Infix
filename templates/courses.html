@@ -82,9 +82,15 @@
         </div>
         {% endif %}
     </div>
-</div>
-<div class="course-input">
-    
+    <div class="course-input">
+        <form>
+            <h1>Suggest a Course: </h1>
+            <input type="text" id="name-input" value="{{user_name}}" disabled>
+            <input type="text" id="path-input" value="{{path}}" disabled>
+            <input type="text" id="message" required rows = 2 placeholder="Please enter a course name and course code">
+
+        </form>
+    </div>
 </div>
 
 {% endblock %}

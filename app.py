@@ -318,7 +318,9 @@ def courses():
     # boolean to check if there are any courses to add
     to_add = len(other_courses) > 0
 
-    return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add)
+    user_name = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)[0]
+
+    return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add, user_name=user_name)
 
 
 
