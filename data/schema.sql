@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     fullname TEXT NOT NULL,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    hash TEXT NOT NULL
+    hash TEXT NOT NULL,
     google_id TEXT
 );
 
@@ -72,4 +72,12 @@ CREATE TABLE IF NOT EXISTS user_topics (
     completed_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
+);
+-- otps table
+CREATE TABLE otps (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    otp_hash TEXT NOT NULL,
+    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
