@@ -11,11 +11,57 @@
 {% block HomeActive %}inactive{% endblock %}
 
 {% block content %}
+
+<style>
+  #otp-email {
+    font-size: 50px;
+    text-align: center;
+  }
+  #sent-para {
+    font-size: 20px;
+    text-align: center;
+  }
+  #otp-email > br {
+    display: none;
+  }
+  @media (max-width : 768px) {
+    #otp-email {
+      font-size: 30px;
+    }
+    #sent-para {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
+  @media (max-width : 600px) {
+    #otp-email {
+      font-size: 30px;
+    }
+    #sent-para > br {
+      display: none;
+    }
+    #otp-email > br {
+      display: block;
+    }
+    #email-head {
+      margin-top: 10px !important;
+    }
+  }
+  .change-submit a {
+    text-align: center;
+  }
+  .change-submit button, .change-submit a {
+    padding: 20px 0 !important;
+    width: 200px !important;
+  }
+  
+</style>
+
 <div id="signup-page">
 </div>
 <div class="change-form">
-  <h2>OTP sent to {{ email }}</h2>
-  <p>Please enter OTP within 20 mins of receiving it. If you don't find it in inbox, please check your spam folder</p>
+  <h2 id="otp-email">OTP sent to <br> <span id="email-head">{{ email }}</span></h2>
+  <p id="sent-para" style="text-align: center;" >Please enter OTP within 20 mins of receiving it. <br> If you don't find it in inbox, please check your spam folder</p>
   <form action="/OTPverification" method="post">
     <div class="change-inputs">
         <input type="hidden" name="email" required value="{{ email }}">
@@ -35,13 +81,22 @@
       </div>
     </div>
     {% include 'flash.html' %}
-    <div class="change-submit">
+    <div class="change-submit" style="justify-content: space-around;" >
+      <a id="resend-otp" onclick="submitForm()" >Resend</a>
       <button type="submit">Submit</button>
     </div>
   </form>
 </div>
 
+<form action="/setnewpassword" id="resendForm" method="POST">
+  <input type="hidden" name="email" value="{{email}}">
+</form>
+
 <script>
+  function submitForm() {
+    document.getElementById('resendForm').submit();
+  }
+
   // eye icon toggle for new password
   const pwdInput = document.getElementById('pwd');
   const toggleNewPassword = document.getElementById('toggle-new-password');
