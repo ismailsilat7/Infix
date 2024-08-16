@@ -238,7 +238,7 @@ button:hover {
   gap: 20px;
 }
 
-.change-submit button {
+.change-submit button, .change-submit #resend-otp {
   border: none;
   background-color: black;
   color: white;
@@ -250,7 +250,7 @@ button:hover {
   box-shadow: 0 0 8px black;
 }
 
-.change-submit button:hover {
+.change-submit button:hover, .change-submit #resend-otp:hover {
   color: black;
   background-color: white;
 }
@@ -324,7 +324,7 @@ button:hover {
   .change-inputs {
     width: 450px;
   }
-  .change-submit button {
+  .change-submit button, .change-submit #resend-otp {
     font-size: 18px;
     padding: 10px 30px;
   }
@@ -358,7 +358,7 @@ button:hover {
   .change-inputs {
     width: 350px;
   }
-  .change-submit button {
+  .change-submit button, .change-submit #resend-otp {
     font-size: 16px;
     padding: 10px 25px;
   }
@@ -395,7 +395,7 @@ button:hover {
   .change-inputs {
     width: 250px;
   }
-  .change-submit button {
+  .change-submit button, .change-submit #resend-otp {
     padding: 10px 25px;
   }
 }
