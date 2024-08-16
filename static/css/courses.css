@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5em;
+    gap: 1em;
 }
 
 .header h1 {
@@ -154,6 +154,7 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 3em;
 }
 
 .course-input form {
@@ -184,4 +185,22 @@ button {
     background: none;
     outline: none;
     color: black;
+}
+.course-input button {
+    align-self: flex-end;
+    padding: 10px 30px;
+    font-size: 20px;
+    border-radius: 25px;
+}
+
+.course-input button:hover {
+    background-color: white;
+    color: black;
+}
+#message {
+    border-bottom: 2px rgba(0, 0, 0, 0.445) solid;
+    padding: 1px 0px;
+}
+#message:focus {
+    border-bottom: 2px black solid;
 }
