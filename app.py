@@ -319,8 +319,9 @@ def courses():
     to_add = len(other_courses) > 0
 
     user_name = db.execute("SELECT fullname FROM users WHERE id = ?", user_id)[0]['fullname']
+    user_email = db.execute("SELECT email FROM users WHERE id = ?", user_id)[0]['email']
 
-    return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add, user_name=user_name)
+    return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add, user_name=user_name, user_email=user_email)
 
 
 
