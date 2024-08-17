@@ -154,7 +154,7 @@
 .step img {
     width: 150px;
     height: auto;
-    filter: drop-shadow(0 0 5px white);
+    filter: drop-shadow(0 0 3px white);
 }
 .step .head {
     font-size: 30px;
