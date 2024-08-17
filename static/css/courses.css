@@ -185,6 +185,7 @@ button {
     background: none;
     outline: none;
     color: black;
+    letter-spacing: 1px;
 }
 .course-input button {
     align-self: flex-end;
