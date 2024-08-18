@@ -332,7 +332,7 @@ def course_detail(course_code):
     # Get the course details using the course name
     course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
     if not course:
-        return "Course not found", 404
+        flash('Course not found.', 'warning')
 
     course_id = course[0]['id']
     topics = db.execute("SELECT * FROM topics WHERE course_id = ?", course_id)
