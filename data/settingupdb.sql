@@ -34,36 +34,39 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- INSERTING TOPICS IN TABLE topics IN OFFICIAL SYLLABUS ORDER
--- Pure Mathematics 3
-INSERT INTO topics (course_id, title, category)
-VALUES 
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Algebra', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Logarithmic and Exponential Functions', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Trigonometry', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Differentiation', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Integration', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Numerical Solution of Equations', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Vectors', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Differential Equations', 'Pure Mathematics 3'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Complex Numbers', 'Pure Mathematics 3')
-ON CONFLICT DO NOTHING;
+-- Insert categories
+INSERT INTO categories (name) VALUES 
+('Pure Mathematics 3'), 
+('Probability and Statistics 2'), 
+('Mechanics');
 
--- Mechanics
-INSERT INTO topics (course_id, title, category)
+-- Insert topics for Pure Mathematics 3
+INSERT INTO topics (course_id, title, category_id)
 VALUES 
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Forces and Equilibrium', 'Mechanics'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Kinematics of Motion in a Straight Line', 'Mechanics'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Momentum', 'Mechanics'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Newton’s Laws of Motion', 'Mechanics'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Energy, Work and Power', 'Mechanics')
-ON CONFLICT DO NOTHING;
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Algebra', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Logarithmic and Exponential Functions', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Trigonometry', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Differentiation', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Integration', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Numerical Solution of Equations', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Vectors', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Differential Equations', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Complex Numbers', (SELECT id FROM categories WHERE name = 'Pure Mathematics 3'));
 
--- Probability & Statistics 2
-INSERT INTO topics (course_id, title, category)
+-- Insert topics for Mechanics
+INSERT INTO topics (course_id, title, category_id)
 VALUES 
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'The Poisson Distribution', 'Probability & Statistics 2'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Linear Combinations of Random Variables', 'Probability & Statistics 2'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Continuous Random Variables', 'Probability & Statistics 2'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Sampling and Estimation', 'Probability & Statistics 2'),
-((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Hypothesis Tests', 'Probability & Statistics 2')
-ON CONFLICT DO NOTHING;
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Forces and Equilibrium', (SELECT id FROM categories WHERE name = 'Mechanics')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Kinematics of Motion in a Straight Line', (SELECT id FROM categories WHERE name = 'Mechanics')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Momentum', (SELECT id FROM categories WHERE name = 'Mechanics')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Newton’s Laws of Motion', (SELECT id FROM categories WHERE name = 'Mechanics')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Energy, Work and Power', (SELECT id FROM categories WHERE name = 'Mechanics'));
+
+-- Insert topics for Probability & Statistics 2
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'The Poisson Distribution', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Linear Combinations of Random Variables', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Continuous Random Variables', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Sampling and Estimation', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
+((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Hypothesis Tests', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2'));

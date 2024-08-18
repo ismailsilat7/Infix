@@ -333,6 +333,7 @@ def course_detail(course_code):
     course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
     if not course:
         flash('Course not found.', 'warning')
+        return redirect('/dashboard')
 
     course_id = course[0]['id']
     topics = db.execute("SELECT * FROM topics WHERE course_id = ?", course_id)
