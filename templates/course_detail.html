@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{course.name}} - Infix{% endblock %}
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/courses.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/course_detail.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -9,8 +9,13 @@
 
 {% block content %}
 <div id="course-section">
-
-
+  <h1>{{course.name}}</h1>
+  <h3>{{course.course_code}}</h3>
+  <div class="topics-container">
+    <div>
+      
+    </div>
+  </div>
 </div>
 
 {% endblock %}
