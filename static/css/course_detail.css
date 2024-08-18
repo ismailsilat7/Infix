@@ -1,4 +1,8 @@
+#navbar {
+  margin-bottom: 210px;
+}
 #course-section {
+  padding: calc(80px + 1rem) 0px;
   width: 100%;
   min-height: 100%;
   background-color: #111111;
@@ -7,11 +11,57 @@
   justify-content: center;
   align-items: center;
   color: white;
+  text-align: center;
+  gap: 2em;
 }
-
-.topics-container {
-  background-color: darkred;
+.course-name {
+  font-family: 'Platform-Regular';
+  font-size: 80px;
+}
+.course-code {
+  font-size: 40px;
+}
+.topics-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 1em 0;
+
+}
+.topic-container {
+  background-color:white;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60vw;
+  padding: 0.5em 2em;
+  border-radius: 15px;
+  box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.493);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 85%;
+}
+.topic-container i {
+  font-size: 40px;
+}
+.text p{
+  font-size: 30px;
+}
+.text .category {
+  font-size: 20px;
+  background-color: lightblue;
+  padding: 5px 10px;
+  border-radius: 15px;
+  margin-bottom: 8px;
 }

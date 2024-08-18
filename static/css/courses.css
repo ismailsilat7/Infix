@@ -1,5 +1,5 @@
 #courses-container {
-    padding: 130px 100px;
+    padding: calc(80px + 1rem) 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -175,7 +175,6 @@ button {
     text-align: left;
     padding: 10px;
     font-family: 'Platform-Light';
-    
 }
 
 .course-input input {

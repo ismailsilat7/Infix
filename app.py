@@ -338,7 +338,15 @@ def course_detail(course_code):
     course_id = course[0]['id']
     topics = db.execute("SELECT * FROM topics WHERE course_id = ?", course_id)
 
-    return render_template('course_detail.html', course=course[0], topics=topics)
+    # Fetch topics and their category names using a JOIN
+    topics_with_categories = db.execute("""
+        SELECT topics.id, topics.title, categories.name AS category
+        FROM topics
+        JOIN categories ON topics.category_id = categories.id
+        WHERE topics.course_id = ?
+    """, course_id)
+
+    return render_template('course_detail.html', course=course[0], topics=topics_with_categories)
 
 @app.route('/enrollcourse/<course_code>')
 @login_required

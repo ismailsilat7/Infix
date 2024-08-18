@@ -9,12 +9,22 @@
 
 {% block content %}
 <div id="course-section">
-  <h1>{{course.name}}</h1>
-  <h3>{{course.course_code}}</h3>
-  <div class="topics-container">
-    <div>
-      
+  <div class="head">
+    <p class="course-name">{{course.name}}</p>
+    <p class="course-code">{{course.course_code}}</p>
+  </div>
+  <div class="topics-list">
+    {% for topic in topics %}
+    <div class="topic-container">
+      <div class="text">
+        <p>{{ topic.title }}</p>
+        <p class="category">{{ topic.category }}</p>
+      </div>
+      <div class="icon">
+        <i class="ri-checkbox-blank-circle-fill"></i>
+      </div>
     </div>
+    {% endfor %}
   </div>
 </div>
 
