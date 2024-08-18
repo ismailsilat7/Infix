@@ -52,6 +52,8 @@ CREATE TABLE IF NOT EXISTS topics (
     title TEXT NOT NULL,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
+-- Add a category column to the topics table
+ALTER TABLE topics ADD COLUMN category TEXT;
 
 -- bookmarks table
 CREATE TABLE IF NOT EXISTS bookmarks (

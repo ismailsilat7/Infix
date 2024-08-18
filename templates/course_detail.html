@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Courses - Infix{% endblock %}
+{% block title %}{{course.name}} - Infix{% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/courses.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
@@ -9,7 +9,8 @@
 
 {% block content %}
 <div id="course-section">
-  
+
+
 </div>
 
 {% endblock %}
