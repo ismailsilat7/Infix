@@ -108,7 +108,7 @@ VALUES
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Energy, Work and Power', 'Mechanics');
 
 -- Probability & Statistics 2
-INSERT INTO topics (course_id, title)
+INSERT INTO topics (course_id, title, category)
 VALUES 
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'The Poisson Distribution', 'Probability & Statistics 2'),
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Linear Combinations of Random Variables', 'Probability & Statistics 2'),
