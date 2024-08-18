@@ -42,7 +42,6 @@
   box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.493);
 }
 .topic-container:hover {
-  cursor: pointer;
   transform: scale(1.02);
 }
 .text {
@@ -56,8 +55,13 @@
   overflow: hidden;
   width: 85%;
 }
-.topic-container i {
-  font-size: 40px;
+.topic-container a {
+  font-size: 20px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+
 }
 .text p{
   font-size: 30px;
