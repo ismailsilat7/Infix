@@ -50,18 +50,23 @@
   justify-content: center;
   align-items: flex-start;
   gap: 10px;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
   white-space: nowrap;
   overflow: hidden;
   width: 85%;
 }
 .topic-container a {
   font-size: 20px;
-  background-color: black;
-  color: white;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
   padding: 10px 20px;
   border-radius: 30px;
-
+}
+.topic-container a:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid transparent;
 }
 .text p{
   font-size: 30px;
