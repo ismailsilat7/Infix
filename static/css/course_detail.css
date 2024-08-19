@@ -1,6 +1,3 @@
-#navbar {
-  margin-bottom: 210px;
-}
 #course-section {
   padding: calc(80px + 1rem) 0px;
   width: 100%;
@@ -49,11 +46,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  text-align: left;
   gap: 10px;
-  /* letter-spacing: 2px; */
-  white-space: nowrap;
-  overflow: hidden;
-  width: 85%;
+  /* white-space: nowrap;
+  overflow: hidden; */
+  width: 80%;
 }
 .topic-container a {
   font-size: 20px;
