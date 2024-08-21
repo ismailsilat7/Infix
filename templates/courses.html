@@ -44,9 +44,7 @@
             </div>
         </div>
         {% endif %}
-        <div class="flash">
-            {% include 'flash.html' %}
-        </div>
+        
         {% if to_add %}
         <div class="add-courses">
             <div class="add-change">
@@ -81,14 +79,17 @@
             </div>
         </div>
         {% endif %}
+        <div class="flash">
+            {% include 'flash.html' %}
+        </div>
     </div>
     <div class="course-input">
         <h1>Suggest a Course: </h1>
-        <form>
-            <input type="text" id="name-input" value="{{user_name}}" disabled>
-            <input type="text" id="path-input" value="{{path}}" disabled>
-            <input type="hidden" id="email-input" value="{{user_email}}" disabled>
-            <input type="text" id="message" rows = '2' placeholder="Enter a course name and/or course code" required>
+        <form method="post" action="/course-recommendation">  
+            <input type="text" id="name-input" value="{{user_name}}" name="name" readonly>
+            <input type="text" id="path-input" value="{{path}}" name="path" readonly>
+            <input type="hidden" id="email-input" value="{{user_email}}" name="email" readonly>
+            <input type="text" id="message" rows = '2' placeholder="Enter a course name and/or course code" required name="course_name" >
             <button type="submit">Send</button>
         </form>
     </div>
