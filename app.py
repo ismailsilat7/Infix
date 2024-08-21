@@ -342,7 +342,7 @@ def courses():
 
     return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add, user_name=user_name, user_email=user_email)
 
-@app.route('/course-recommendation', methods=["POST"])
+@app.route('/course-recommendation', methods=["POST", "GET"])
 @login_required
 def get_course_recommendation():
     if request.method == "POST":
@@ -379,6 +379,7 @@ def get_course_recommendation():
 
         flash("Suggestion received", "success")
         return redirect('/courses')
+    return redirect('/courses')
         
 
 @app.route('/course/<course_code>')
