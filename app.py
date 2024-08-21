@@ -26,6 +26,25 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Configure app with Google OAuth credentials
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
+app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET")
+app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
+
+# Initialize OAuth client
+client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
+
+# Configure app with smtp
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
+
+mail = Mail(app)
+
 # Initialize database connection
 db = SQL("sqlite:///data/infix.db")
 db.execute('PRAGMA foreign_keys = ON')
@@ -323,7 +342,44 @@ def courses():
 
     return render_template('courses.html', enrolled_courses=enrolled_courses, other_courses=other_courses, path=path, enrolled = enrolled, to_add = to_add, user_name=user_name, user_email=user_email)
 
+@app.route('/course-recommendation', methods=["POST"])
+@login_required
+def get_course_recommendation():
+    if request.method == "POST":
+        name = request.form.get('name')
+        path = request.form.get('path')
+        email = request.form.get('email')
+        course_name = request.form.get('course_name')
+        if not name or not path or not email or not course_name:
+            flash("Incomplete response, please try again", "warning")
+            return redirect('/courses')
+        
+        result = db.execute("""
+            SELECT id FROM users
+            WHERE fullname = ? AND email = ?
+        """, name, email)
+        if not result:
+            flash("Invalid response, please try again", "warning")
+            return redirect('/courses')
+        user_id = result[0]['id']
+        result = db.execute("""
+            SELECT id FROM paths
+            WHERE name = ?
+        """, path)
+        if not result:
+            flash("Invalid response, please try again", "warning")
+            return redirect('/courses')
+        name = name.split(' ')[0]
+        subject = "Course Suggestion Received"
+        message_body = f"Dear {name},\n\nThank you for sharing your course suggestion! We’ve received your input for the course '{course_name}' for {path} path, and it’s awesome to see you contributing to making Infix better.\n\nKeep up the hard work with your studies, and feel free to send us more ideas anytime!\n\nBest Regards,"
+        # Send the appropriate email
+        msg = Message(subject, recipients=[email, "connect.infix@gmail.com"])
+        msg.body = message_body + f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
+        mail.send(msg)
 
+        flash("Suggestion received", "success")
+        return redirect('/courses')
+        
 
 @app.route('/course/<course_code>')
 @login_required
@@ -639,16 +695,6 @@ def page_not_found(e):
     return render_template('404.html', user_id=user_id, name=name), 404
 
 
-
-# Configure your app with Google OAuth credentials
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
-app.config['GOOGLE_CLIENT_SECRET'] = os.getenv("GOOGLE_CLIENT_SECRET")
-app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
-
-# Initialize OAuth client
-client = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
-
 @app.route('/auth/google', methods=["GET"])
 def google_login():
     # Get Google's provider configuration
@@ -742,17 +788,6 @@ def select_path_oauth():
     return render_template('select-path.html')
 
 
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')
-
-
-mail = Mail(app)
-
 def generate_random_code():
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(6))  # Generate a 6-character code
@@ -803,61 +838,32 @@ def send_email():
         # Check if the user needs to reset their password or set up a new password
         user_hash = user_record[0]['hash']
 
+        # Generate OTP and store it in the database
         otp = generate_random_code()
         db.execute("""
             INSERT INTO otps (user_id, otp_hash)
             VALUES (?,?)
         """, user_record[0]['id'], generate_password_hash(otp))
+
+        # Get user full name
         user_name = db.execute("""
             SELECT fullname FROM users
             WHERE email = ?
         """, email)[0]['fullname']
         user_name = user_name.split(' ')[0]
+
         if user_hash == "GOOGLE_OAUTH":
             # This is a password setup scenario
             subject = "Password Setup Code - Infix"
-            message_body = f"""
-            Dear {user_name},
-
-            We have received a request to set up a new password for your Infix account. Please use the following one-time code to complete the setup process:
-
-            Code: {otp}
-
-            This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
-
-            Thank you for using Infix.
-
-            Best regards,
-            The Infix Team
-            """
+            message_body = f"Dear {user_name},\n\nWe have received a request to set up a new password for your Infix account. Please use the following one-time code to complete the setup process:\n\nCode: {otp}\n\nThis code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.\n\nThank you for using Infix.\n\nBest Regards,"
         else:
             # This is a password reset scenario
             subject = "Password Reset Code - Infix"
-            message_body = f"""
-            Dear {user_name},
-
-            We have received a request to reset the password for your Infix account. Please use the following one-time code to complete the reset process:
-
-            Code: {otp}
-
-            This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
-
-            Thank you for using Infix.
-
-            Best regards,
-            The Infix Team
-            """
-
-        # Generate OTP and store it in the database
-        otp = generate_random_code()
-        db.execute("""
-            INSERT INTO otps (user_id, otp_hash)
-            VALUES (?, ?)
-        """, user_record[0]['id'], generate_password_hash(otp))
+            message_body = f"Dear {user_name},\n\nWe have received a request to reset the password for your Infix account. Please use the following one-time code to complete the setup process:\n\nCode: {otp}\n\nThis code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.\n\nThank you for using Infix.\n\nBest Regards,"
 
         # Send the appropriate email
         msg = Message(subject, recipients=[email])
-        msg.body = message_body.format(otp=otp) + f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
+        msg.body = message_body + f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
         mail.send(msg)
 
         # Flash message and redirect
