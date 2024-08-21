@@ -1,0 +1,9 @@
+Flask
+cs50
+Flask-Session
+werkzeug
+oauthlib
+requests
+python-dotenv
+Flask-Mail
+Flask-OAuthlib
