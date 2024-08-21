@@ -757,59 +757,84 @@ def generate_random_code():
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(6))  # Generate a 6-character code
 
-@app.route('/setnewpassword', methods = ["GET", "POST"])
+@app.route('/setnewpassword', methods=["GET", "POST"])
 def send_email():
     if session.get('user_id'):
+        # Check if the user logged in via Google OAuth
         hash = db.execute("""
             SELECT hash FROM users
             WHERE id = ?
         """, session.get('user_id'))[0]['hash']
+        
+        # If the user has a password, redirect to change password
         if hash != "GOOGLE_OAUTH":
             return redirect("/changepassword")
+
     if request.method == "POST":
         email = request.form.get('email')
+        
+        # Ensure email is provided
         if not email:
             flash("Please enter email", "warning")
             return render_template("set-new-password.html")
-        id = db.execute("""
-            SELECT id FROM users
+        
+        # Fetch the logged-in user's ID
+        if session.get("user_id"):
+            logged_in_user_email = db.execute("""
+                SELECT email FROM users
+                WHERE id = ?
+            """, session.get("user_id"))[0]['email']
+
+            # Ensure the entered email matches the logged-in user's email
+            if email != logged_in_user_email:
+                flash("Please enter your own email", "warning")
+                return render_template("set-new-password.html")
+
+        # Verify that the email exists in the database
+        user_record = db.execute("""
+            SELECT id, hash FROM users
             WHERE email = ?
         """, email)
-        if not id:
+        
+        if not user_record:
             flash("Email not found", "warning")
             return render_template("set-new-password.html")
+
+        # Check if the user needs to reset their password or set up a new password
+        user_hash = user_record[0]['hash']
+
         otp = generate_random_code()
         db.execute("""
             INSERT INTO otps (user_id, otp_hash)
             VALUES (?,?)
-        """, id[0]['id'], generate_password_hash(otp))
-        if session.get("user_id"):
-            google_id = db.execute("""
-                SELECT google_id FROM users
-                WHERE id = ?
-            """, session.get("user_id"))[0]['google_id']
-            if google_id != None:
-                msg = Message("Password Setup Code - Infix", recipients=[email])
-                msg.body = f"""
-                Dear User,
+        """, user_record[0]['id'], generate_password_hash(otp))
+        user_name = db.execute("""
+            SELECT fullname FROM users
+            WHERE email = ?
+        """, email)[0]['fullname']
+        user_name = user_name.split(' ')[0]
+        if user_hash == "GOOGLE_OAUTH":
+            # This is a password setup scenario
+            subject = "Password Setup Code - Infix"
+            message_body = f"""
+            Dear {user_name},
 
-                We have received a request to set up a new password for your Infix account. Please use the following one-time code to complete the setup process:
+            We have received a request to set up a new password for your Infix account. Please use the following one-time code to complete the setup process:
 
-                Code: {otp}
+            Code: {otp}
 
-                This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
+            This code is valid for 20 minutes. If you did not initiate this request, please disregard this message. Your account remains secure.
 
-                Thank you for using Infix.
+            Thank you for using Infix.
 
-                Best regards,
-                The Infix Team
-                """
-            else:
-                return redirect('/changepassword')
+            Best regards,
+            The Infix Team
+            """
         else:
-            msg = Message("Password Reset Code - Infix", recipients=[email])
-            msg.body = f"""
-            Dear User,
+            # This is a password reset scenario
+            subject = "Password Reset Code - Infix"
+            message_body = f"""
+            Dear {user_name},
 
             We have received a request to reset the password for your Infix account. Please use the following one-time code to complete the reset process:
 
@@ -822,12 +847,24 @@ def send_email():
             Best regards,
             The Infix Team
             """
-        msg.body += f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
+
+        # Generate OTP and store it in the database
+        otp = generate_random_code()
+        db.execute("""
+            INSERT INTO otps (user_id, otp_hash)
+            VALUES (?, ?)
+        """, user_record[0]['id'], generate_password_hash(otp))
+
+        # Send the appropriate email
+        msg = Message(subject, recipients=[email])
+        msg.body = message_body.format(otp=otp) + f"\n\n--\nInfix Team\nExcel Beyond\n🌐 www.infix.com\n📞+92-333-2498905, + 92-334-2087247\n"
         mail.send(msg)
 
+        # Flash message and redirect
         flash("OTP sent to your email", "info")
         session['email'] = email
         return redirect('/OTPverification')
+
     return render_template("set-new-password.html")
 
 @app.route('/OTPverification', methods=['POST', 'GET'])
@@ -843,6 +880,7 @@ def verify_otp():
             SELECT hash FROM users
             WHERE id = ?
         """, user_id)
+
         if not hash_record or hash_record[0]['hash'] != "GOOGLE_OAUTH":
             return redirect("/changepassword")
 
