@@ -397,9 +397,9 @@ def course_detail(course_code):
 
     # Fetch topics and their category names using a JOIN
     topics_with_categories = db.execute("""
-        SELECT topics.id, topics.title, categories.name AS category
+        SELECT topics.id, topics.title, categories.name AS category, categories.id AS category_id
         FROM topics
-        JOIN categories ON topics.category_id = categories.id
+        LEFT JOIN categories ON topics.category_id = categories.id
         WHERE topics.course_id = ?
     """, course_id)
 
