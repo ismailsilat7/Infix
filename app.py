@@ -967,7 +967,10 @@ def verify_otp():
 
     return render_template('enter-otp.html', email=email)
 
-
+@app.route('/studyguides')
+@login_required
+def study_guides():
+    return render_template('study-guides.html')
 
 
 
