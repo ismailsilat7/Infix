@@ -41,7 +41,15 @@ INSERT INTO categories (name) VALUES
 ('Physical Chemistry'),
 ('Inorganic Chemistry'),
 ('Organic Chemistry'),
-('Analysis')
+('Analysis'),
+('Data Representation'),
+('Communication and Internet Technologies'),
+('Hardware and Virtual Machines'),
+('System Software'),
+('Security'),
+('Artificial Intelligence (AI)'),
+('Computational Thinking and Problem-solving'),
+('Further Programming')
 ON CONFLICT DO NOTHING;
 
 -- Insert topics for Pure Mathematics 3
@@ -130,4 +138,59 @@ VALUES
 ((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Nuclear Physics', NULL),
 ((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Medical Physics', NULL),
 ((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Astronomy and Cosmology', NULL)
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Data Representation
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'User-defined Data Types', (SELECT id FROM categories WHERE name = 'Data Representation')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'File Organisation and Access', (SELECT id FROM categories WHERE name = 'Data Representation')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Floating-point Numbers, Representation and Manipulation', (SELECT id FROM categories WHERE name = 'Data Representation'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Communication and Internet Technologies
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Protocols', (SELECT id FROM categories WHERE name = 'Communication and Internet Technologies')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Circuit Switching and Packet Switching', (SELECT id FROM categories WHERE name = 'Communication and Internet Technologies'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Hardware and Virtual Machines
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Processors, Parallel Processing, and Virtual Machines', (SELECT id FROM categories WHERE name = 'Hardware and Virtual Machines')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Boolean Algebra and Logic Circuits', (SELECT id FROM categories WHERE name = 'Hardware and Virtual Machines'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for System Software
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Purposes of an Operating System (OS)', (SELECT id FROM categories WHERE name = 'System Software')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Translation Software', (SELECT id FROM categories WHERE name = 'System Software'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Security
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Encryption, Encryption Protocols, and Digital Certificates', (SELECT id FROM categories WHERE name = 'Security'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Artificial Intelligence (AI)
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Artificial Intelligence', (SELECT id FROM categories WHERE name = 'Artificial Intelligence (AI)'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Computational Thinking and Problem-solving
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Algorithms', (SELECT id FROM categories WHERE name = 'Computational Thinking and Problem-solving')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Recursion', (SELECT id FROM categories WHERE name = 'Computational Thinking and Problem-solving'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Further Programming
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Programming Paradigms', (SELECT id FROM categories WHERE name = 'Further Programming')),
+((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'File Processing and Exception Handling', (SELECT id FROM categories WHERE name = 'Further Programming'))
 ON CONFLICT DO NOTHING;
