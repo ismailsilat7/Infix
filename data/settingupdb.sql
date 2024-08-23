@@ -33,12 +33,15 @@ VALUES
 (2,4),(2,2),(2,6),(2,8),(1,4),(1,2),(1,6),(1,8)
 ON CONFLICT DO NOTHING;
 
--- INSERTING TOPICS IN TABLE topics IN OFFICIAL SYLLABUS ORDER
 -- Insert categories
 INSERT INTO categories (name) VALUES 
 ('Pure Mathematics 3'), 
 ('Probability and Statistics 2'), 
-('Mechanics')
+('Mechanics'),
+('Physical Chemistry'),
+('Inorganic Chemistry'),
+('Organic Chemistry'),
+('Analysis')
 ON CONFLICT DO NOTHING;
 
 -- Insert topics for Pure Mathematics 3
@@ -73,4 +76,39 @@ VALUES
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Continuous Random Variables', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Sampling and Estimation', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2')),
 ((SELECT id FROM courses WHERE course_code = '9709-A2' AND name = 'Mathematics'), 'Hypothesis Tests', (SELECT id FROM categories WHERE name = 'Probability and Statistics 2'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Physical Chemistry
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Chemical Energetics', (SELECT id FROM categories WHERE name = 'Physical Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Electrochemistry', (SELECT id FROM categories WHERE name = 'Physical Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Equilibria', (SELECT id FROM categories WHERE name = 'Physical Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Reaction Kinetics', (SELECT id FROM categories WHERE name = 'Physical Chemistry'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Inorganic Chemistry
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Group 2', (SELECT id FROM categories WHERE name = 'Inorganic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Chemistry of Transition Elements', (SELECT id FROM categories WHERE name = 'Inorganic Chemistry'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Organic Chemistry
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'An Introduction to A Level Organic Chemistry', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Hydrocarbons', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Halogen Compounds', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Hydroxy Compounds', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Carboxylic Acids and Derivatives', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Nitrogen Compounds', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Polymerisation', (SELECT id FROM categories WHERE name = 'Organic Chemistry')),
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Organic Synthesis', (SELECT id FROM categories WHERE name = 'Organic Chemistry'))
+ON CONFLICT DO NOTHING;
+
+-- Insert topics for Analysis
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Analytical Techniques', (SELECT id FROM categories WHERE name = 'Analysis'))
 ON CONFLICT DO NOTHING;
