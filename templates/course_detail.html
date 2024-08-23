@@ -18,7 +18,9 @@
     <div class="topic-container">
       <div class="text">
         <p>{{ topic.title }}</p>
-        <p class="category">{{ topic.category }}</p>
+        {% if topic.category_id %}
+          <p class="category">{{ topic.category }}</p>
+        {% endif %}
       </div>
       <div class="view-link">
         <a href="">View</a>

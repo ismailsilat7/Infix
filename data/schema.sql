@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     course_id INTEGER NOT NULL,
     title TEXT NOT NULL,
-    category_id INTEGER NOT NULL,
+    category_id INTEGER NULL,
     seq_num INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS user_topics (
 --categories table
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    name TEXT UNIQUE NULL
 );
 
 -- bookmarks table

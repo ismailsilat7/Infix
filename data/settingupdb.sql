@@ -112,3 +112,22 @@ INSERT INTO topics (course_id, title, category_id)
 VALUES 
 ((SELECT id FROM courses WHERE course_code = '9701-A2' AND name = 'Chemistry'), 'Analytical Techniques', (SELECT id FROM categories WHERE name = 'Analysis'))
 ON CONFLICT DO NOTHING;
+
+-- Insert topics for Physics A2 without categories
+INSERT INTO topics (course_id, title, category_id)
+VALUES 
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Motion in a Circle', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Gravitational Fields', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Temperature', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Ideal Gases', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Thermodynamics', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Oscillations', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Electric Fields', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Capacitance', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Magnetic Fields', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Alternating Currents', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Quantum Physics', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Nuclear Physics', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Medical Physics', NULL),
+((SELECT id FROM courses WHERE course_code = '9702-A2' AND name = 'Physics'), 'Astronomy and Cosmology', NULL)
+ON CONFLICT DO NOTHING;
