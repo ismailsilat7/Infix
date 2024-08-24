@@ -194,3 +194,32 @@ VALUES
 ((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'Programming Paradigms', (SELECT id FROM categories WHERE name = 'Further Programming')),
 ((SELECT id FROM courses WHERE course_code = '9618-A2' AND name = 'Computer Science'), 'File Processing and Exception Handling', (SELECT id FROM categories WHERE name = 'Further Programming'))
 ON CONFLICT DO NOTHING;
+
+-- Inserting Data into study_guides
+INSERT INTO study_guides (title, author) VALUES 
+('Mastering Calculus for A Levels', 'John Doe'),
+('Physics Made Easy', 'Jane Smith'),
+('Comprehensive Chemistry Guide', 'Dr. Albert Einstein'),
+('A* in Computer Science', 'Isaac Newton'),
+('Exam Techniques for A Levels', 'Marie Curie')
+ON CONFLICT DO NOTHING;
+
+-- Inserting Data into labels
+INSERT INTO labels (name) VALUES 
+('Mathematics'),
+('Physics'),
+('Chemistry'),
+('Computer Science'),
+('Exam Preparation')
+ON CONFLICT DO NOTHING;
+
+-- Inserting into study_guides_laveks
+INSERT INTO study_guides_labels (study_guide_id, label_id) VALUES 
+(1, 1), -- Mastering Calculus for A Levels -> Mathematics
+(2, 2), -- Physics Made Easy -> Physics
+(3, 3), -- Comprehensive Chemistry Guide -> Chemistry
+(4, 4), -- A* in Computer Science -> Computer Science
+(5, 5) -- Exam Techniques for A Levels -> Exam Preparation
+ON CONFLICT DO NOTHING;
+
+
