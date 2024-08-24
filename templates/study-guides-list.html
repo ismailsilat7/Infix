@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Courses - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/study-guides-list.css') }}">
+{% endblock %}
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+
+<div id="study-guides-list">
+    {% if search_query == "all" %}
+        <div class="head">
+            <h1>Study Guides</h1>
+            <a href="/studyguides" class="go-back-link">Go Back</a>
+        </div>
+    {% elif search_query %}
+        <div class="head">
+            <h1>Search results for '{{ search_query }}'</h1>
+            <a href="/studyguides" class="go-back-link">Go Back</a>
+        </div>
+    {% endif %}
+    
+    {% if not study_guides %}
+        <style>
+            #study-guides-list {
+                display: flex; 
+                flex-direction: column; 
+                text-align: center; 
+                min-height: 85vh;
+                align-items: center;
+            }
+            .head {
+                justify-content: center;
+            }
+            .head h1 {
+                text-align: center;
+            }
+            @media (min-width : 900px) {
+                .head h1{
+                    margin-right: 30px;
+                }
+
+            }
+
+        </style>
+        <div class="study-guides-card"><p>No guides found, ensure you have used correct spelling</p></div>
+    {% else %}
+        <div class="study-guides-card">
+            {% for study_guide in study_guides %}
+                <div class="card" onclick="submitForm('{{ study_guide.id }}')">
+                    <div class="title">{{ study_guide.title }}</div>
+                    <div class="author">By {{ study_guide.author }}</div>
+                    <div class="date">{{ study_guide.created_at }}</div>
+
+                    {% if study_guide.labels %}
+                        <div class="labels">
+                        {% for label in study_guide.labels %}
+                            <div class="label">{{ label }}</div>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <form id="form-{{ study_guide.id }}" action="/readguide" method="post">
+                        <input type="hidden" name="study_guide_id" value="{{ study_guide.id }}">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function submitForm(studyGuideId) {
+        document.getElementById('form-' + studyGuideId).submit();
+    }
+</script>
+
+{% endblock %}
+
+
