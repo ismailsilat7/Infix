@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Courses - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/study-guides.css') }}">
+{% endblock %}
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+<div class="change-form">
+    <h2>Study Guides</h2>
+    <p>Curated by A* Students and Expert Teachers</p>
+    <form action="/studyguides" id="search-form" method="post">
+      <div class="change-inputs">
+        <div class="input-container">
+          <i class="ri-search-line"></i>
+          <input type="text" name="search" placeholder="Use keywords, subjects, author (e.g., Ace Exams/Chemistry/John Doe)" required autofocus>
+        </div>
+      </div>
+      
+      {% include 'flash.html' %}
+      <div class="drop-btn-container" style="margin-top: 20px;">
+        <a href="/allstudyguides" class="whitebgBtn">View All</a>
+        <a id="search-button" href="#" class="whitebgBtn-contrast">Search</a>
+      </div>
+      <button type="submit" style="display: none;"></button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('search-button').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+        document.querySelector('#search-form button[type="submit"]').click(); // Click the hidden submit button
+    });
+</script>
+
+{% endblock %}
+
