@@ -91,3 +91,26 @@ CREATE TABLE IF NOT EXISTS otps (
     generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- study_guides table
+CREATE TABLE IF NOT EXISTS study_guides (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- labels table
+CREATE TABLE IF NOT EXISTS labels (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+-- study_guides_labels table
+CREATE TABLE IF NOT EXISTS study_guides_labels (
+    study_guide_id INTEGER NOT NULL,
+    label_id INTEGER NOT NULL,
+    FOREIGN KEY (study_guide_id) REFERENCES study_guides(id) ON DELETE CASCADE,
+    FOREIGN KEY (label_id) REFERENCES labels(id) ON DELETE CASCADE,
+    PRIMARY KEY (study_guide_id, label_id)
+);
