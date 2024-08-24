@@ -1,0 +1,155 @@
+.change-form {
+    width: 100%;
+    min-height: 85vh;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+  
+.change-form h2 {
+    font-family: 'Platform-Light';
+    font-size: 60px;
+    line-height: 1;
+}
+  
+.change-form p {
+    font-size: 25px;
+    text-align: center;
+}
+  
+.change-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 550px;
+}
+  
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 5px;
+    border-bottom: solid 2px rgb(148, 148, 148);
+}
+  
+.input-container i {
+    font-size: 20px;
+}
+  
+.input-container input {
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-family: 'Figtree';
+}
+  
+/* Button Styles */
+.whitebgBtn, .whitebgBtn-contrast {
+    font-family: 'Figtree';
+    font-size: 16px;
+    padding: 1em 2em;
+    border: 2px solid black;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+  
+.whitebgBtn {
+    background-color: white;
+    color: black;
+}
+.whitebgBtn:hover {
+    border-radius: 15px;
+}
+  
+.whitebgBtn-contrast {
+    background-color: black;
+    color: white;
+}
+.whitebgBtn-contrast:hover {
+    border-radius: 15px;
+}
+
+/* Button Hover Effects */
+.whitebgBtn::before, .whitebgBtn-contrast::before,
+.whitebgBtn::after, .whitebgBtn-contrast::after {
+    content: '';
+    position: absolute;
+    transition: all 0.5s ease;
+}
+.whitebgBtn::before, .whitebgBtn-contrast::before {
+    inset: 0px 8px;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+.whitebgBtn::after, .whitebgBtn-contrast::after {
+    inset: 8px 0px;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+.whitebgBtn:hover::before, .whitebgBtn-contrast:hover::before {
+    inset: 16px 8px;
+}
+.whitebgBtn:hover::after, .whitebgBtn-contrast:hover::after {
+    inset: 8px 16px;
+}
+  
+.drop-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1.5em;
+    margin-top: 0.5em;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .change-form h2 {
+        font-size: 50px;
+    }
+    .change-inputs {
+        max-width: 450px;
+    }
+    .input-container input {
+        font-size: 14px;
+    }
+    .whitebgBtn, .whitebgBtn-contrast {
+        padding: 0.8em 1.5em;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 550px) {
+    .change-form h2 {
+        font-size: 40px;
+    }
+    .change-inputs {
+        max-width: 350px;
+    }
+    .whitebgBtn, .whitebgBtn-contrast {
+        padding: 0.6em 1.2em;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .change-form h2 {
+        font-size: 35px;
+    }
+    .change-inputs {
+        max-width: 300px;
+    }
+    .whitebgBtn, .whitebgBtn-contrast {
+        padding: 0.5em 1em;
+        font-size: 10px;
+    }
+}
