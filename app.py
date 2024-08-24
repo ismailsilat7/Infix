@@ -967,12 +967,89 @@ def verify_otp():
 
     return render_template('enter-otp.html', email=email)
 
-@app.route('/studyguides')
+@app.route('/studyguides', methods=["GET", "POST"])
 @login_required
 def study_guides():
-    return render_template('study-guides.html')
+    if request.method == 'POST':
+        search_query = request.form.get('search')
+        if search_query:
+            if len(search_query) >= 21:
+                flash('Search query must be less than 20 characters', "warning")
+                return render_template('study-guides.html')
+            return redirect(url_for('search_study_guides', q=search_query))
+    else:
+        return render_template('study-guides.html')
 
+@app.route('/studyguides/search')
+@login_required
+def search_study_guides():
+    search_query = request.args.get('q')
+    if not search_query:
+        flash("Please provide a search term.", "warning")
+        return redirect(url_for('study_guides'))
 
+    query = """
+        SELECT sg.id, sg.title, sg.author, DATE(sg.created_at) AS created_date, 
+            GROUP_CONCAT(l.name) AS labels
+        FROM study_guides sg
+        LEFT JOIN study_guides_labels sgl ON sg.id = sgl.study_guide_id
+        LEFT JOIN labels l ON sgl.label_id = l.id
+        WHERE sg.title LIKE ? OR sg.author LIKE ? OR l.name LIKE ?
+        GROUP BY sg.id
+        ORDER BY sg.created_at DESC;
+        """
+    search_param = f'%{search_query}%'
+    
+    try:
+        result = db.execute(query, search_param, search_param, search_param)
+        study_guides = []
+        for row in result:
+            study_guide = {
+                'id': row['id'],
+                'title': row['title'],
+                'author': row['author'],
+                'created_at': row['created_date'],
+                # Split the 'labels' string into an array
+                'labels': row['labels'].split(',') if row['labels'] else []  # Handle case when labels is None
+            }
+            print(study_guide)
+            study_guides.append(study_guide)
+    except Exception as e:
+        flash("There was an error retrieving the study guides.", "warning")
+        return redirect(url_for('study_guides'))
+    
+    return render_template('study-guides-list.html', study_guides=study_guides, search_query=search_query)
+
+@app.route('/allstudyguides')
+@login_required
+def all_guides():
+    try:
+        query = """
+        SELECT sg.id, sg.title, sg.author, DATE(sg.created_at) AS created_date, 
+            GROUP_CONCAT(l.name) AS labels
+        FROM study_guides sg
+        LEFT JOIN study_guides_labels sgl ON sg.id = sgl.study_guide_id
+        LEFT JOIN labels l ON sgl.label_id = l.id
+        GROUP BY sg.id
+        ORDER BY created_at DESC
+        """
+        result = db.execute(query)
+        study_guides = []
+        for row in result:
+            study_guide = {
+                'id': row['id'],
+                'title': row['title'],
+                'author': row['author'],
+                'created_at': row['created_date'],
+                # Split the 'labels' string into an array
+                'labels': row['labels'].split(',') if row['labels'] else []  # Handle case when labels is None
+            }
+            study_guides.append(study_guide)
+    except Exception as e:
+        flash("There was an error retrieving the study guides.", "warning")
+        return redirect(url_for('study_guides'))
+
+    return render_template('study-guides-list.html', study_guides=study_guides, search_query='all')
 
 if __name__ == "__main__":
     app.run(debug=True)
