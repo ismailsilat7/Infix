@@ -1,0 +1,22 @@
+#footer {
+  display: none;
+}
+.copyright {
+  display: none;
+}
+
+#privacy-section {
+  padding-top: calc(80px + 1rem);
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2em;
+}
+.privacy-title {
+  font-family: 'Platform-Regular';
+  font-size: 80px;
+}
