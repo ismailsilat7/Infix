@@ -5,7 +5,7 @@
   display: none;
 }
 
-#privacy-section {
+#terms-section {
   padding: calc(80px + 1rem) 5em calc(80px + 1rem) 5em;
   min-height: 100%;
   display: flex;
@@ -15,19 +15,19 @@
   text-align: center;
   gap: 2em;
 }
-#privacy-section h1{
+#terms-section h1{
   font-family: 'Platform-Regular';
   font-size: 80px;
 }
-#privacy-section p{
+#terms-section p{
   font-size: 25px;
   text-align: left;
 }
-#privacy-section h3{
+#terms-section h3{
   font-size: 40px;
   text-align: left;
 }
-.privacy-content {
+.terms-content {
   display: flex;
   flex-direction: column;
   justify-content: center;  
@@ -37,7 +37,7 @@
 .point {
   font-weight: bolder;
 }
-.privacy-content div {
+.terms-content div {
   display: flex;
   flex-direction: column;
   gap: 15px;
