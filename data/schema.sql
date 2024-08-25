@@ -52,7 +52,6 @@ CREATE TABLE IF NOT EXISTS topics (
     title TEXT NOT NULL,
     category_id INTEGER NULL,
     seq_num INTEGER NOT NULL DEFAULT 0,
-    UNIQUE(title),
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
