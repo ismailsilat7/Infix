@@ -206,12 +206,20 @@ button {
   font-family: "Figtree";
 }
 .countdown-container {
+  align-self: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1em;
-  background-color: lightslategray;
+  font-size: 20px;
+  padding: 1.5em 2em;
+  border: solid black 2px;
+  border-radius: 20px;
+}
+.date-head {
+  font-family: 'Platform-Regular';
+  font-size: 24px;
 }
 .countdown {
   display: flex;
@@ -224,4 +232,8 @@ button {
   flex-direction: column;   
   justify-content: center;
   align-items: center;
+  gap: 0.5em;
+  width: 100px;
+  border-bottom: solid rgb(94, 94, 94) 2px;
+  padding: 0.5em 0;
 }

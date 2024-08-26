@@ -4,7 +4,7 @@ infixLogo.addEventListener('click', () => {
 })
 
 // Set the exam date (e.g., December 1, 2024, at 9:00 AM)
-var examDate = new Date("September 29, 2024 00:00:00").getTime();
+var examDate = new Date("September 30, 2024 00:00:00").getTime();
 
 // Update the countdown every second
 var countdownFunction = setInterval(function() {
