@@ -114,6 +114,8 @@ body {
     background-color: #ffffff; /* Light blue */
     color: #000000; /* Dark text for buttons */
     padding: 10px 20px;
+    border: none;
+    box-shadow: none;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
@@ -271,6 +273,7 @@ body {
     font-size: 30px; 
     color: #ffffff;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .bookmark-icon:hover {
@@ -318,9 +321,13 @@ body {
     transition: background-color 0.3s ease;
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
     gap: 8px;
     width: 250px;
+}
+
+.completed {
+    background-color: #66bb6a;
 }
 
 .mark-as-complete:hover,
@@ -332,6 +339,11 @@ body {
 .mark-as-complete:hover {
     background-color: #66bb6a;
     color: #2e2e2e;
+}
+
+.completed:hover {
+    background-color: rgb(183, 64, 64);
+    color: #f1f1f1;
 }
 
 /* Responsive Design */
