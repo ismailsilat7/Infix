@@ -1171,5 +1171,31 @@ def all_guides():
 
     return render_template('study-guides-list.html', study_guides=study_guides, search_query='all')
 
+@app.route('/progress')
+def progress():
+    user_id = session.get('user_id')
+    topics = db.execute("""
+        SELECT t.id, t.name, ut.completed
+        FROM topics t
+        LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
+    """, (user_id,))
+    return render_template('progress.html', topics=topics)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
