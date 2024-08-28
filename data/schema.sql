@@ -61,8 +61,6 @@ CREATE TABLE IF NOT EXISTS user_topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
-    completed BOOLEAN DEFAULT FALSE,
-    completed_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
 );
@@ -79,6 +77,7 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     user_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, topic_id)
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
 );
@@ -125,7 +124,7 @@ CREATE TABLE IF NOT EXISTS contributors (
 );
 
 -- contributors_topics table
-CREATE TABLE contributors_topics (
+CREATE TABLE IF NOT EXISTS contributors_topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     contributor_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
