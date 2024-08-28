@@ -30,3 +30,9 @@ function toggleNavbar() {
     }
 }
 
+
+
+function submitBookmarkRequest() {
+    document.getElementById('bookmark-request').submit();
+}
+
