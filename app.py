@@ -1174,12 +1174,25 @@ def all_guides():
 @app.route('/progress')
 def progress():
     user_id = session.get('user_id')
-    topics = db.execute("""
-        SELECT t.id, t.name, ut.completed
-        FROM topics t
-        LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
+
+    courses = db.execute("""
+        SELECT c.id, c.name
+        FROM courses c
+        JOIN user_courses uc ON c.id = uc.course_id
+        WHERE uc.user_id = ?
     """, (user_id,))
-    return render_template('progress.html', topics=topics)
+
+    topics_by_course = {}
+    for course in courses:
+        topics = db.execute("""
+            SELECT t.id, t.title, ut.completed
+            FROM topics t
+            LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
+            WHERE t.course_id = ?
+        """, user_id, course['id'])
+        topics_by_course[course['id']] = topics
+
+    return render_template('progress.html', courses=courses, topics_by_course=topics_by_course)
 
 
 

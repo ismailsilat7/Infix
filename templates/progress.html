@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Courses - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/progress.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+<div id="progress-container">
+  <h1>Your Infix Progress</h1>
+  <div class="list">
+    {% for course in courses %}
+      <p class="course-name">{{ course.name }}</p>
+      {% for topic in topics_by_course[course.id] %}
+        <p class="topic-name {% if topic.completed %}completed{% else %}incomplete{% endif %}">
+          {{ topic.title }}
+        </p>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}
