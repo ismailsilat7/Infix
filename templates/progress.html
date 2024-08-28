@@ -9,15 +9,19 @@
 
 {% block content %}
 <div id="progress-container">
-  <h1>Your Infix Progress</h1>
+  <h1>{{firstname}}'s Infix Progress</h1>
   <div class="list">
     {% for course in courses %}
+    <div class="course-container">
       <p class="course-name">{{ course.name }}</p>
-      {% for topic in topics_by_course[course.id] %}
+      <div class="topics-container">
+        {% for topic in topics_by_course[course.id] %}
         <p class="topic-name {% if topic.completed %}completed{% else %}incomplete{% endif %}">
           {{ topic.title }}
         </p>
-      {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
     {% endfor %}
   </div>
 </div>

@@ -5,16 +5,50 @@
   justify-content: flex-start;
   align-items: center;
   min-height: 100%;
-  background-color: lightgray;
 }
 #progress-container h1 {
   font-size: 80px;
   font-family: 'Platform-Regular';
+  margin-bottom: 30px;
 }
 .list {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
+}
+.course-name {
+  font-family: 'Platform-Regular';
+  font-size: 40px;
+  /* align-self: center; */
+}
+.course-container {
+  padding: 1em 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* border: solid 2px black; */
+  width: 100%;
+  margin-bottom: 1em;
+  gap: 1em;
+  border-radius: 15px;
+}
+.topics-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+}
+.topic-name {
+  box-sizing: border-box;
+  font-size: 20px;
+  /* background-color: red; */
+  width: 100%;
+  padding: 1em 1em;
+  border: solid 2px black;
+  border-radius: 15px;
 }
