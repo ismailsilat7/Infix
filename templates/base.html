@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Infix{% endblock %}</title>
-  <link rel="icon" href="{{url_for ('static', filename='images/favicon.png') }}">
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <!-- fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   {% block nav %}
   <div id="navbar">
     <div class="navbar-content">
-      <a href="/" class="logo"><img src="../static/images/White text, no bg.png" alt="Infix Logo" class="infix-logo-nav"></a>
+      <a href="/" class="logo"><img src="{{ url_for('static', filename='images/White text, no bg.png') }}" alt="Infix Logo" class="infix-logo-nav"></a>
       <div class="nav">
         <ul class="nav-list">
           <li class="nav-item"><a href="/" class="nav-link" id="{% block HomeActive %}active{% endblock %}">Home</a></li>
@@ -59,19 +59,21 @@
   {% block footer %}
   <div id="footer">
     <div class="infix-logo-top">
-      <img src="../static/images/Black text, no bg.png" alt="Infix Logo Black" class="infix-logo">
+      <img src="{{ url_for('static', filename='images/Black text, no bg.png') }}" alt="Infix Logo Black" class="infix-logo">
     </div>
     <div class="help-us">
-      <p class="help-us-expand"><span class="gray">HELP US</span> <span class="expand">EXPAND</span></p>
+      <p class="help-us-expand"><span class="gray">HELP US</span> <span class="expand" style="color: black;">EXPAND</span></p>
       <div class="action-buttons">
-        <div class="whitebgBtn-contrast donate"><a href="./">Donate</a></div>
-        <div class="whitebgBtn contribute"><a href="./">Contribute</a></div>
+        <div class="whitebgBtn-contrast donate"><a href="/">Donate</a></div>
+        <div class="whitebgBtn contribute"><a href="/">Contribute</a></div>
       </div>
     </div>
     <div class="links">
       <div class="socials">
         <div class="get-social">
-          <span class="social-text">Get Social</span><a href="./"><img class="facebook-icon" src="../static/images/Facebook Icon.png" alt="Facebook Icon"></a><a href="./"><img class="instagram-icon" src="../static/images/Instagram Icon.png" alt="Instagram Icon">
+          <span class="social-text">Get Social</span>
+          <a href="https://www.facebook.com/infix"><img class="facebook-icon" src="{{ url_for('static', filename='images/Facebook Icon.png') }}" alt="Facebook Icon"></a>
+          <a href="https://www.instagram.com/infix"><img class="instagram-icon" src="{{ url_for('static', filename='images/Instagram Icon.png') }}" alt="Instagram Icon"></a>
         </div>
         <p class="contact-email">connect.infix@gmail.com</p>
       </div>
@@ -84,6 +86,7 @@
   </div>
   <div class="copyright">Copyright © Infix - 2024</div>
   {% endblock %}
+  
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
