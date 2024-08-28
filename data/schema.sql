@@ -97,7 +97,8 @@ CREATE TABLE IF NOT EXISTS study_guides (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(title)
 );
 
 -- labels table
@@ -113,4 +114,22 @@ CREATE TABLE IF NOT EXISTS study_guides_labels (
     FOREIGN KEY (study_guide_id) REFERENCES study_guides(id) ON DELETE CASCADE,
     FOREIGN KEY (label_id) REFERENCES labels(id) ON DELETE CASCADE,
     PRIMARY KEY (study_guide_id, label_id)
+);
+
+-- contributors table
+CREATE TABLE IF NOT EXISTS contributors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- contributors_topics table
+CREATE TABLE contributors_topics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    contributor_id INTEGER NOT NULL,
+    topic_id INTEGER NOT NULL,
+    FOREIGN KEY (contributor_id) REFERENCES contributors(id),
+    FOREIGN KEY (topic_id) REFERENCES topics(id),
+    UNIQUE(contributor_id, topic_id)
 );

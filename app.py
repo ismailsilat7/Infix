@@ -414,6 +414,117 @@ def course_detail(course_code):
 
     return render_template('course_detail.html', course=course[0], topics=topics_with_categories)
 
+# Function to replace special characters with ASCII equivalents
+def replace_special_characters(text):
+    replacements = {
+        "‘": "'", "’": "'", "“": '"', "”": '"', "—": "-", "–": "-", "…": "...",
+        "é": "e", "è": "e", "ê": "e", "ë": "e", "á": "a", "à": "a", "â": "a",
+        "ä": "a", "í": "i", "ì": "i", "î": "i", "ï": "i", "ó": "o", "ò": "o",
+        "ô": "o", "ö": "o", "ú": "u", "ù": "u", "û": "u", "ü": "u", "ç": "c",
+        "ñ": "n", "ß": "ss", "ÿ": "y"
+    }
+    for key, value in replacements.items():
+        text = text.replace(key, value)
+    return text
+
+@app.route('/course/<course_code>/<topic>')
+@login_required
+def topic_detail(course_code, topic):
+    # Fetch course details
+    course = db.execute("SELECT * FROM courses WHERE course_code = ?", course_code)
+    
+    if not course:
+        flash("Course not found.", "warning")
+        return redirect('/dashboard')
+    
+    course = course[0]  # Get the first result
+    
+    # Fetch topic details
+    topic_details = db.execute("""
+        SELECT t.title, c.name as course_name, c.course_code, t.id as topic_id, t.category_id
+        FROM topics t
+        JOIN courses c ON t.course_id = c.id
+        WHERE t.title = ? AND c.course_code = ?
+    """, topic, course_code)
+    
+    if not topic_details:
+        flash("Topic not found.", "error")
+        return redirect(url_for('index'))  # Redirect to a suitable page if the topic is not found
+    
+    topic_details = topic_details[0]  # Get the first result
+    print(topic_details)
+    # Fetch categories and their respective topics
+    categories = db.execute("""
+        SELECT * FROM categories
+        WHERE id IN (
+                        SELECT DISTINCT t.category_id FROM topics t
+                        JOIN courses c ON t.course_id = c.id
+                        WHERE c.course_code = ?
+                    )
+    """, course_code)
+    topics_data = {}
+    if categories:
+        current_category = db.execute("""
+            SELECT name FROM categories WHERE id = ?
+        """, topic_details['category_id'])[0]['name']
+        for category in categories:
+            category_name = category['name']
+            topics_in_category = db.execute("""
+                SELECT title FROM topics
+                WHERE category_id = ?
+            """, category['id'])
+            
+            if topics_in_category:
+                topics_data[category_name] = topics_in_category
+            else:
+                print(f"No topics found for category: {category_name}")
+    else:
+        print("No categories found, defaulting to 'Topics'")
+        current_category = "Topics"
+        course_id = db.execute("""
+            SELECT id FROM courses
+            WHERE course_code = ?
+        """, topic_details['course_code'])[0]['id']
+
+        topics_in_category = db.execute("""
+            SELECT title FROM topics WHERE course_id = ?
+        """, course_id)
+        
+        if topics_in_category:
+            topics_data[current_category] = topics_in_category
+        else:
+            print(f"No topics found for course: {course_code}")
+    
+    # Extract necessary details
+    topic_name = topic_details['title']
+    course_name = topic_details['course_name']
+    topic_id = topic_details['topic_id']
+    
+    # Determine the path (O Levels or A Levels)
+    if 'A' in course_code:
+        path = "A Levels"
+    else:
+        path = "O Levels"
+    
+    
+    # Format topic for file path with special character replacement
+    formatted_topic = replace_special_characters(topic.lower().replace(' ', '_'))
+    
+    # Generate the file path
+    template_path = f"{path}/{course_name} {course_code}/{formatted_topic}.html"
+    
+    # Render the template with the appropriate context
+    return render_template(template_path, 
+                           topic_name=topic_name, 
+                           course_name=course_name,
+                           course_code=course_code, 
+                           topic_id=topic_id, 
+                           topics_data=topics_data,  # Structured topics and categories
+                           current_topic=topic_name,  # Current topic
+                           current_category=current_category,  # Current category
+                           formatted_topic=formatted_topic)
+
+
 @app.route('/enrollcourse/<course_code>')
 @login_required
 def enroll_course(course_code):

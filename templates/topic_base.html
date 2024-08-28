@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}{{topic_name}} - Infix{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/topic_base.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block HomeActive %}inactive{% endblock %}
+
+{% block content %}
+
+    <div id="topic-content">
+        <div class="links-container">
+            {% if topics_data.items() %}
+            {% if current_category != "Topics" %}
+                <h1 style="padding: 20px 0;">Categories</h1>
+            {% else %}
+                <h1 style="padding: 10px 0;"></h1>
+            {% endif %}
+            {% endif %}
+            {% for category, topics in topics_data.items() %}
+            <div class="categories">
+                {% if category == current_category %}
+                    <p class="category-name" onclick="toggleCategory('{{ category }}')"
+                        class="active">
+                    {{ category }}
+                    </p>
+                {% else %}
+                    <p class="category-name" onclick="toggleCategory('{{ category }}')">
+                    {{ category }}
+                    </p>
+                {% endif %}
+                {% if category == current_category %}
+                    <div id="{{ category|replace(' ', '_') }}" class="topics" 
+                        style="display: block;">
+                        {% for topic in topics %}
+                            {% if topic['title'] == current_topic %} 
+                                <a href="/course/{{course_code}}/{{topic['title']}}" class="topics-name current">
+                                    {{ topic['title'] }}
+                                </a>
+                            {% else %}
+                                <a href="/course/{{course_code}}/{{topic['title']}}" class="topics-name">
+                                    {{ topic['title'] }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div id="{{ category|replace(' ', '_') }}" class="topics" 
+                    style="display: none;">
+                        {% for topic in topics %}
+                            {% if topic['title'] == current_topic %} 
+                                <a href="/course/{{course_code}}/{{topic['title']}}" class="topics-name current">
+                                    {{ topic['title'] }}
+                                </a>
+                            {% else %}
+                                <a href="/course/{{course_code}}/{{topic['title']}}" class="topics-name">
+                                    {{ topic['title'] }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="topic-main">
+            <div class="topic-detail">
+                {% block topic_detail %}
+
+                {% endblock %}
+            </div>
+            <div class="buttons">
+                <div class="mark-as-complete"><span>Mark as Complete</span> <i class="ri-checkbox-circle-line"></i></div>
+                <div class="next"><span>Next Topic</span> <i class="ri-arrow-right-circle-line"></i></div>
+            </div>
+        </div>
+        <div class="table-of-content" id="toc-container">
+            <p class="table-head">Table Of Content</p>
+            <div class="content-link" id="toc-main">
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="contributors">
+
+    </div>
+
+<!-- Include jQuery before your custom scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/topic_base.js') }}" ></script>
+{% endblock %}
