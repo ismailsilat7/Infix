@@ -62,8 +62,14 @@ for course_name, course_code, path_id, topic_name in data:
 
             {{% block topic_detail %}}
                 <div id="title">
-                    <h2>{replace_special_characters(topic_name)}<p>{course_code}</p></h2> 
-                    <a href="/bookmark" class="bookmark-icon"><i class="ri-bookmark-fill"></i></a>
+                    <h2>{replace_special_characters(topic_name)}<p>{course_code}</p></h2> """ + "{% if bookmarked %}" +f"""
+                        <div href="/bookmark" class="bookmark-icon remove-bookmark" title="Remove Bookmark" onclick="submitBookmarkRequest()">
+                            <i class="ri-bookmark-fill" style="color: #66bb6a;"></i>
+                        </div>
+            """ + "{% else %}" + f"""
+                        <div href="/bookmark" class="bookmark-icon add-bookmark" title="Add Bookmark" onclick="submitBookmarkRequest()">
+                            <i class="ri-bookmark-line" style="color: #999;"></i>
+                        </div> """ + "{% endif %}" + f"""
                 </div>
 
                 <div id="learning-outcomes" class="toc-item">
