@@ -51,4 +51,18 @@
   padding: 1em 1em;
   border: solid 2px black;
   border-radius: 15px;
+  position: relative;
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+.completed {
+  border: solid 2px #66BB6A;
+}
+
+.incomplete{
+  border: solid 2px darkred;
 }

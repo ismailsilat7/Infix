@@ -3,6 +3,7 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/progress.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 {% endblock %}
 
 {% block HomeActive %}inactive{% endblock %}
@@ -16,9 +17,14 @@
       <p class="course-name">{{ course.name }}</p>
       <div class="topics-container">
         {% for topic in topics_by_course[course.id] %}
-        <p class="topic-name {% if topic.completed %}completed{% else %}incomplete{% endif %}">
-          {{ topic.title }}
-        </p>
+        <div class="topic-name {% if topic.completed %}completed{% else %}incomplete{% endif %}">
+          <p>{{ topic.title }}</p>
+          {% if topic.completed %}
+          <span class="material-symbols-outlined icon">done_all</span>
+          {% else %}
+          <span class="material-symbols-outlined icon">close</span>
+          {% endif %}
+        </div>
         {% endfor %}
       </div>
     </div>
