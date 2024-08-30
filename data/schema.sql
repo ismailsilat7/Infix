@@ -61,8 +61,6 @@ CREATE TABLE IF NOT EXISTS user_topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
-    completed BOOLEAN DEFAULT FALSE,
-    completed_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
 );

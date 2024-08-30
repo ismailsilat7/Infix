@@ -1191,7 +1191,7 @@ def progress():
             SELECT t.id, t.title, ut.completed
             FROM topics t
             LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
-            WHERE t.course_id = ?
+            WHERE t.course_id = ? 
         """, user_id, course['id'])
         topics_by_course[course['id']] = topics
 
