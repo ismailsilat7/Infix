@@ -1174,6 +1174,8 @@ def all_guides():
 @app.route('/progress')
 def progress():
     user_id = session.get('user_id')
+
+    # Fetch the user's full name
     user_info = db.execute("SELECT fullname FROM users WHERE id = ?", (user_id,))
     fullname = user_info[0]['fullname'] if user_info else 'User'
     firstname = fullname.split()[0]
@@ -1183,19 +1185,21 @@ def progress():
         FROM courses c
         JOIN user_courses uc ON c.id = uc.course_id
         WHERE uc.user_id = ?
-    """, (user_id,))
-
+    """, user_id,)
+    
     topics_by_course = {}
     for course in courses:
         topics = db.execute("""
-            SELECT t.id, t.title, ut.completed
+            SELECT t.id, t.title,
+                CASE WHEN ut.id IS NOT NULL THEN 1 ELSE 0 END AS completed
             FROM topics t
             LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
-            WHERE t.course_id = ? 
+            WHERE t.course_id = ?
         """, user_id, course['id'])
         topics_by_course[course['id']] = topics
 
     return render_template('progress.html', courses=courses, topics_by_course=topics_by_course, firstname=firstname)
+
 
 
 
