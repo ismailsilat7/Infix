@@ -19,7 +19,7 @@
       <div class="progress-bar-container">
         <div class="progress-bar" style="width: {{ completion_data[course.id]['percentage'] }}%;"></div>
         <span class="progress-text">
-            {{ completion_data[course.id]['completed'] }} out of {{ completion_data[course.id]['total'] }} topics completed ({{ completion_data[course.id]['percentage'] | round(2) }}%)
+            {{ completion_data[course.id]['completed'] }} out of {{ completion_data[course.id]['total'] }} topics completed ({{ completion_data[course.id]['percentage'] | int }}%)
         </span>
       </div>
 
