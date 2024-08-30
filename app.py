@@ -1179,7 +1179,7 @@ def progress():
     firstname = fullname.split()[0]
 
     courses = db.execute("""
-        SELECT c.id, c.name
+        SELECT c.id, c.name, course_code
         FROM courses c
         JOIN user_courses uc ON c.id = uc.course_id
         WHERE uc.user_id = ?

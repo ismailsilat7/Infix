@@ -14,7 +14,7 @@
   <div class="list">
     {% for course in courses %}
     <div class="course-container">
-      <p class="course-name">{{ course.name }}</p>
+      <p class="course-name">{{ course.name }} ({{ course.course_code }})</p>
 
       <div class="progress-bar-container">
         <div class="progress-bar" style="width: {{ completion_data[course.id]['percentage'] }}%;"></div>
