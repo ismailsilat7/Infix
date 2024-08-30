@@ -441,7 +441,7 @@ def topic_detail(course_code, topic):
     
     # Fetch topic details
     topic_details = db.execute("""
-        SELECT t.title, c.name as course_name, c.course_code, t.id as topic_id, t.category_id
+        SELECT t.title, c.name as course_name, c.course_code, t.id as topic_id, t.category_id, t.seq_num, c.id as course_id
         FROM topics t
         JOIN courses c ON t.course_id = c.id
         WHERE t.title = ? AND c.course_code = ?
@@ -453,6 +453,17 @@ def topic_detail(course_code, topic):
     
     topic_details = topic_details[0]  # Get the first result
     print(topic_details)
+    
+    # Fetch the next topic based on the sequence number - currently doing based on topic num
+    next_topic = db.execute("""
+        SELECT title FROM topics
+        WHERE course_id = ? AND seq_num > ?
+        ORDER BY seq_num ASC
+        LIMIT 1
+    """, topic_details['course_id'], topic_details['seq_num'])
+
+    next_topic = next_topic[0]['title'] if next_topic else None
+    
     # Fetch categories and their respective topics
     categories = db.execute("""
         SELECT * FROM categories
@@ -500,12 +511,22 @@ def topic_detail(course_code, topic):
     course_name = topic_details['course_name']
     topic_id = topic_details['topic_id']
     
-    # Determine the path (O Levels or A Levels)
-    if 'A' in course_code:
-        path = "A Levels"
-    else:
-        path = "O Levels"
+    result = db.execute("""
+        SELECT * FROM bookmarks
+        WHERE user_id = ? AND topic_id = ?
+    """, session['user_id'], topic_id)
+
+    bookmarked = bool(result)
+
+    result = db.execute("""
+        SELECT * FROM user_topics
+        WHERE user_id = ? AND topic_id = ?
+    """, session['user_id'], topic_id)
     
+    completed = bool(result)
+
+    # Determine the path (O Levels or A Levels)
+    path = "A Levels" if 'A' in course_code else "O Levels"
     
     # Format topic for file path with special character replacement
     formatted_topic = replace_special_characters(topic.lower().replace(' ', '_'))
@@ -514,15 +535,152 @@ def topic_detail(course_code, topic):
     template_path = f"{path}/{course_name} {course_code}/{formatted_topic}.html"
     
     # Render the template with the appropriate context
-    return render_template(template_path, 
-                           topic_name=topic_name, 
-                           course_name=course_name,
-                           course_code=course_code, 
-                           topic_id=topic_id, 
-                           topics_data=topics_data,  # Structured topics and categories
-                           current_topic=topic_name,  # Current topic
-                           current_category=current_category,  # Current category
-                           formatted_topic=formatted_topic)
+    return render_template(
+        template_path, 
+        topic_name=topic_name, 
+        course_name=course_name,
+        course_code=course_code, 
+        topic_id=topic_id, 
+        topics_data=topics_data,  # Structured topics and categories
+        current_topic=topic_name,  # Current topic
+        current_category=current_category,  # Current category
+        formatted_topic=formatted_topic,
+        bookmarked=bookmarked,
+        completed=completed,
+        next_topic=next_topic  # Add the next topic to the context
+    )
+
+
+
+def isenrolled(course_code, user_id):
+    """Checks if the user is enrolled in the course."""
+    try:
+        # Get course ID based on the course code
+        result = db.execute("SELECT id FROM courses WHERE course_code = ?", course_code)
+        if result:
+            course_id = result[0]['id']
+            # Check if the user is enrolled in the course
+            enrollment = db.execute("SELECT * FROM user_courses WHERE course_id = ? AND user_id = ?", course_id, user_id)
+            return bool(enrollment)  # Return True if the enrollment exists
+    except Exception as e:
+        print(f"Error in isenrolled: {e}")
+    return False
+
+def determine_path(course_code):
+    """Determines the path (O Levels or A Levels) based on the course code."""
+    return "A Levels" if 'A' in course_code else "O Levels"
+
+@app.route('/add-bookmark', methods=['POST'])
+@login_required
+def addBookmark():
+    course_code = request.form.get('course_code')
+    topic_id = request.form.get('topic_id')
+    topic_name = request.form.get('topic_name')
+    user_id = session.get('user_id')
+
+    if not course_code or not topic_id or not topic_name:
+        flash("Error encountered, please try again", "warning")
+        return redirect(request.referrer)
+
+    redirect_route = f"/course/{course_code}/{topic_name}"
+    
+    if isenrolled(course_code, user_id):
+        try:
+            result = db.execute("SELECT id FROM bookmarks WHERE topic_id = ? AND user_id = ?", topic_id, user_id)
+            if result:
+                flash(f"{topic_name} is already bookmarked.", "warning")
+            else:
+                db.execute("INSERT INTO bookmarks (topic_id, user_id) VALUES (?, ?)", topic_id, user_id)
+                flash(f"{topic_name} bookmarked!", "success")
+        except Exception as e:
+            flash(f"Error encountered, please try again. {str(e)}", "warning")
+    else:
+        flash(f"Please enroll in {course_code} first.", "warning")
+    return redirect(redirect_route)
+
+@app.route('/remove-bookmark', methods=['POST'])
+@login_required
+def removeBookmark():
+    course_code = request.form.get('course_code')
+    topic_id = request.form.get('topic_id')
+    topic_name = request.form.get('topic_name')
+    user_id = session.get('user_id')
+
+    if not course_code or not topic_id or not topic_name:
+        flash("Error encountered, please try again", "warning")
+        return redirect(request.referrer)
+
+    redirect_route = f"/course/{course_code}/{topic_name}"
+    
+    if isenrolled(course_code, user_id):
+        try:
+            result = db.execute("SELECT id FROM bookmarks WHERE topic_id = ? AND user_id = ?", topic_id, user_id)
+            if not result:
+                flash(f"{topic_name} wasn't already bookmarked.", "warning")
+            else:
+                db.execute("DELETE FROM bookmarks WHERE id = ?", result[0]['id'])
+                flash(f"Bookmark for {topic_name} removed!", "success")
+        except Exception as e:
+            flash(f"Error encountered, please try again. {str(e)}", "warning")
+    else:
+        flash(f"Please enroll in {course_code} first.", "warning")
+    return redirect(redirect_route)
+
+@app.route('/markascomplete', methods=['POST'])
+@login_required
+def markComplete():
+    course_code = request.form.get('course_code')
+    topic_id = request.form.get('topic_id')
+    topic_name = request.form.get('topic_name')
+    user_id = session.get('user_id')
+
+    if not course_code or not topic_id or not topic_name:
+        flash("Error encountered, please try again", "warning")
+        return redirect(request.referrer)
+
+    redirect_route = f"/course/{course_code}/{topic_name}"
+    
+    if isenrolled(course_code, user_id):
+        try:
+            result = db.execute("SELECT id FROM user_topics WHERE topic_id = ? AND user_id = ?", topic_id, user_id)
+            if result:
+                flash(f"{topic_name} already marked as complete.", "warning")
+            else:
+                db.execute("INSERT INTO user_topics (topic_id, user_id) VALUES (?, ?)", topic_id, user_id)
+                flash(f"{topic_name} marked as complete.", "success")
+        except Exception as e:
+            flash(f"Error encountered, please try again. {str(e)}", "warning")
+    else:
+        flash(f"Please enroll in {course_code} first.", "warning")
+    return redirect(redirect_route)
+
+@app.route('/marknotcomplete', methods=['POST'])
+@login_required
+def markNotComplete():
+    course_code = request.form.get('course_code')
+    topic_id = request.form.get('topic_id')
+    topic_name = request.form.get('topic_name')
+    user_id = session.get('user_id')
+
+    if not course_code or not topic_id or not topic_name:
+        flash("Error encountered, please try again", "warning")
+        return redirect(request.referrer)
+
+    redirect_route = f"/course/{course_code}/{topic_name}"
+    
+    if isenrolled(course_code, user_id):
+        try:
+            result = db.execute("SELECT id FROM user_topics WHERE topic_id = ? AND user_id = ?", topic_id, user_id)
+            if result:
+                db.execute("DELETE FROM user_topics WHERE id = ?", result[0]['id'])
+                flash(f"{topic_name} marked as not complete.", "success")
+            else:
+                flash(f"{topic_name} was not marked complete.", "warning")
+        except Exception as e:
+            flash(f"Error encountered, please try again. {str(e)}", "warning")
+    else:
+        flash(f"Please enroll in {course_code} first.", "warning")
+    return redirect(redirect_route)
 
 
 @app.route('/enrollcourse/<course_code>')
