@@ -1198,7 +1198,17 @@ def progress():
         """, user_id, course['id'])
         topics_by_course[course['id']] = topics
 
-    return render_template('progress.html', courses=courses, topics_by_course=topics_by_course, firstname=firstname)
+    completion_data = {}
+    total_topics = len(topics)
+    completed_topics = sum(topic['completed'] for topic in topics)
+    completion_percentage = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+    completion_data[course['id']] = {
+        'total': total_topics,
+        'completed': completed_topics,
+        'percentage': completion_percentage
+    }
+
+    return render_template('progress.html', courses=courses, topics_by_course=topics_by_course, completion_data=completion_data, firstname=firstname)
 
 
 
