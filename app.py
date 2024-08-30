@@ -1174,8 +1174,6 @@ def all_guides():
 @app.route('/progress')
 def progress():
     user_id = session.get('user_id')
-
-    # Fetch the user's full name
     user_info = db.execute("SELECT fullname FROM users WHERE id = ?", (user_id,))
     fullname = user_info[0]['fullname'] if user_info else 'User'
     firstname = fullname.split()[0]
@@ -1188,6 +1186,8 @@ def progress():
     """, user_id,)
     
     topics_by_course = {}
+    completion_data = {}
+    
     for course in courses:
         topics = db.execute("""
             SELECT t.id, t.title,
@@ -1196,17 +1196,18 @@ def progress():
             LEFT JOIN user_topics ut ON t.id = ut.topic_id AND ut.user_id = ?
             WHERE t.course_id = ?
         """, user_id, course['id'])
+        
         topics_by_course[course['id']] = topics
 
-    completion_data = {}
-    total_topics = len(topics)
-    completed_topics = sum(topic['completed'] for topic in topics)
-    completion_percentage = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
-    completion_data[course['id']] = {
-        'total': total_topics,
-        'completed': completed_topics,
-        'percentage': completion_percentage
-    }
+        total_topics = len(topics)
+        completed_topics = sum(topic['completed'] for topic in topics)
+        completion_percentage = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+
+        completion_data[course['id']] = {
+            'total': total_topics,
+            'completed': completed_topics,
+            'percentage': completion_percentage
+        }
 
     return render_template('progress.html', courses=courses, topics_by_course=topics_by_course, completion_data=completion_data, firstname=firstname)
 

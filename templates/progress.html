@@ -15,6 +15,14 @@
     {% for course in courses %}
     <div class="course-container">
       <p class="course-name">{{ course.name }}</p>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar" style="width: {{ completion_data[course.id]['percentage'] }}%;"></div>
+        <span class="progress-text">
+            {{ completion_data[course.id]['completed'] }} out of {{ completion_data[course.id]['total'] }} topics completed ({{ completion_data[course.id]['percentage'] | round(2) }}%)
+        </span>
+      </div>
+
       <div class="topics-container">
         {% for topic in topics_by_course[course.id] %}
         <div class="topic-name {% if topic.completed %}completed{% else %}incomplete{% endif %}">
