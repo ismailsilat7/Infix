@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS contributors (
 );
 
 -- contributors_topics table
-CREATE TABLE contributors_topics (
+CREATE TABLE IF NOT EXISTS contributors_topics (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     contributor_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
