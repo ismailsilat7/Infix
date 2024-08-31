@@ -619,7 +619,7 @@ def removeBookmark():
                 flash(f"{topic_name} wasn't already bookmarked.", "warning")
             else:
                 db.execute("DELETE FROM bookmarks WHERE id = ?", result[0]['id'])
-                flash(f"Bookmark for {topic_name} removed!", "success")
+                flash(f"Bookmark for {topic_name} removed!", "info")
         except Exception as e:
             flash(f"Error encountered, please try again. {str(e)}", "warning")
     else:
@@ -673,7 +673,7 @@ def markNotComplete():
             result = db.execute("SELECT id FROM user_topics WHERE topic_id = ? AND user_id = ?", topic_id, user_id)
             if result:
                 db.execute("DELETE FROM user_topics WHERE id = ?", result[0]['id'])
-                flash(f"{topic_name} marked as not complete.", "success")
+                flash(f"{topic_name} marked as not complete.", "info")
             else:
                 flash(f"{topic_name} was not marked complete.", "warning")
         except Exception as e:
