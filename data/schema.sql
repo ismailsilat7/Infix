@@ -120,7 +120,8 @@ CREATE TABLE IF NOT EXISTS contributors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    description TEXT
+    description TEXT,
+    link TEXT NOT NULL DEFAULT '/'
 );
 
 -- contributors_topics table
