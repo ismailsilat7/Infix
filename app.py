@@ -524,6 +524,16 @@ def topic_detail(course_code, topic):
     """, session['user_id'], topic_id)
     
     completed = bool(result)
+    contributors = []
+    contributors = db.execute("""
+        SELECT c.name, c.email, c.description, c.link 
+        FROM contributors c
+        JOIN contributors_topics ct ON c.id = ct.contributor_id
+        WHERE ct.topic_id = ?
+    """, topic_id)
+    print(contributors)
+    contributors.append({"name" : "Ismail Silat", "email" : "ismailsilat7@gmail.com", "description" : "Straight As in A Levels", "link" : "https://instagram.com/ismail.silat"})
+    contributors.append({"name" : "Ali Kashif", "email" : "alikashif5917@gmail.com", "description" : "CS is my fav, 68/75 is my best score", "link" : "https://instagram.com/ali___kashif"})
 
     # Determine the path (O Levels or A Levels)
     path = "A Levels" if 'A' in course_code else "O Levels"
@@ -547,7 +557,8 @@ def topic_detail(course_code, topic):
         formatted_topic=formatted_topic,
         bookmarked=bookmarked,
         completed=completed,
-        next_topic=next_topic  # Add the next topic to the context
+        next_topic=next_topic,  # Add the next topic to the context
+        contributors=contributors
     )
 
 
