@@ -457,10 +457,10 @@ def topic_detail(course_code, topic):
     # Fetch the next topic based on the sequence number - currently doing based on topic num
     next_topic = db.execute("""
         SELECT title FROM topics
-        WHERE course_id = ? AND seq_num > ?
-        ORDER BY seq_num ASC
+        WHERE course_id = ? AND id > ?
+        ORDER BY id ASC
         LIMIT 1
-    """, topic_details['course_id'], topic_details['seq_num'])
+    """, topic_details['course_id'], topic_details['topic_id'])
 
     next_topic = next_topic[0]['title'] if next_topic else None
     
