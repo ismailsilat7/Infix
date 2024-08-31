@@ -355,7 +355,22 @@ body {
     }
     .mark-as-complete,
     .next {
-        width: 80%;
+        width: 400px;
+    }
+}
+
+@media (max-width : 500px) {
+    .mark-as-complete,
+    .next {
+        width: 300px;
+    }
+    
+}
+
+@media (max-width : 400px) {
+    .mark-as-complete,
+    .next {
+        width: 250px;
     }
 }
 
@@ -407,4 +422,111 @@ body {
 .active {
     font-weight: bold;
     color: #66bb6a;
+}
+
+/* Contributor Section */
+#contributors {
+    margin-top: 40px;
+    background-color: #2e2e2e; /* Dark background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+    margin: 40px 15px;
+}
+
+.contributor-head {
+    color: #66bb6a; 
+    font-size: 35px;
+    transition: font-size 0.3s cubic-bezier(0.94, 0.95, 0, 1.01);
+}
+
+.contributor-head:hover {
+    font-size: 50px;
+}
+
+#contributors h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.contributor-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.contributor-form {
+    flex: 1 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+}
+
+.contributor-item {
+    width: 100%;
+    padding: 15px;
+    background-color: #3a3a3a; /* Slightly lighter background */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contributor-item:hover {
+    background-color: #4a4a4a; /* Darker shade on hover */
+    transform: scale(1.02); /* Slight zoom effect */
+}
+
+.contributor-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #66bb6a; /* Highlight color */
+    border-radius: 50%;
+    color: #2e2e2e;
+    font-size: 24px;
+}
+
+.contributor-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contributor-details h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #66bb6a;
+}
+
+.contributor-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #dcdcdc;
+}
+
+.contributor-description {
+    font-style: italic;
+    color: #b3b3b3;
+}
+
+/* Responsive Design for Contributors */
+@media (max-width: 1000px) {
+    .contributor-form {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width : 500px) {
+    .contributor-item {
+        flex-direction: column;
+    }
 }
