@@ -152,14 +152,16 @@ body {
     color: #dcdcdc;
     text-decoration: none;
     font-size: 16px;
-    padding: 5px 0;
+    padding: 5px 5px;
     transition: color 0.3s ease, padding-left 0.3s ease;
 }
 
 .content-link a:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     color: #ffffff;
-    padding-left: 10px; /* Slide effect on hover */
+    background-color: #4a4a4a;
+    border-radius: 5px;
+    /* padding-left: 10px; Slide effect on hover */
 }
 
 .content-link a.active {
@@ -167,10 +169,10 @@ body {
     color: #66bb6a;
 }
 
-.content-link a:before {
+/* .content-link a:before {
     content: "• ";
-    color: #66bb6a; /* Dot color for list items */
-}
+    color: #66bb6a;
+} */
 
 
 /* Contributor section */
@@ -251,7 +253,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: space-between;
     align-items: flex-start;
     gap: 5px;
