@@ -432,7 +432,7 @@ body {
     background-color: #2e2e2e; /* Dark background */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     margin: 40px 15px;
 }
 
@@ -458,14 +458,14 @@ body {
 }
 
 .contributor-form {
-    flex: 1 1 calc(50% - 20px);
-    max-width: calc(50% - 20px);
+    flex: 1 1 calc(40% - 20px);
+    max-width: calc(40% - 20px);
 }
 
 .contributor-item {
     width: 100%;
     padding: 15px;
-    background-color: #3a3a3a; /* Slightly lighter background */
+    background-color: #3a3a3a;
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -473,12 +473,12 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px 0 rgb(36, 36, 36);
 }
 
 .contributor-item:hover {
-    background-color: #4a4a4a; /* Darker shade on hover */
-    /* transform: scale(1.02); Slight zoom effect */
+    background-color: #4a4a4a;
 }
 
 .contributor-icon-container {
@@ -487,7 +487,7 @@ body {
     align-items: center;
     width: 50px;
     height: 50px;
-    background-color: #66bb6a; /* Highlight color */
+    background-color: #66bb6a;
     border-radius: 50%;
     color: #2e2e2e;
     font-size: 24px;
@@ -502,7 +502,7 @@ body {
 
 .contributor-details h4 {
     margin: 0;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: #66bb6a;
     font-family: 'Platform-Light';
@@ -511,14 +511,15 @@ body {
 
 .contributor-details p {
     margin: 5px 0;
-    font-size: 14px;
+    font-size: 16px;
     color: #dcdcdc;
     font-family: 'Figtree';
 }
 
-.contributor-description {
-    font-style: italic;
+.contributor-description.quote {
+    font-size: 14px;
     color: #b3b3b3;
+    letter-spacing: 2px;
 }
 
 /* Responsive Design for Contributors */
