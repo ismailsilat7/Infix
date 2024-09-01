@@ -322,8 +322,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     width: 250px;
+    font-family: 'Figtree';
+    font-size: 20px;
 }
 
 .completed {
