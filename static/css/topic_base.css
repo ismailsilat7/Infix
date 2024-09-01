@@ -439,7 +439,8 @@ body {
 .contributor-head {
     color: #66bb6a; 
     font-size: 35px;
-    font-family: 'Figtree';
+    font-family: 'Platform-Regular';
+    letter-spacing: 1px;
 }
 
 #contributors h3 {
@@ -452,6 +453,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .contributor-form {
@@ -475,7 +478,7 @@ body {
 
 .contributor-item:hover {
     background-color: #4a4a4a; /* Darker shade on hover */
-    transform: scale(1.02); /* Slight zoom effect */
+    /* transform: scale(1.02); Slight zoom effect */
 }
 
 .contributor-icon-container {
