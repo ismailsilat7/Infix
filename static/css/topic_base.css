@@ -439,11 +439,7 @@ body {
 .contributor-head {
     color: #66bb6a; 
     font-size: 35px;
-    transition: font-size 0.3s cubic-bezier(0.94, 0.95, 0, 1.01);
-}
-
-.contributor-head:hover {
-    font-size: 50px;
+    font-family: 'Figtree';
 }
 
 #contributors h3 {
@@ -506,12 +502,15 @@ body {
     font-size: 18px;
     font-weight: bold;
     color: #66bb6a;
+    font-family: 'Platform-Light';
+    letter-spacing: 1px;
 }
 
 .contributor-details p {
     margin: 5px 0;
     font-size: 14px;
     color: #dcdcdc;
+    font-family: 'Figtree';
 }
 
 .contributor-description {
